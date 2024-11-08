@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using Sirenix.OdinInspector;
 
 namespace VMFramework.Core
 {
@@ -25,7 +24,7 @@ namespace VMFramework.Core
         }
 
         private const int INITIAL_QUEUE_SIZE = 10;
-        [ShowInInspector]
+
         private readonly GenericArrayPriorityQueue<SimpleNode, TPriority> _queue;
         private readonly Dictionary<TItem, IList<SimpleNode>> _itemToNodesCache;
         private readonly IList<SimpleNode> _nullNodesCache;
