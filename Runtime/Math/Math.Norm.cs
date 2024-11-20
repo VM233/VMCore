@@ -27,39 +27,57 @@ namespace VMFramework.Core
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Vector4 Abs(this Vector4 a)
+        public static Vector4 Abs(this Vector4 vector)
         {
-            return a.ForeachNumber(num => num.Abs());
+            vector.x = vector.x.Abs();
+            vector.y = vector.y.Abs();
+            vector.z = vector.z.Abs();
+            vector.w = vector.w.Abs();
+            return vector;
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Vector3Int Abs(this Vector3Int a)
+        public static Vector3Int Abs(this Vector3Int vector)
         {
-            return a.ForeachNumber(num => num.Abs());
+            vector.x = vector.x.Abs();
+            vector.y = vector.y.Abs();
+            vector.z = vector.z.Abs();
+            return vector;
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Vector3 Abs(this Vector3 a)
+        public static Vector3 Abs(this Vector3 vector)
         {
-            return a.ForeachNumber(num => num.Abs());
+            vector.x = vector.x.Abs();
+            vector.y = vector.y.Abs();
+            vector.z = vector.z.Abs();
+            return vector;
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Vector2Int Abs(this Vector2Int a)
+        public static Vector2Int Abs(this Vector2Int vector)
         {
-            return a.ForeachNumber(num => num.Abs());
+            vector.x = vector.x.Abs();
+            vector.y = vector.y.Abs();
+            return vector;
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Vector2 Abs(this Vector2 a)
+        public static Vector2 Abs(this Vector2 vector)
         {
-            return a.ForeachNumber(num => num.Abs());
+            vector.x = vector.x.Abs();
+            vector.y = vector.y.Abs();
+            return vector;
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Color Abs(this Color a)
+        public static Color Abs(this Color color)
         {
-            return a.ForeachNumber(num => num.Abs());
+            color.r = color.r.Abs();
+            color.g = color.g.Abs();
+            color.b = color.b.Abs();
+            color.a = color.a.Abs();
+            return color;
         }
 
         #endregion

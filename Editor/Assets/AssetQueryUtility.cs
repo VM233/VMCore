@@ -10,22 +10,39 @@ namespace VMFramework.Core.Editor
 {
     public static class AssetQueryUtility
     {
-        #region Find By Asset Path
+        #region By Asset Path
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static IEnumerable<Object> FindAssetsByAssetPath(string assetPath, bool exactMatch = false,
+        public static IEnumerable<Object> FindAssetsByAssetPath(this AssetPath assetPath, bool isExactMatch = false,
             StringComparison comparison = StringComparison.Ordinal)
         {
-            if (assetPath.IsAssetPath() == false)
+            if (assetPath.path.IsAssetPath() == false)
             {
                 Debug.LogError($"{assetPath} is not a valid asset path.");
                 return Enumerable.Empty<Object>();
             }
 
-            var assetFolder = assetPath.GetDirectoryPath();
-            var fileName = assetPath.GetFileNameWithoutExtensionFromPath();
+            return assetPath.fileName.FindAssetsOfName<Object>(isExactMatch, comparison, assetPath.folderPath);
+        }
 
-            return fileName.FindAssetsOfName<Object>(exactMatch, comparison, assetFolder);
+        #endregion
+
+        #region By Relative Asset Path
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static IEnumerable<TAsset> FindAssetsByRelativeAssetPath<TAsset>(this AssetPath relativeAssetPath,
+            bool isExactMatch = false, StringComparison comparison = StringComparison.Ordinal)
+            where TAsset : Object
+        {
+            var relativeAssetFolder = relativeAssetPath.folderPath;
+            
+            if (relativeAssetFolder.TryGetAssetFolderPathByRelativeFolderPath(true, out var assetFolderPath) == false)
+            {
+                return EmptyCollections<TAsset>.emptyList;
+            }
+
+            return relativeAssetPath.fileName.FindAssetsOfName<TAsset>(isExactMatch: isExactMatch, comparison: comparison,
+                searchInFolders: assetFolderPath);
         }
 
         #endregion
@@ -33,19 +50,19 @@ namespace VMFramework.Core.Editor
         #region Find By Type And By Name
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static TAsset FindAssetOfName<TAsset>(this string assetName, bool exactMatch = false,
+        public static TAsset FindAssetOfName<TAsset>(this string assetName, bool isExactMatch = false,
             StringComparison comparison = StringComparison.Ordinal, params string[] searchInFolders)
             where TAsset : Object
         {
-            return (TAsset)assetName.FindAssetOfName(typeof(TAsset), exactMatch, comparison, searchInFolders);
+            return (TAsset)assetName.FindAssetOfName(typeof(TAsset), isExactMatch, comparison, searchInFolders);
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static bool TryFindAssetOfName<TAsset>(this string assetName, out TAsset asset, bool exactMatch = false,
+        public static bool TryFindAssetOfName<TAsset>(this string assetName, out TAsset asset, bool isExactMatch = false,
             StringComparison comparison = StringComparison.Ordinal, params string[] searchInFolders)
             where TAsset : Object
         {
-            if (assetName.TryFindAssetOfName(typeof(TAsset), out var obj, exactMatch, comparison, searchInFolders))
+            if (assetName.TryFindAssetOfName(typeof(TAsset), out var obj, isExactMatch, comparison, searchInFolders))
             {
                 asset = (TAsset)obj;
                 return true;
@@ -56,10 +73,10 @@ namespace VMFramework.Core.Editor
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Object FindAssetOfName(this string assetName, Type type, bool exactMatch = false,
+        public static Object FindAssetOfName(this string assetName, Type type, bool isExactMatch = false,
             StringComparison comparison = StringComparison.Ordinal, params string[] searchInFolders)
         {
-            return assetName.FindAssetsOfName(type, exactMatch, comparison, searchInFolders).FirstOrDefault();
+            return assetName.FindAssetsOfName(type, isExactMatch, comparison, searchInFolders).FirstOrDefault();
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -72,20 +89,20 @@ namespace VMFramework.Core.Editor
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static IEnumerable<TAsset> FindAssetsOfName<TAsset>(this string assetName, bool exactMatch = false,
+        public static IEnumerable<TAsset> FindAssetsOfName<TAsset>(this string assetName, bool isExactMatch = false,
             StringComparison comparison = StringComparison.Ordinal, params string[] searchInFolders)
             where TAsset : Object
         {
-            return FindAssetsOfName(assetName, typeof(TAsset), exactMatch, comparison, searchInFolders).Cast<TAsset>();
+            return FindAssetsOfName(assetName, typeof(TAsset), isExactMatch, comparison, searchInFolders).Cast<TAsset>();
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static IEnumerable<Object> FindAssetsOfName(this string assetName, Type type, bool exactMatch = false,
+        public static IEnumerable<Object> FindAssetsOfName(this string assetName, Type type, bool isExactMatch = false,
             StringComparison comparison = StringComparison.Ordinal, params string[] searchInFolders)
         {
             var assets = FindAssets(assetName, type, searchInFolders);
 
-            if (exactMatch == false)
+            if (isExactMatch == false)
             {
                 foreach (var asset in assets)
                 {

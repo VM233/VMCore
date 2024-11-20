@@ -67,5 +67,20 @@ namespace VMFramework.Core.Editor
             
             EditorUtility.SetDirty(obj);
         }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void SetEditorDirty<TEnumerable>(this TEnumerable objects)
+            where TEnumerable : IEnumerable<Object>
+        {
+            foreach (var obj in objects)
+            {
+                if (obj == null)
+                {
+                    continue;
+                }
+                
+                obj.SetEditorDirty();
+            }
+        }
     }
 }

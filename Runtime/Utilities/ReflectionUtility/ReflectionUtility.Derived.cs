@@ -155,13 +155,35 @@ namespace VMFramework.Core
 
             if (parentType.IsInterface)
             {
+                if (includingGenericDefinition)
+                {
+                    foreach (var parentInterface in derivedType.GetInterfaces())
+                    {
+                        if (parentInterface == parentType)
+                        {
+                            return true;
+                        }
+
+                        if (parentInterface.IsGenericType && parentInterface.GetGenericTypeDefinition() == parentType)
+                        {
+                            return true;
+                        }
+                    }
+                    
+                    return false;
+                }
+                
                 return derivedType.GetInterfaces().Contains(parentType);
             }
 
             if (includingGenericDefinition)
             {
-                return derivedType.GetAllBaseTypes(includingSelf, false, true)
-                    .Any(type => type == parentType);
+                foreach (var type in derivedType.GetAllBaseTypes(includingSelf, false, true))
+                {
+                    if (type == parentType) return true;
+                }
+
+                return false;
             }
 
             return false;

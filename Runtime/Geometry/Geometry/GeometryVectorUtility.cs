@@ -679,7 +679,7 @@ namespace VMFramework.Core
         public static IEnumerable<Vector2> GetUniformlySpacedClockwiseAngleDirections(this float startAngle,
             float endAngle, int stepCount)
         {
-            foreach (var angle in startAngle.GetUniformlySpacedRange(endAngle, stepCount))
+            foreach (var angle in startAngle.UniformlySpaced(endAngle, stepCount))
             {
                 yield return angle.ClockwiseAngleToDirection();
             }

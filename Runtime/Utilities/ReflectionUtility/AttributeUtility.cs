@@ -8,27 +8,27 @@ namespace VMFramework.Core
 {
     public static partial class ReflectionUtility
     {
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static TAttribute GetAttribute<TAttribute>(this MemberInfo member, bool inherit)
-            where TAttribute : Attribute
-        {
-            return member.GetCustomAttributes<TAttribute>(inherit).FirstOrDefault();
-        }
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static bool HasAttribute<TAttribute>(this MemberInfo member, bool inherit)
-            where TAttribute : Attribute
-        {
-            return member.GetAttribute<TAttribute>(inherit) != null;
-        }
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static bool TryGetAttribute<TAttribute>(this MemberInfo member,
-            bool inherit, out TAttribute attribute) where TAttribute : Attribute
-        {
-            attribute = member.GetAttribute<TAttribute>(inherit);
-            return attribute != null;
-        }
+        // [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        // public static TAttribute GetAttribute<TAttribute>(this MemberInfo member, bool inherit)
+        //     where TAttribute : Attribute
+        // {
+        //     return member.GetCustomAttributes<TAttribute>(inherit).FirstOrDefault();
+        // }
+        //
+        // [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        // public static bool HasAttribute<TAttribute>(this MemberInfo member, bool inherit)
+        //     where TAttribute : Attribute
+        // {
+        //     return member.GetAttribute<TAttribute>(inherit) != null;
+        // }
+        //
+        // [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        // public static bool TryGetAttribute<TAttribute>(this MemberInfo member,
+        //     bool inherit, out TAttribute attribute) where TAttribute : Attribute
+        // {
+        //     attribute = member.GetAttribute<TAttribute>(inherit);
+        //     return attribute != null;
+        // }
 
         #region From Attribute Provider
 

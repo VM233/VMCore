@@ -71,6 +71,12 @@ namespace VMFramework.Core
             return Path.GetFileNameWithoutExtension(path);
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static string GetExtensionFromPath(this string path)
+        {
+            return Path.GetExtension(path);
+        }
+
         #endregion
     }
 }
