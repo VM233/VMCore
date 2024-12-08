@@ -6,16 +6,16 @@ namespace VMFramework.Core
         where TPoint : struct, IEquatable<TPoint>
         where TRadius : struct, IComparable<TRadius>
     {
-        public TPoint center { get; init; }
+        public TPoint Center { get; init; }
 
-        public TRadius radius { get; init; }
+        public TRadius Radius { get; init; }
 
         public TPoint GetRelativePos(TPoint pos);
 
         public TPoint Clamp(TPoint pos);
 
-        public TPoint GetRandomPointInside();
+        public TPoint GetRandomPointInside(Random random);
 
-        public TPoint GetRandomPointOnSurface();
+        public TPoint GetRandomPointOnSurface(Random random);
     }
 }

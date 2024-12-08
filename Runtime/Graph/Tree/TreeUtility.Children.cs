@@ -19,8 +19,7 @@ namespace VMFramework.Core
         /// <param name="includingSelf"></param>
         /// <returns></returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static IEnumerable<T> PreorderTraverse<T>(this T node,
-            bool includingSelf)
+        public static IEnumerable<T> PreorderTraverse<T>(this T node, bool includingSelf)
             where T : class, IChildrenProvider<T>
         {
             return PreorderTraverse(node, includingSelf, node => node.GetChildren());
@@ -45,8 +44,7 @@ namespace VMFramework.Core
 
             foreach (var child in childrenGetter(node))
             {
-                foreach (var subNode in
-                         PreorderTraverse(child, true, childrenGetter))
+                foreach (var subNode in PreorderTraverse(child, true, childrenGetter))
                 {
                     yield return subNode;
                 }
@@ -62,12 +60,11 @@ namespace VMFramework.Core
         /// <param name="includingSelf"></param>
         /// <returns></returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static IEnumerable<TResult> PreorderTraverse<T, TResult>(this T node,
-            bool includingSelf)
-            where T : class, IChildrenProvider<T> where TResult : T
+        public static IEnumerable<TResult> PreorderTraverse<T, TResult>(this T node, bool includingSelf)
+            where T : class, IChildrenProvider<T>
+            where TResult : T
         {
-            return PreorderTraverse<T, TResult>(node, includingSelf,
-                node => node.GetChildren());
+            return PreorderTraverse<T, TResult>(node, includingSelf, node => node.GetChildren());
         }
 
         /// <summary>
@@ -81,7 +78,8 @@ namespace VMFramework.Core
         /// <returns></returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static IEnumerable<TResult> PreorderTraverse<T, TResult>(this T node, bool includingSelf,
-            Func<T, IEnumerable<T>> childrenGetter) where TResult : T
+            Func<T, IEnumerable<T>> childrenGetter)
+            where TResult : T
         {
             foreach (var child in node.PreorderTraverse(includingSelf, childrenGetter))
             {
@@ -104,8 +102,7 @@ namespace VMFramework.Core
         /// <param name="includingSelf"></param>
         /// <returns></returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static IEnumerable<T> PreorderTraverse<T>(this IEnumerable<T> nodes,
-            bool includingSelf)
+        public static IEnumerable<T> PreorderTraverse<T>(this IEnumerable<T> nodes, bool includingSelf)
             where T : class, IChildrenProvider<T>
         {
             foreach (var node in nodes)
@@ -126,13 +123,12 @@ namespace VMFramework.Core
         /// <param name="childrenGetter"></param>
         /// <returns></returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static IEnumerable<T> PreorderTraverse<T>(this IEnumerable<T> nodes,
-            bool includingSelf, Func<T, IEnumerable<T>> childrenGetter)
+        public static IEnumerable<T> PreorderTraverse<T>(this IEnumerable<T> nodes, bool includingSelf,
+            Func<T, IEnumerable<T>> childrenGetter)
         {
             foreach (var node in nodes)
             {
-                foreach (var child in node.PreorderTraverse(includingSelf,
-                             childrenGetter))
+                foreach (var child in node.PreorderTraverse(includingSelf, childrenGetter))
                 {
                     yield return child;
                 }
@@ -148,15 +144,13 @@ namespace VMFramework.Core
         /// <param name="includingSelf"></param>
         /// <returns></returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static IEnumerable<TResult> PreorderTraverse<T, TResult>(
-            this IEnumerable<T> nodes,
-            bool includingSelf)
-            where T : class, IChildrenProvider<T> where TResult : T
+        public static IEnumerable<TResult> PreorderTraverse<T, TResult>(this IEnumerable<T> nodes, bool includingSelf)
+            where T : class, IChildrenProvider<T>
+            where TResult : T
         {
             foreach (var node in nodes)
             {
-                foreach (var child in node.PreorderTraverse<T, TResult>(
-                             includingSelf))
+                foreach (var child in node.PreorderTraverse<T, TResult>(includingSelf))
                 {
                     yield return child;
                 }
@@ -173,14 +167,13 @@ namespace VMFramework.Core
         /// <param name="childrenGetter"></param>
         /// <returns></returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static IEnumerable<TResult> PreorderTraverse<T, TResult>(
-            this IEnumerable<T> nodes, bool includingSelf,
-            Func<T, IEnumerable<T>> childrenGetter) where TResult : T
+        public static IEnumerable<TResult> PreorderTraverse<T, TResult>(this IEnumerable<T> nodes, bool includingSelf,
+            Func<T, IEnumerable<T>> childrenGetter)
+            where TResult : T
         {
             foreach (var node in nodes)
             {
-                foreach (var child in node.PreorderTraverse<T, TResult>(
-                             includingSelf, childrenGetter))
+                foreach (var child in node.PreorderTraverse<T, TResult>(includingSelf, childrenGetter))
                 {
                     yield return child;
                 }
@@ -203,12 +196,10 @@ namespace VMFramework.Core
         /// <param name="includingSelf"></param>
         /// <returns></returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static IEnumerable<T> PostorderTraverse<T>(this T node,
-            bool includingSelf)
+        public static IEnumerable<T> PostorderTraverse<T>(this T node, bool includingSelf)
             where T : class, IChildrenProvider<T>
         {
-            return PostorderTraverse(node, includingSelf,
-                node => node.GetChildren());
+            return PostorderTraverse(node, includingSelf, node => node.GetChildren());
         }
 
         /// <summary>
@@ -220,13 +211,12 @@ namespace VMFramework.Core
         /// <param name="childrenGetter"></param>
         /// <returns></returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static IEnumerable<T> PostorderTraverse<T>(this T node,
-            bool includingSelf, Func<T, IEnumerable<T>> childrenGetter)
+        public static IEnumerable<T> PostorderTraverse<T>(this T node, bool includingSelf,
+            Func<T, IEnumerable<T>> childrenGetter)
         {
             foreach (var child in childrenGetter(node))
             {
-                foreach (var subNode in PostorderTraverse(child, true,
-                             childrenGetter))
+                foreach (var subNode in PostorderTraverse(child, true, childrenGetter))
                 {
                     yield return subNode;
                 }
@@ -250,8 +240,7 @@ namespace VMFramework.Core
         /// <param name="includingSelf"></param>
         /// <returns></returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static IEnumerable<T> PostorderTraverse<T>(this IEnumerable<T> nodes,
-            bool includingSelf)
+        public static IEnumerable<T> PostorderTraverse<T>(this IEnumerable<T> nodes, bool includingSelf)
             where T : class, IChildrenProvider<T>
         {
             foreach (var node in nodes)
@@ -272,13 +261,12 @@ namespace VMFramework.Core
         /// <param name="childrenGetter"></param>
         /// <returns></returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static IEnumerable<T> PostorderTraverse<T>(this IEnumerable<T> nodes,
-            bool includingSelf, Func<T, IEnumerable<T>> childrenGetter)
+        public static IEnumerable<T> PostorderTraverse<T>(this IEnumerable<T> nodes, bool includingSelf,
+            Func<T, IEnumerable<T>> childrenGetter)
         {
             foreach (var node in nodes)
             {
-                foreach (var child in node.PostorderTraverse(includingSelf,
-                             childrenGetter))
+                foreach (var child in node.PostorderTraverse(includingSelf, childrenGetter))
                 {
                     yield return child;
                 }
@@ -301,12 +289,10 @@ namespace VMFramework.Core
         /// <param name="includingSelf"></param>
         /// <returns></returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static IEnumerable<T> LevelOrderTraverse<T>(this T node,
-            bool includingSelf)
+        public static IEnumerable<T> LevelOrderTraverse<T>(this T node, bool includingSelf)
             where T : class, IChildrenProvider<T>
         {
-            return LevelOrderTraverse(node, includingSelf,
-                node => node.GetChildren());
+            return LevelOrderTraverse(node, includingSelf, node => node.GetChildren());
         }
 
         /// <summary>
@@ -317,8 +303,8 @@ namespace VMFramework.Core
         /// <param name="includingSelf"></param>
         /// <param name="childrenGetter"></param>
         /// <returns></returns>
-        public static IEnumerable<T> LevelOrderTraverse<T>(this T node,
-            bool includingSelf, Func<T, IEnumerable<T>> childrenGetter)
+        public static IEnumerable<T> LevelOrderTraverse<T>(this T node, bool includingSelf,
+            Func<T, IEnumerable<T>> childrenGetter)
         {
             var queue = new Queue<T>();
 
@@ -350,12 +336,10 @@ namespace VMFramework.Core
         #region Multiple Nodes
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static IEnumerable<T> LevelOrderTraverse<T>(this IEnumerable<T> nodes,
-            bool includingSelf)
+        public static IEnumerable<T> LevelOrderTraverse<T>(this IEnumerable<T> nodes, bool includingSelf)
             where T : class, IChildrenProvider<T>
         {
-            return LevelOrderTraverse(nodes, includingSelf,
-                node => node.GetChildren());
+            return LevelOrderTraverse(nodes, includingSelf, node => node.GetChildren());
         }
 
         /// <summary>
@@ -366,8 +350,8 @@ namespace VMFramework.Core
         /// <param name="includingSelf"></param>
         /// <param name="childrenGetter"></param>
         /// <returns></returns>
-        public static IEnumerable<T> LevelOrderTraverse<T>(this IEnumerable<T> nodes,
-            bool includingSelf, Func<T, IEnumerable<T>> childrenGetter)
+        public static IEnumerable<T> LevelOrderTraverse<T>(this IEnumerable<T> nodes, bool includingSelf,
+            Func<T, IEnumerable<T>> childrenGetter)
         {
             var nodesList = nodes.ToList();
 
@@ -455,14 +439,12 @@ namespace VMFramework.Core
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static IEnumerable<T> GetAllLeaves<T>(this IEnumerable<T> nodes,
-            bool includingSelf,
+        public static IEnumerable<T> GetAllLeaves<T>(this IEnumerable<T> nodes, bool includingSelf,
             Func<T, IEnumerable<T>> childrenGetter)
         {
             foreach (var node in nodes)
             {
-                foreach (var leaf in
-                         node.GetAllLeaves(includingSelf, childrenGetter))
+                foreach (var leaf in node.GetAllLeaves(includingSelf, childrenGetter))
                 {
                     yield return leaf;
                 }
@@ -474,8 +456,7 @@ namespace VMFramework.Core
         #region Find Children
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static IEnumerable<T> FindChildren<T>(this T node, bool includingSelf,
-            Func<T, bool> predicate)
+        public static IEnumerable<T> FindChildren<T>(this T node, bool includingSelf, Func<T, bool> predicate)
             where T : class, IChildrenProvider<T>
         {
             return PreorderTraverse(node, includingSelf).Where(predicate);
@@ -493,19 +474,17 @@ namespace VMFramework.Core
         #region Find Child
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static T FindChild<T>(this T node, bool includingSelf,
-            Func<T, bool> predicate)
+        public static T FindChild<T>(this T node, bool includingSelf, Func<T, bool> predicate)
             where T : class, IChildrenProvider<T>
         {
             return PreorderTraverse(node, includingSelf).FirstOrDefault(predicate);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static T FindChild<T>(this T node, bool includingSelf,
-            Func<T, IEnumerable<T>> childrenGetter, Func<T, bool> predicate)
+        public static T FindChild<T>(this T node, bool includingSelf, Func<T, IEnumerable<T>> childrenGetter,
+            Func<T, bool> predicate)
         {
-            return PreorderTraverse(node, includingSelf, childrenGetter)
-                .FirstOrDefault(predicate);
+            return PreorderTraverse(node, includingSelf, childrenGetter).FirstOrDefault(predicate);
         }
 
         #endregion
@@ -513,8 +492,7 @@ namespace VMFramework.Core
         #region Try Find Child
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static bool TryFindChild<T>(this T node, bool includingSelf,
-            Func<T, bool> predicate, out T result)
+        public static bool TryFindChild<T>(this T node, bool includingSelf, Func<T, bool> predicate, out T result)
             where T : class, IChildrenProvider<T>
         {
             result = FindChild(node, includingSelf, predicate);
@@ -522,9 +500,8 @@ namespace VMFramework.Core
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static bool TryFindChild<T>(this T node, bool includingSelf,
-            Func<T, IEnumerable<T>> childrenGetter, Func<T, bool> predicate,
-            out T result)
+        public static bool TryFindChild<T>(this T node, bool includingSelf, Func<T, IEnumerable<T>> childrenGetter,
+            Func<T, bool> predicate, out T result)
         {
             result = FindChild(node, includingSelf, childrenGetter, predicate);
             return result != null;
@@ -535,36 +512,31 @@ namespace VMFramework.Core
         #region Has Child
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static bool HasChild<T>(this T node, bool includingSelf,
-            Func<T, bool> predicate)
+        public static bool HasChild<T>(this T node, bool includingSelf, Func<T, bool> predicate)
             where T : class, IChildrenProvider<T>
         {
             return FindChildren(node, includingSelf, predicate).Any();
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static bool HasChild<T>(this T node, bool includingSelf,
-            Func<T, IEnumerable<T>> childrenGetter, Func<T, bool> predicate)
+        public static bool HasChild<T>(this T node, bool includingSelf, Func<T, IEnumerable<T>> childrenGetter,
+            Func<T, bool> predicate)
         {
-            return FindChildren(node, includingSelf, childrenGetter, predicate)
-                .Any();
+            return FindChildren(node, includingSelf, childrenGetter, predicate).Any();
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static bool HasChild<T>(this T node, T child, bool includingSelf)
             where T : class, IChildrenProvider<T>
         {
-            return node.PreorderTraverse(includingSelf)
-                .Any(node => node.Equals(child));
+            return node.PreorderTraverse(includingSelf).Any(node => node.Equals(child));
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static bool HasChild<T>(this T node, T child, bool includingSelf,
-            Func<T, IEnumerable<T>> childrenGetter)
+        public static bool HasChild<T>(this T node, T child, bool includingSelf, Func<T, IEnumerable<T>> childrenGetter)
             where T : class
         {
-            return node.PreorderTraverse(includingSelf, childrenGetter)
-                .Any(node => node.Equals(child));
+            return node.PreorderTraverse(includingSelf, childrenGetter).Any(node => node.Equals(child));
         }
 
         #endregion
@@ -584,8 +556,7 @@ namespace VMFramework.Core
             return GetLeavesMaxDepth(node, node => node.GetChildren());
         }
 
-        public static int GetLeavesMaxDepth<T>(this T node,
-            Func<T, IEnumerable<T>> childrenGetter)
+        public static int GetLeavesMaxDepth<T>(this T node, Func<T, IEnumerable<T>> childrenGetter)
         {
             var children = childrenGetter(node).ToList();
 

@@ -6,6 +6,17 @@ namespace VMFramework.Core
 {
     public static class RandomRangeUtility
     {
+        #region KCube
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static int Range(this Random random, RangeInteger range) => random.Next(range.min, range.max + 1);
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static float Range(this Random random, RangeFloat range) =>
+            (float)random.NextDouble() * (range.max - range.min) + range.min;
+
+        #endregion
+        
         #region Min and Max
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]

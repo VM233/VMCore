@@ -1,6 +1,8 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Random = System.Random;
 
 namespace VMFramework.Core
 {
@@ -10,7 +12,7 @@ namespace VMFramework.Core
         public readonly Color max;
         public readonly int count;
         
-        public Color step => count > 0 ? (max - min) / (count - 1) : ColorDefinitions.zero;
+        public Color Step => count > 0 ? (max - min) / (count - 1) : ColorDefinitions.zero;
         
         public UniformlySpacedRangeColor(Color min, Color max, int count)
         {
@@ -51,7 +53,33 @@ namespace VMFramework.Core
             }
             
             var offset = pos - min;
-            return offset.r % step.r == 0 && offset.g % step.g == 0 && offset.b % step.b == 0 && offset.a % step.a == 0;
+            return offset.r % Step.r == 0 && offset.g % Step.g == 0 && offset.b % Step.b == 0 && offset.a % Step.a == 0;
+        }
+        
+        public Color GetRandomItem(Random random)
+        {
+            if (count <= 0)
+            {
+                throw new InvalidOperationException($"{nameof(UniformlySpacedRangeColor)} is empty.");
+            }
+
+            if (count == 1)
+            {
+                return (max + min) / 2;
+            }
+
+            if (count == 2)
+            {
+                return random.NextBool() ? min : max;
+            }
+
+            var index = random.Next(count);
+            return min + index * Step;
+        }
+
+        object IRandomItemProvider.GetRandomObjectItem(Random random)
+        {
+            return GetRandomItem(random);
         }
         
         #region Enumerator
@@ -76,7 +104,7 @@ namespace VMFramework.Core
             public Enumerator(UniformlySpacedRangeColor range)
             {
                 this.range = range;
-                step = range.step;
+                step = range.Step;
                 x = range.min - step;
                 index = -1;
             }
@@ -106,7 +134,7 @@ namespace VMFramework.Core
 
             public void Reset()
             {
-                x = range.min - range.step;
+                x = range.min - range.Step;
             }
 
             public void Dispose() { }

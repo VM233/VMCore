@@ -13,7 +13,21 @@ namespace VMFramework.Core
         #region Add
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static void AddIfNotContains<T>(this ICollection<T> collection, T item)
+        public static void AddIfNotNull<TCollection, TItem>(this TCollection collection, TItem item)
+            where TCollection : ICollection<TItem>
+            where TItem : class
+        {
+            if (item == null)
+            {
+                return;
+            }
+            
+            collection.Add(item);
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void AddIfNotContains<TCollection, TItem>(this TCollection collection, TItem item)
+            where TCollection : ICollection<TItem>
         {
             if (collection.Contains(item) == false)
             {

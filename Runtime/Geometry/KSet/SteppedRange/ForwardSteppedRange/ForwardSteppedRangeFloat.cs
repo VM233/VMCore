@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 
 namespace VMFramework.Core
@@ -23,7 +24,7 @@ namespace VMFramework.Core
             init => max = value;
         }
         
-        float ISteppedRange<float>.step => step;
+        float ISteppedRange<float>.Step => step;
 
         public ForwardSteppedRangeFloat(float min, float max, float step)
         {
@@ -35,6 +36,17 @@ namespace VMFramework.Core
         public bool Contains(float pos)
         {
             return (pos - min) % step == 0;
+        }
+
+        public float GetRandomItem(Random random)
+        {
+            var index = random.Next(Count);
+            return min + index * step;
+        }
+
+        object IRandomItemProvider.GetRandomObjectItem(Random random)
+        {
+            return GetRandomItem(random);
         }
 
         #region Enumerator

@@ -1,4 +1,6 @@
 ﻿using UnityEngine;
+using System;
+using Random = System.Random;
 
 namespace VMFramework.Core
 {
@@ -10,13 +12,13 @@ namespace VMFramework.Core
 
         #region Interface Implementation
 
-        Vector2 IKSphere<Vector2, float>.center
+        Vector2 IKSphere<Vector2, float>.Center
         {
             get => center;
             init => center = value;
         }
 
-        float IKSphere<Vector2, float>.radius
+        float IKSphere<Vector2, float>.Radius
         {
             get => radius;
             init => radius = value;
@@ -61,14 +63,14 @@ namespace VMFramework.Core
             return pos.ClampMaxMagnitude(radius);
         }
 
-        public Vector2 GetRandomPointInside()
+        public Vector2 GetRandomPointInside(Random random)
         {
-            return radius.RandomPointInsideCircle() + center;
+            return random.PointInsideCircle(radius) + center;
         }
 
-        public Vector2 GetRandomPointOnSurface()
+        public Vector2 GetRandomPointOnSurface(Random random)
         {
-            return radius.RandomPointOnCircle() + center;
+            return random.PointOnCircle(radius) + center;
         }
     }
 }

@@ -82,6 +82,80 @@ namespace VMFramework.Core
 
         #endregion
 
+        #region Abs XYZW
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Vector2 AbsX(this Vector2 vector)
+        {
+            vector.x = vector.x.Abs();
+            return vector;
+        }
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Vector2 AbsY(this Vector2 vector)
+        {
+            vector.y = vector.y.Abs();
+            return vector;
+        }
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Vector3 AbsX(this Vector3 vector)
+        {
+            vector.x = vector.x.Abs();
+            return vector;
+        }
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Vector3 AbsY(this Vector3 vector)
+        {
+            vector.y = vector.y.Abs();
+            return vector;
+        }
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Vector3 AbsZ(this Vector3 vector)
+        {
+            vector.z = vector.z.Abs();
+            return vector;
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Vector2Int AbsX(this Vector2Int vector)
+        {
+            vector.x = vector.x.Abs();
+            return vector;
+        }
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Vector2Int AbsY(this Vector2Int vector)
+        {
+            vector.y = vector.y.Abs();
+            return vector;
+        }
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Vector3Int AbsX(this Vector3Int vector)
+        {
+            vector.x = vector.x.Abs();
+            return vector;
+        }
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Vector3Int AbsY(this Vector3Int vector)
+        {
+            vector.y = vector.y.Abs();
+            return vector;
+        }
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Vector3Int AbsZ(this Vector3Int vector)
+        {
+            vector.z = vector.z.Abs();
+            return vector;
+        }
+
+        #endregion
+
         #region L1Norm
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]

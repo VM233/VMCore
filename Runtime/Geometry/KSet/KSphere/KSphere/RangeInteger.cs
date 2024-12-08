@@ -1,24 +1,24 @@
-﻿using System.Runtime.CompilerServices;
-using UnityEngine;
+﻿using System;
+using System.Runtime.CompilerServices;
 
 namespace VMFramework.Core
 {
     public partial struct RangeInteger : IKSphere<int, int>
     {
-        public readonly int center
+        public int Center
         {
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
             get => Pivot;
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
             init
             {
-                var radius = this.radius;
+                var radius = this.Radius;
                 min = value - radius;
                 max = value + radius;
             }
         }
 
-        public readonly int radius
+        public int Radius
         {
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
             get => (max + min) / 2;
@@ -32,24 +32,20 @@ namespace VMFramework.Core
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public readonly int Clamp(int pos) => pos.Clamp(min, max);
+        public int Clamp(int pos) => pos.Clamp(min, max);
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public readonly int GetRandomPointInside() => (min + 1).RandomRange(max - 1);
+        public int GetRandomPointInside(Random random) => random.Range(min + 1, max - 1);
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public readonly int GetRandomPointOnSurface()
+        public int GetRandomPointOnSurface(Random random)
         {
-            var r = Random.value;
-
-            if (r < 0.5f)
+            if (random.NextBool())
             {
                 return min;
             }
-            else
-            {
-                return max;
-            }
+            
+            return max;
         }
     }
 }

@@ -22,6 +22,12 @@ namespace VMFramework.Core
         {
             return vector;
         }
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Vector4 To4D(this Vector2 vector)
+        {
+            return new(vector.x, vector.y, 0, 0);
+        }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Vector3Int To3D(this Vector2Int vector)
@@ -63,6 +69,12 @@ namespace VMFramework.Core
         public static Vector3 To3DF(this Vector2Int vector)
         {
             return vector.To3D();
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Vector4 To4DF(this Vector2Int vector)
+        {
+            return new(vector.x, vector.y, 0, 0);
         }
     }
 }

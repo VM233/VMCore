@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 
 namespace VMFramework.Core
@@ -23,7 +24,7 @@ namespace VMFramework.Core
             init => max = value;
         }
         
-        int ISteppedRange<int>.step => step;
+        int ISteppedRange<int>.Step => step;
 
         public ForwardSteppedRangeInteger(int min, int max, int step)
         {
@@ -35,6 +36,17 @@ namespace VMFramework.Core
         public bool Contains(int pos)
         {
             return (pos - min) % step == 0;
+        }
+        
+        public int GetRandomItem(Random random)
+        {
+            var index = random.Next(Count);
+            return min + index * step;
+        }
+
+        object IRandomItemProvider.GetRandomObjectItem(Random random)
+        {
+            return GetRandomItem(random);
         }
 
         #region Enumerator

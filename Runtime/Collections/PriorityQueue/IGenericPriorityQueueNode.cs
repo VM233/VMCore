@@ -7,18 +7,18 @@
         /// Cannot be manually edited - see queue.Enqueue() and queue.UpdatePriority() instead
         /// Just explicit implement this property to make it clear that it is read-only
         /// </summary>
-        public TPriority Priority { get; set; }
+        TPriority Priority { get; set; }
 
         /// <summary>
         /// Represents the current position in the queue
         /// Just explicit implement this property to make it clear that it is read-only
         /// </summary>
-        public int QueueIndex { get; set; }
+        int QueueIndex { get; set; }
 
         /// <summary>
         /// Represents the order the node was inserted in
         /// Just explicit implement this property to make it clear that it is read-only
         /// </summary>
-        public long InsertionIndex { get; set; }
+        long InsertionIndex { get; set; }
     }
 }

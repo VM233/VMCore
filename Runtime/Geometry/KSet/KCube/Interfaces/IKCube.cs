@@ -7,7 +7,7 @@ namespace VMFramework.Core
     /// K维立方体接口
     /// </summary>
     /// <typeparam name="TPoint">K维立方体的点类型</typeparam>
-    public interface IKCube<TPoint> : IKSet<TPoint>, IMinMaxOwner<TPoint>, IRandomPointProvider<TPoint>
+    public interface IKCube<TPoint> : IKSet<TPoint>, IMinMaxOwner<TPoint>, IChooser<TPoint>
         where TPoint : struct, IEquatable<TPoint>
     {
         /// <summary>
@@ -29,5 +29,15 @@ namespace VMFramework.Core
         /// 确保这个点比K维立方体的最大点小
         /// </summary>
         public TPoint ClampMax(TPoint pos);
+        
+        /// <summary>
+        /// 返回一个点相对于K维立方体的位置
+        /// </summary>
+        public TPoint GetRelativePos(TPoint pos);
+
+        void IChooser.ResetChooser()
+        {
+            // Do nothing
+        }
     }
 }

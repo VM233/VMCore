@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 
 namespace VMFramework.Core
@@ -9,7 +10,7 @@ namespace VMFramework.Core
         public readonly float max;
         public readonly int count;
         
-        public float step => count > 0 ? (max - min) / (count - 1) : 0;
+        public float Step => count > 0 ? (max - min) / (count - 1) : 0;
         
         public UniformlySpacedRangeFloat(float min, float max, int count)
         {
@@ -49,7 +50,33 @@ namespace VMFramework.Core
                 return pos == min || pos == max;
             }
             
-            return (pos - min) % step == 0;
+            return (pos - min) % Step == 0;
+        }
+        
+        public float GetRandomItem(Random random)
+        {
+            if (count <= 0)
+            {
+                throw new InvalidOperationException($"{nameof(UniformlySpacedRangeFloat)} is empty.");
+            }
+
+            if (count == 1)
+            {
+                return (max + min) / 2;
+            }
+
+            if (count == 2)
+            {
+                return random.NextBool() ? min : max;
+            }
+
+            var index = random.Next(count);
+            return min + index * Step;
+        }
+
+        object IRandomItemProvider.GetRandomObjectItem(Random random)
+        {
+            return GetRandomItem(random);
         }
         
         #region Enumerator
@@ -74,7 +101,7 @@ namespace VMFramework.Core
             public Enumerator(UniformlySpacedRangeFloat range)
             {
                 this.range = range;
-                step = range.step;
+                step = range.Step;
                 x = range.min - step;
                 index = -1;
             }
@@ -104,7 +131,7 @@ namespace VMFramework.Core
 
             public void Reset()
             {
-                x = range.min - range.step;
+                x = range.min - range.Step;
             }
 
             public void Dispose() { }
