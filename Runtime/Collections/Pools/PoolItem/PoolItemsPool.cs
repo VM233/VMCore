@@ -43,8 +43,9 @@ namespace VMFramework.Core.Pools
                 return false;
             }
             
-            pool.Enqueue(item);
             item.OnReturn();
+            pool.Enqueue(item);
+            
             return true;
         }
 

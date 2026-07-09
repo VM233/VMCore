@@ -1,17 +1,18 @@
 ﻿using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 namespace VMFramework.Core
 {
-    public readonly partial struct RangeInteger : IKCubeInteger<int>, IEquatable<RangeInteger>, IFormattable
+    [Serializable]
+    public partial struct RangeInteger : IKCubeInteger<int>, IEquatable<RangeInteger>, IFormattable
     {
         public static RangeInteger Zero { get; } = new(0, 0);
 
         public static RangeInteger One { get; } = new(1, 1);
 
         public static RangeInteger Unit { get; } = new(0, 1);
+        
+        public static RangeInteger Infinite { get; } = new(int.MinValue, int.MaxValue);
 
         public int Size => max - min + 1;
 
@@ -19,7 +20,7 @@ namespace VMFramework.Core
 
         public int Pivot => (max + min) / 2;
 
-        public readonly int min, max;
+        public int min, max;
 
         #region Constructor
 

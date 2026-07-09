@@ -28,5 +28,16 @@ namespace VMFramework.Core.Pools
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void ReturnToDefaultPool<T>(this List<T> list) => ListPool<T>.Default.Return(list);
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void ReturnItemsToDefaultPoolAndClear<T>(this List<List<T>> lists)
+        {
+            foreach (var list in lists)
+            {
+                list.ReturnToDefaultPool();
+            }
+            
+            lists.Clear();
+        }
     }
 }

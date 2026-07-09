@@ -11,7 +11,12 @@ namespace VMFramework.Core
             return GetEnumerator();
         }
 
-        public IEnumerator<Vector2Int> GetEnumerator()
+        IEnumerator<Vector2Int> IEnumerable<Vector2Int>.GetEnumerator()
+        {
+            return new Enumerator(this);
+        }
+        
+        public Enumerator GetEnumerator()
         {
             return new Enumerator(this);
         }

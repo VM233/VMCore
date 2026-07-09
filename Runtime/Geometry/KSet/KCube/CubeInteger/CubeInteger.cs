@@ -1,12 +1,13 @@
 ﻿using System;
+using System.Diagnostics.CodeAnalysis;
 using UnityEngine;
 
 namespace VMFramework.Core
 {
-    public readonly partial struct CubeInteger : IKCubeInteger<Vector3Int>, IEquatable<CubeInteger>, IFormattable
+    public partial struct CubeInteger : IKCubeInteger<Vector3Int>, IEquatable<CubeInteger>, IFormattable
     {
         public static CubeInteger Max { get; } = new(CommonVector3Int.minValue, CommonVector3Int.maxValue);
-        
+
         public static CubeInteger Zero { get; } = new(Vector3Int.zero, Vector3Int.zero);
 
         public static CubeInteger One { get; } = new(Vector3Int.one, Vector3Int.one);
@@ -17,7 +18,8 @@ namespace VMFramework.Core
 
         public Vector3Int Pivot => (max + min) / 2;
 
-        public readonly Vector3Int min, max;
+        public Vector3Int min, max;
+        public bool inverseX, inverseY, inverseZ;
 
         public int Count => Size.Products();
 
@@ -35,65 +37,60 @@ namespace VMFramework.Core
 
         #region Constructor
 
-        public CubeInteger(RangeInteger xRange, RangeInteger yRange, RangeInteger zRange)
+        public CubeInteger(RangeInteger xRange, RangeInteger yRange, RangeInteger zRange) : this(
+            new Vector3Int(xRange.min, yRange.min, zRange.min), new Vector3Int(xRange.max, yRange.max, zRange.max))
         {
-            min = new Vector3Int(xRange.min, yRange.min, zRange.min);
-            max = new Vector3Int(xRange.max, yRange.max, zRange.max);
+
         }
 
-        public CubeInteger(RectangleInteger xyRectangle, RangeInteger zRange)
+        public CubeInteger(RectangleInteger xyRectangle, RangeInteger zRange) : this(
+            new Vector3Int(xyRectangle.min.x, xyRectangle.min.y, zRange.min),
+            new Vector3Int(xyRectangle.max.x, xyRectangle.max.y, zRange.max))
         {
-            min = new Vector3Int(xyRectangle.min.x, xyRectangle.min.y, zRange.min);
-            max = new Vector3Int(xyRectangle.max.x, xyRectangle.max.y, zRange.max);
+
         }
 
-        public CubeInteger(RangeInteger xRange, RectangleInteger yzRectangle)
+        public CubeInteger(RangeInteger xRange, RectangleInteger yzRectangle) : this(
+            new Vector3Int(xRange.min, yzRectangle.min.x, yzRectangle.min.y),
+            new Vector3Int(xRange.max, yzRectangle.max.x, yzRectangle.max.y))
         {
-            min = new Vector3Int(xRange.min, yzRectangle.min.x, yzRectangle.min.y);
-            max = new Vector3Int(xRange.max, yzRectangle.max.x, yzRectangle.max.y);
+
         }
 
-        public CubeInteger(int xMin, int yMin, int zMin, int xMax, int yMax, int zMax)
+        public CubeInteger(int xMin, int yMin, int zMin, int xMax, int yMax, int zMax) : this(
+            new Vector3Int(xMin, yMin, zMin), new Vector3Int(xMax, yMax, zMax))
         {
-            min = new Vector3Int(xMin, yMin, zMin);
-            max = new Vector3Int(xMax, yMax, zMax);
+
         }
 
         public CubeInteger(Vector3Int min, Vector3Int max)
         {
             this.min = min;
             this.max = max;
+            inverseX = false;
+            inverseY = false;
+            inverseZ = false;
         }
 
-        public CubeInteger(int width, int length, int height)
+        public CubeInteger(int width, int length, int height) : this(Vector3Int.zero,
+            new Vector3Int(width - 1, length - 1, height - 1))
         {
-            min = Vector3Int.zero;
-            max = new Vector3Int(width - 1, length - 1, height - 1);
+
         }
 
-        public CubeInteger(Vector3Int size)
+        public CubeInteger(Vector3Int size) : this(Vector3Int.zero, size - Vector3Int.one)
         {
-            min = Vector3Int.zero;
-            max = new(size.x - 1, size.y - 1, size.z - 1);
+
         }
 
-        public CubeInteger(CubeInteger source)
+        public CubeInteger(CubeInteger source) : this(source.min, source.max)
         {
-            min = source.min;
-            max = source.max;
+
         }
 
-        public CubeInteger(IMinMaxOwner<Vector3Int> config)
+        public CubeInteger([DisallowNull] IMinMaxOwner<Vector3Int> config) : this(config.Min, config.Max)
         {
-            if (config is null)
-            {
-                min = Vector3Int.zero;
-                max = Vector3Int.zero;
-                return;
-            }
 
-            min = config.Min;
-            max = config.Max;
         }
 
         #endregion

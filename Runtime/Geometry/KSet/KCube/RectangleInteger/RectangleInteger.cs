@@ -1,12 +1,11 @@
 ﻿using System;
-using System.Collections;
-using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using UnityEngine;
 
 namespace VMFramework.Core
 {
-    public readonly partial struct RectangleInteger : IKCubeInteger<Vector2Int>, IEquatable<RectangleInteger>, 
+    [Serializable]
+    public partial struct RectangleInteger : IKCubeInteger<Vector2Int>, IEquatable<RectangleInteger>, 
         IFormattable
     {
         /// <summary>
@@ -33,7 +32,7 @@ namespace VMFramework.Core
 
         public Vector2Int Pivot => (max + min) / 2;
 
-        public readonly Vector2Int min, max;
+        public Vector2Int min, max;
 
         public RangeInteger XRange => new(min.x, max.x);
 

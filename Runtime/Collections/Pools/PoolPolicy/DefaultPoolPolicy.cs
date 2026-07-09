@@ -1,27 +1,24 @@
-﻿namespace VMFramework.Core.Pools
+﻿using System;
+
+namespace VMFramework.Core.Pools
 {
-    public sealed class DefaultPoolPolicy<TItem> : PoolPolicy<TItem> where TItem : class, new()
+    public sealed class DefaultPoolPolicy<TItem> : IPoolPolicy<TItem>
+        where TItem : class, new()
     {
-        public override TItem PreGet(TItem item) => item;
+        public Func<TItem, TItem> PreGet { get; } = item => item;
 
-        public override TItem Create()
-        {
-            return new TItem();
-        }
+        public Func<TItem> Create { get; } = () => new TItem();
 
-        public override bool Return(TItem item)
+        public Func<TItem, bool> Return { get; } = item =>
         {
             if (item is IResettable resettable)
             {
                 return resettable.TryReset();
             }
-            
-            return true;
-        }
 
-        public override void Clear(TItem item)
-        {
-            
-        }
+            return true;
+        };
+
+        public Action<TItem> Clear { get; } = item => { };
     }
 }

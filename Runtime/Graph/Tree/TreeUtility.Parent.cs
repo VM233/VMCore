@@ -10,7 +10,8 @@ namespace VMFramework.Core
         #region Get Root
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static T GetRoot<T>(this T node) where T : class, IParentProvider<T>
+        public static T GetRoot<T>(this T node)
+            where T : class, IParentProvider<T>
         {
             return node.TraverseToRoot(true).Last();
         }
@@ -27,19 +28,26 @@ namespace VMFramework.Core
         #region Traverse To Root
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static IEnumerable<T> TraverseToRoot<T>(this T node,
-            bool includingSelf)
+        public static IEnumerable<T> TraverseToRoot<T>(this T node, bool includingSelf)
             where T : class, IParentProvider<T>
         {
             return TraverseToRoot(node, includingSelf, node => node.GetParent());
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static IEnumerable<T> TraverseToRoot<T>(this T node,
-            bool includingSelf, Func<T, T> parentGetter) where T : class
+        public static IEnumerable<T> TraverseToRoot<T>(this T node, bool includingSelf, Func<T, T> parentGetter)
+            where T : class
         {
+            int loopCount = 0;
             while (node != null)
             {
+                loopCount++;
+
+                if (loopCount > 5000)
+                {
+                    throw new Exception("Loop detected in TreeUtility.TraverseToRoot");
+                }
+                
                 if (includingSelf)
                 {
                     yield return node;
@@ -62,12 +70,10 @@ namespace VMFramework.Core
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static bool HasParent<T>(this T node, T parent, bool includingSelf,
-            Func<T, T> parentGetter)
+        public static bool HasParent<T>(this T node, T parent, bool includingSelf, Func<T, T> parentGetter)
             where T : class
         {
-            foreach (var parentNode in node.TraverseToRoot(includingSelf,
-                         parentGetter))
+            foreach (var parentNode in node.TraverseToRoot(includingSelf, parentGetter))
             {
                 if (parentNode.Equals(parent))
                 {
@@ -83,19 +89,16 @@ namespace VMFramework.Core
         #region Has Parent With Comparator
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static bool HasParent<T, TComparable>(this T node,
-            TComparable comparable, Func<T, TComparable, bool> comparator,
-            bool includingSelf)
+        public static bool HasParent<T, TComparable>(this T node, TComparable comparable,
+            Func<T, TComparable, bool> comparator, bool includingSelf)
             where T : class, IParentProvider<T>
         {
-            return HasParent(node, comparable, comparator, includingSelf,
-                node => node.GetParent());
+            return HasParent(node, comparable, comparator, includingSelf, node => node.GetParent());
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static bool HasParent<T, TComparable>(this T node,
-            TComparable comparable, Func<T, TComparable, bool> comparator,
-            bool includingSelf, Func<T, T> parentGetter)
+        public static bool HasParent<T, TComparable>(this T node, TComparable comparable,
+            Func<T, TComparable, bool> comparator, bool includingSelf, Func<T, T> parentGetter)
             where T : class
         {
             comparator.AssertIsNotNull(nameof(comparator));

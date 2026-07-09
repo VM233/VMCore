@@ -9,12 +9,20 @@ namespace VMFramework.Core
         /// 资源根目录
         /// 【读写权限】:pc可读写，移动端只读
         /// 【功能特点】:资源根目录，所有资源都在这里。
-        /// 【Editor路径】:Assets
-        /// 【平台路径】:
-        /// <para>Win: E:/myGame/Assets</para>
-        /// <para>Mac: /myGame/Assets/</para>
-        /// <para>Android: /data/app/com.myCompany.myGame-1/base.apk!</para> 
-        /// <para>ios: /var/containers/Application/E32134…3B123/myGame.app/Data</para>
+        /// <para>
+        /// Unity Editor: <c>[path to project folder]/Assets</c>
+        /// </para>
+        /// Win/Linux player: <c>[path to executablename_Data folder]</c>
+        /// <c>(note that most Linux installations will be case-sensitive!)</c>
+        /// <para>
+        /// Mac player: <c>[path to player app bundle]/Contents</c>
+        /// </para>
+        /// iOS player: <c>[path to player app bundle]/[AppName.app]/Data</c>
+        /// <c>(this folder is read only, use Application.persistentDataPath to save data)</c>
+        /// <para>
+        /// WebGL: <c>The absolute url to the player data file folder (without the actual data file name)</c>
+        /// </para>
+        /// Android: <c>Normally it points directly to the APK. If you are running a split binary build, it points to the OBB instead.</c>
         /// </summary>
         public static string AssetsFolderPath
         {

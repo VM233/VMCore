@@ -62,13 +62,20 @@ namespace VMFramework.Core
         public static RectangleFloat FromCorners(Vector2 corner1, Vector2 corner2) =>
             new(corner1.Min(corner2), corner1.Max(corner2));
     }
-    
+
     public partial struct RectangleInteger
     {
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static RectangleInteger FromPivotExtents(Vector2Int extents) =>
+            FromPivotExtents(Vector2Int.zero, extents);
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static RectangleInteger FromPivotExtents(int extents) => FromPivotExtents(Vector2Int.zero, extents);
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static RectangleInteger FromPivotExtents(Vector2Int pivot, Vector2Int extents) =>
             new(pivot - extents, pivot + extents);
-        
+
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static RectangleInteger FromPivotExtents(Vector2Int pivot, int extents)
         {
@@ -80,7 +87,7 @@ namespace VMFramework.Core
         public static RectangleInteger FromCorners(Vector2Int corner1, Vector2Int corner2) =>
             new(corner1.Min(corner2), corner1.Max(corner2));
     }
-    
+
     public partial struct CubeFloat
     {
         [MethodImpl(MethodImplOptions.AggressiveInlining)]

@@ -11,7 +11,12 @@ namespace VMFramework.Core
             return GetEnumerator();
         }
 
-        public IEnumerator<Vector3Int> GetEnumerator()
+        IEnumerator<Vector3Int> IEnumerable<Vector3Int>.GetEnumerator()
+        {
+            return new Enumerator(this);
+        }
+        
+        public Enumerator GetEnumerator()
         {
             return new Enumerator(this);
         }
@@ -24,7 +29,6 @@ namespace VMFramework.Core
 
             public Enumerator(CubeInteger cube)
             {
-                this.cube = cube;
                 if (cube.min.x > cube.max.x || cube.min.y > cube.max.y || cube.min.z > cube.max.z)
                 {
                     isValid = false;
@@ -33,13 +37,40 @@ namespace VMFramework.Core
                 else
                 {
                     isValid = true;
+
+                    if (cube.inverseX)
+                    {
+                        (cube.min.x, cube.max.x) = (-cube.max.x, -cube.min.x);
+                    }
+                    
+                    if (cube.inverseY)
+                    {
+                        (cube.min.y, cube.max.y) = (-cube.max.y, -cube.min.y);
+                    }
+                    
+                    if (cube.inverseZ)
+                    {
+                        (cube.min.z, cube.max.z) = (-cube.max.z, -cube.min.z);
+                    }
+                    
                     x = cube.min.x;
                     y = cube.min.y;
                     z = cube.min.z - 1;
                 }
+                
+                this.cube = cube;
             }
 
-            public Vector3Int Current => new(x, y, z);
+            public Vector3Int Current
+            {
+                get
+                {
+                    var currentX = cube.inverseX? -x : x;
+                    var currentY = cube.inverseY? -y : y;
+                    var currentZ = cube.inverseZ? -z : z;
+                    return new(currentX, currentY, currentZ);
+                }
+            }
 
             object IEnumerator.Current => Current;
 
@@ -49,7 +80,7 @@ namespace VMFramework.Core
                 {
                     return false;
                 }
-                
+
                 z++;
 
                 if (z > cube.max.z)

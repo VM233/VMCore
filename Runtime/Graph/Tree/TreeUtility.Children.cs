@@ -22,7 +22,15 @@ namespace VMFramework.Core
         public static IEnumerable<T> PreorderTraverse<T>(this T node, bool includingSelf)
             where T : class, IChildrenProvider<T>
         {
-            return PreorderTraverse(node, includingSelf, node => node.GetChildren());
+            return PreorderTraverse(node, includingSelf, node =>
+            {
+                if (node == null)
+                {
+                    return Enumerable.Empty<T>();
+                }
+                
+                return node.GetChildren();
+            });
         }
 
         /// <summary>
@@ -393,17 +401,17 @@ namespace VMFramework.Core
         #region Get All Children List
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static IReadOnlyList<T> GetAllChildrenList<T>(this T node, bool includingSelf)
+        public static IEnumerable<T> GetAllChildren<T>(this T node, bool includingSelf)
             where T : class, IChildrenProvider<T>
         {
-            return node.PreorderTraverse(includingSelf).ToList();
+            return node.PreorderTraverse(includingSelf);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static IReadOnlyList<T> GetAllChildrenList<T>(this T node, bool includingSelf,
+        public static IEnumerable<T> GetAllChildren<T>(this T node, bool includingSelf,
             Func<T, IEnumerable<T>> childrenGetter)
         {
-            return node.PreorderTraverse(includingSelf, childrenGetter).ToList();
+            return node.PreorderTraverse(includingSelf, childrenGetter);
         }
 
         #endregion
@@ -529,14 +537,30 @@ namespace VMFramework.Core
         public static bool HasChild<T>(this T node, T child, bool includingSelf)
             where T : class, IChildrenProvider<T>
         {
-            return node.PreorderTraverse(includingSelf).Any(node => node.Equals(child));
+            return node.PreorderTraverse(includingSelf).Any(node =>
+            {
+                if (node is null)
+                {
+                    return false;
+                }
+                
+                return node.Equals(child);
+            });
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static bool HasChild<T>(this T node, T child, bool includingSelf, Func<T, IEnumerable<T>> childrenGetter)
             where T : class
         {
-            return node.PreorderTraverse(includingSelf, childrenGetter).Any(node => node.Equals(child));
+            return node.PreorderTraverse(includingSelf, childrenGetter).Any(node =>
+            {
+                if (node is null)
+                {
+                    return false;
+                }
+                
+                return node.Equals(child);
+            });
         }
 
         #endregion

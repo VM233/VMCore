@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Runtime.CompilerServices;
 
 namespace VMFramework.Core
 {
@@ -34,10 +33,5 @@ namespace VMFramework.Core
         /// 返回一个点相对于K维立方体的位置
         /// </summary>
         public TPoint GetRelativePos(TPoint pos);
-
-        void IChooser.ResetChooser()
-        {
-            // Do nothing
-        }
     }
 }

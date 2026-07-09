@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Runtime.CompilerServices;
 
 namespace VMFramework.Core
@@ -68,7 +69,21 @@ namespace VMFramework.Core
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static IEnumerable<string> EnumerateAllDirectories(this string directoryPath)
         {
+            if (Directory.Exists(directoryPath) == false)
+            {
+                return Enumerable.Empty<string>();
+            }
             return Directory.EnumerateDirectories(directoryPath, "*", SearchOption.AllDirectories);
+        }
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static IEnumerable<string> EnumerateTopDirectories(this string directoryPath)
+        {
+            if (Directory.Exists(directoryPath) == false)
+            {
+                return Enumerable.Empty<string>();
+            }
+            return Directory.EnumerateDirectories(directoryPath, "*", SearchOption.TopDirectoryOnly);
         }
     }
 }

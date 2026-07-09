@@ -11,7 +11,7 @@ namespace VMFramework.Core
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
             get => min;
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
-            init => min = value;
+            set => min = value;
         }
 
         Vector4 IMinMaxOwner<Vector4>.Max
@@ -19,7 +19,7 @@ namespace VMFramework.Core
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
             get => max;
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
-            init => max = value;
+            set => max = value;
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -41,14 +41,13 @@ namespace VMFramework.Core
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public Vector4 GetRandomItem(Random random) => random.Range(min, max);
         
+        public IChooser<Vector4> GenerateNewChooser() => this;
+
+        public IChooser GenerateNewObjectChooser() => this;
+        
         object IRandomItemProvider.GetRandomObjectItem(Random random)
         {
             return GetRandomItem(random);
-        }
-
-        void IChooser.ResetChooser()
-        {
-            
         }
     }
 }

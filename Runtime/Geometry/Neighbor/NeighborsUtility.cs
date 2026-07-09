@@ -25,8 +25,8 @@ namespace VMFramework.Core
             Func<TFrom, TTo> mapFunc)
         {
             return new EightDirectionsNeighbors<TTo>(mapFunc(from.left), mapFunc(from.right), mapFunc(from.up),
-                mapFunc(from.down), mapFunc(from.upLeft), mapFunc(from.upRight), mapFunc(from.downLeft),
-                mapFunc(from.downRight));
+                mapFunc(from.down), mapFunc(from.leftUp), mapFunc(from.rightUp), mapFunc(from.leftDown),
+                mapFunc(from.rightDown));
         }
     }
 }

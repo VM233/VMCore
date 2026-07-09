@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Runtime.CompilerServices;
+using EnumsNET;
 
 namespace VMFramework.Core
 {
@@ -21,12 +22,12 @@ namespace VMFramework.Core
         {
             var result = LeftRightDirection.None;
 
-            if (direction.HasFlag(LeftRightDirection.Left))
+            if (direction.HasAnyFlags(LeftRightDirection.Left))
             {
                 result |= LeftRightDirection.Right;
             }
 
-            if (direction.HasFlag(LeftRightDirection.Right))
+            if (direction.HasAnyFlags(LeftRightDirection.Right))
             {
                 result |= LeftRightDirection.Left;
             }

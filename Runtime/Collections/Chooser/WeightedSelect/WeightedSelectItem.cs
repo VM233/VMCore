@@ -13,6 +13,6 @@
 
         T IWeightedSelectItem<T>.Value => value;
 
-        float IWeightedSelectItem<T>.Weight => weight;
+        float IWeightedSelectItem.Weight => weight;
     }
 }

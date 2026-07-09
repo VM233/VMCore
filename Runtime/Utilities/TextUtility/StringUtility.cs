@@ -69,13 +69,8 @@ namespace VMFramework.Core
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static bool IsWhiteSpace([NotNull] this string str)
+        public static bool IsEmptyOrWhiteSpace([NotNull] this string str)
         {
-            if (str.Length == 0)
-            {
-                return false;
-            }
-
             foreach (var c in str)
             {
                 if (char.IsWhiteSpace(c) == false)
@@ -113,6 +108,12 @@ namespace VMFramework.Core
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static string ToString(this float value, int decimalPlaces)
+        {
+            return value.ToString("F" + decimalPlaces.ClampMin(0));
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static string ToString(this double value, int decimalPlaces)
         {
             return value.ToString("F" + decimalPlaces.ClampMin(0));
         }

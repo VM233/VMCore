@@ -1,4 +1,6 @@
-﻿namespace VMFramework.Core.Pools
+﻿using System;
+
+namespace VMFramework.Core.Pools
 {
     public sealed class ArrayPoolPolicy<TItem> : IPoolPolicy<TItem[]>
     {
@@ -9,9 +11,13 @@
             this.arrayLength = arrayLength;
         }
 
-        public TItem[] PreGet(TItem[] item) => item;
+        public Func<TItem[], TItem[]> PreGet { get; } = item => item;
+
+        Func<TItem[]> IPoolPolicy<TItem[]>.Create => Create;
 
         public TItem[] Create() => new TItem[arrayLength];
+
+        Func<TItem[], bool> IPoolPolicy<TItem[]>.Return => Return;
 
         public bool Return(TItem[] item)
         {
@@ -28,8 +34,6 @@
             return true;
         }
 
-        public void Clear(TItem[] item)
-        {
-        }
+        public Action<TItem[]> Clear { get; } = array => { };
     }
 }

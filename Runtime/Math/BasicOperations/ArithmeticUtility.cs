@@ -38,8 +38,8 @@ namespace VMFramework.Core
         #region Circular Divide
 
         /// <summary>
-        /// 7 / 3 = 2
-        /// -5 / 3 = -2 rather than -1
+        /// 7 / 3 = 2,
+        /// -5 / 3 = -2 rather than -1,
         /// -6 / 3 = -2
         /// </summary>
         /// <param name="dividend"></param>
@@ -56,10 +56,12 @@ namespace VMFramework.Core
             return dividend / divisor;
         }
 
+        /// <inheritdoc cref="CircularDivide(int,int)"/>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Vector2Int CircularDivide(this Vector2Int dividend, Vector2Int divisor) =>
             new(dividend.x.CircularDivide(divisor.x), dividend.y.CircularDivide(divisor.y));
 
+        /// <inheritdoc cref="CircularDivide(int,int)"/>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Vector3Int CircularDivide(this Vector3Int dividend, Vector3Int divisor) => new(
             dividend.x.CircularDivide(divisor.x), dividend.y.CircularDivide(divisor.y),

@@ -206,6 +206,14 @@ namespace VMFramework.Core.Editor
             return result != null;
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static bool TryGetAssetByPath<T>(this string path, out T result)
+            where T : Object
+        {
+            result = AssetDatabase.LoadAssetAtPath<T>(path);
+            return result != null;
+        }
+
         #endregion
         
         #region Get Asset Path
@@ -287,9 +295,19 @@ namespace VMFramework.Core.Editor
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static string GetAssetAbsolutePath(this Object asset)
         {
-            return asset == null
-                ? string.Empty
-                : CommonFolders.ProjectFolderPath.PathCombine(asset.GetAssetPath()).ReplaceToDirectorySeparator();
+            if (asset == null)
+            {
+                return null;
+            }
+            
+            var assetPath = AssetDatabase.GetAssetPath(asset);
+
+            if (assetPath.IsNullOrEmpty())
+            {
+                return null;
+            }
+
+            return CommonFolders.ProjectFolderPath.PathCombine(assetPath).ReplaceToDirectorySeparator();
         }
 
         #endregion
@@ -343,8 +361,6 @@ namespace VMFramework.Core.Editor
             }
 
             Undo.RecordObject(obj, "Rename");
-            
-            obj.EnforceSave();
         }
 
         #endregion

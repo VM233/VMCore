@@ -70,6 +70,12 @@ namespace VMFramework.Core.Editor
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static bool IsFolder(this Object obj, out string path)
         {
+            if (obj == null)
+            {
+                path = null;
+                return false;
+            }
+            
             path = AssetDatabase.GetAssetPath(obj);
 
             return AssetDatabase.IsValidFolder(path);

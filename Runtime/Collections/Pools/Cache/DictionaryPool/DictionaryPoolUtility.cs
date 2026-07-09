@@ -27,36 +27,6 @@ namespace VMFramework.Core.Pools
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static List<TItem> GetOrAddFromDefaultPool<TKey, TItem>(this Dictionary<TKey, List<TItem>> dictionary,
-            [NotNull] TKey key)
-        {
-            if (dictionary.TryGetValue(key, out var list))
-            {
-                return list;
-            }
-
-            list = ListPool<TItem>.Default.Get();
-            list.Clear();
-            dictionary[key] = list;
-            return list;
-        }
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static HashSet<TItem> GetOrAddFromDefaultPool<TKey, TItem>(
-            this Dictionary<TKey, HashSet<TItem>> dictionary, [NotNull] TKey key)
-        {
-            if (dictionary.TryGetValue(key, out var collection))
-            {
-                return collection;
-            }
-
-            collection = HashSetPool<TItem>.Default.Get();
-            collection.Clear();
-            dictionary[key] = collection;
-            return collection;
-        }
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static bool RemoveAndReturnToDefaultPool<TKey, TItem, TCollection>(
             this Dictionary<TKey, TCollection> dictionary, [NotNull] TKey key, [NotNull] TItem item)
             where TCollection : class, ICollection<TItem>, new()

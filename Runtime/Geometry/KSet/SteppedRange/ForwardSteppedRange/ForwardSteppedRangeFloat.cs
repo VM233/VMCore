@@ -4,24 +4,24 @@ using System.Collections.Generic;
 
 namespace VMFramework.Core
 {
-    public readonly struct ForwardSteppedRangeFloat : ISteppedRange<float>
+    public struct ForwardSteppedRangeFloat : ISteppedRange<float>
     {
-        public readonly float min;
-        public readonly float max;
-        public readonly float step;
+        public float min;
+        public float max;
+        public float step;
 
         public int Count => ((max - min) / step).Floor() + 1;
 
         float IMinMaxOwner<float>.Min
         {
             get => min;
-            init => min = value;
+            set => min = value;
         }
 
         float IMinMaxOwner<float>.Max
         {
             get => max;
-            init => max = value;
+            set => max = value;
         }
         
         float ISteppedRange<float>.Step => step;

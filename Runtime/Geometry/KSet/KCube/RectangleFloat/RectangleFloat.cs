@@ -3,7 +3,8 @@ using UnityEngine;
 
 namespace VMFramework.Core
 {
-    public readonly partial struct RectangleFloat : IKCubeFloat<Vector2>, IEquatable<RectangleFloat>, IFormattable
+    [Serializable]
+    public partial struct RectangleFloat : IKCubeFloat<Vector2>, IEquatable<RectangleFloat>, IFormattable
     {
         public static RectangleFloat Zero { get; } =
             new(Vector2.zero, Vector2.zero);
@@ -14,13 +15,18 @@ namespace VMFramework.Core
         public static RectangleFloat Unit { get; } =
             new(Vector2.zero, Vector2.one);
 
+        public static RectangleFloat None { get; } = new(xMin: float.MaxValue, yMin: float.MaxValue,
+            xMax: float.MinValue, yMax: float.MinValue);
+
         public Vector2 Size => max - min;
+        
+        public float Area => Size.Products();
 
         public Vector2 Pivot => (max + min) / 2;
 
         public Vector2 Extents => (max - min) / 2;
 
-        public readonly Vector2 min, max;
+        public Vector2 min, max;
 
         public RangeFloat XRange => new(min.x, max.x);
 

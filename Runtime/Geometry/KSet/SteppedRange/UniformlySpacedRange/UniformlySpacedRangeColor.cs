@@ -6,13 +6,13 @@ using Random = System.Random;
 
 namespace VMFramework.Core
 {
-    public readonly struct UniformlySpacedRangeColor : ISteppedRange<Color>
+    public struct UniformlySpacedRangeColor : ISteppedRange<Color>
     {
-        public readonly Color min;
-        public readonly Color max;
-        public readonly int count;
+        public Color min;
+        public Color max;
+        public int count;
         
-        public Color Step => count > 0 ? (max - min) / (count - 1) : ColorDefinitions.zero;
+        public Color Step => count > 0 ? (max - min) / (count - 1) : Color.clear;
         
         public UniformlySpacedRangeColor(Color min, Color max, int count)
         {
@@ -24,13 +24,13 @@ namespace VMFramework.Core
         Color IMinMaxOwner<Color>.Min
         {
             get => min;
-            init => min = value;
+            set => min = value;
         }
 
         Color IMinMaxOwner<Color>.Max
         {
             get => max;
-            init => max = value;
+            set => max = value;
         }
 
         int IReadOnlyCollection<Color>.Count => count;

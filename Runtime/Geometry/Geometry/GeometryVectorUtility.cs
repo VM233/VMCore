@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using EnumsNET;
 using UnityEngine;
+using VMFramework.Core.Pools;
 
 namespace VMFramework.Core
 {
@@ -76,7 +78,7 @@ namespace VMFramework.Core
             FaceType faceType)
         {
             // 获取立方体右面（x = end.x）的点
-            if (faceType.HasFlag(FaceType.Right))
+            if (faceType.HasAnyFlags(FaceType.Right))
             {
                 for (int y = start.y; y <= end.y; y++)
                 {
@@ -88,7 +90,7 @@ namespace VMFramework.Core
             }
 
             // 获取立方体左面（x = start.x）的点
-            if (faceType.HasFlag(FaceType.Left))
+            if (faceType.HasAnyFlags(FaceType.Left))
             {
                 for (int y = start.y; y <= end.y; y++)
                 {
@@ -100,7 +102,7 @@ namespace VMFramework.Core
             }
 
             // 获取立方体上面（y = end.y）的点
-            if (faceType.HasFlag(FaceType.Up))
+            if (faceType.HasAnyFlags(FaceType.Up))
             {
                 for (int x = start.x; x <= end.x; x++)
                 {
@@ -112,7 +114,7 @@ namespace VMFramework.Core
             }
 
             // 获取立方体下面（y = start.y）的点
-            if (faceType.HasFlag(FaceType.Down))
+            if (faceType.HasAnyFlags(FaceType.Down))
             {
                 for (int x = start.x; x <= end.x; x++)
                 {
@@ -124,7 +126,7 @@ namespace VMFramework.Core
             }
 
             // 获取立方体前面（z = end.z）的点
-            if (faceType.HasFlag(FaceType.Forward))
+            if (faceType.HasAnyFlags(FaceType.Forward))
             {
                 for (int x = start.x; x <= end.x; x++)
                 {
@@ -136,7 +138,7 @@ namespace VMFramework.Core
             }
 
             // 获取立方体后面（z = start.z）的点
-            if (faceType.HasFlag(FaceType.Back))
+            if (faceType.HasAnyFlags(FaceType.Back))
             {
                 for (int x = start.x; x <= end.x; x++)
                 {
@@ -473,15 +475,38 @@ namespace VMFramework.Core
 
         #region Get Points
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void GetPointsOfManhattanCircleLevelOrder<TPoints>(this Vector2Int pivot, int radius,
+            TPoints points)
+            where TPoints : ICollection<Vector2Int>
+        {
+            if (radius < 0)
+            {
+                return;
+            }
+
+            points.Add(pivot);
+
+            for (int r = 1; r <= radius; r++)
+            {
+                int maxX = pivot.x + r;
+                int y = pivot.y + r;
+                for (int x = pivot.x; x < maxX; x++)
+                {
+                    var point = new Vector2Int(x, y);
+                    point.Symmetric(pivot, points, includingSelf: true);
+                    y--;
+                }
+            }
+        }
+
+        #endregion
+
+        #region Get Points
+
         /// <summary>
         /// 获取以pivot为中心，半径为radius的圆上的点
         /// </summary>
-        /// <param name="pivot"></param>
-        /// <param name="radius"></param>
-        /// <param name="distanceType"></param>
-        /// <param name="planeType"></param>
-        /// <returns></returns>
-        /// <exception cref="InvalidEnumArgumentException"></exception>
         public static IEnumerable<Vector3Int> GetPointsOfCircle(this Vector3Int pivot, float radius,
             DistanceType distanceType = DistanceType.Manhattan, PlaneType planeType = PlaneType.XY)
         {
@@ -532,14 +557,12 @@ namespace VMFramework.Core
         /// <summary>
         /// 以pivot为中心，获取曼哈顿距离不超过radius的点
         /// </summary>
-        /// <param name="pivot"></param>
-        /// <param name="radius"></param>
-        /// <returns></returns>
-        public static IEnumerable<Vector2Int> GetPointsOfManhattanCircle(this Vector2Int pivot, float radius)
+        public static void GetPointsOfManhattanCircle<TCollection>(this Vector2Int pivot, float radius, TCollection points)
+            where TCollection : ICollection<Vector2Int>
         {
             if (radius < 0)
             {
-                yield break;
+                return;
             }
 
             int r = Mathf.FloorToInt(radius);
@@ -550,14 +573,14 @@ namespace VMFramework.Core
                 int ny = pivot.y - (r - l);
                 for (int x = pivot.x - l; x <= pivot.x + l; x++)
                 {
-                    yield return new(x, py);
-                    yield return new(x, ny);
+                    points.Add(new Vector2Int(x, py));
+                    points.Add(new Vector2Int(x, ny));
                 }
             }
 
             for (int x = pivot.x - r; x <= pivot.x + r; x++)
             {
-                yield return new(x, pivot.y);
+                points.Add(new Vector2Int(x, pivot.y));
             }
         }
 
@@ -600,24 +623,20 @@ namespace VMFramework.Core
         /// <summary>
         /// 以pivot为中心，获取欧氏距离不超过radius的点
         /// </summary>
-        /// <param name="pivot"></param>
-        /// <param name="radius"></param>
-        /// <returns></returns>
-        public static IEnumerable<Vector2Int> GetPointsOfEuclideanCircle(this Vector2Int pivot, float radius)
+        public static void GetPointsOfEuclideanCircle<TCollection>(this Vector2Int pivot, float radius, TCollection points)
+            where TCollection : ICollection<Vector2Int>
         {
             if (radius < 0)
             {
-                yield break;
+                return;
             }
 
-            foreach (var pos in GetPointsOfManhattanCircle(pivot, radius))
-            {
-                yield return pos;
-            }
+            GetPointsOfManhattanCircle(pivot, radius, points);
 
             int r = radius.Floor();
 
-            List<Vector2Int> quarterCircle = new();
+            var quarterCircle = ListPool<Vector2Int>.Default.Get();
+            quarterCircle.Clear();
 
             for (int l = 0; l < r; l++)
             {
@@ -637,9 +656,11 @@ namespace VMFramework.Core
             {
                 foreach (var pos in quarterPos.Symmetric(pivot))
                 {
-                    yield return pos;
+                    points.Add(pos);
                 }
             }
+            
+            quarterCircle.ReturnToDefaultPool();
         }
 
         #endregion

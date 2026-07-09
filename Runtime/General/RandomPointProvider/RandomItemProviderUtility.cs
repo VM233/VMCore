@@ -7,6 +7,13 @@ namespace VMFramework.Core
     public static class RandomItemProviderUtility
     {
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void GetRandomItem<TProvider, TItem>(this TProvider randomItemProvider, out TItem item)
+            where TProvider : IRandomItemProvider<TItem>
+        {
+            item = randomItemProvider.GetRandomItem(GlobalRandom.Default);
+        }
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static TItem GetRandomItem<TItem>(this IRandomItemProvider<TItem> randomItemProvider)
         {
             return randomItemProvider.GetRandomItem(GlobalRandom.Default);

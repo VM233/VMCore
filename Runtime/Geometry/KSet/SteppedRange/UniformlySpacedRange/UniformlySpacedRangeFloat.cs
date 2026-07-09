@@ -4,13 +4,13 @@ using System.Collections.Generic;
 
 namespace VMFramework.Core
 {
-    public readonly partial struct UniformlySpacedRangeFloat : ISteppedRange<float>
+    public partial struct UniformlySpacedRangeFloat : ISteppedRange<float>
     {
-        public readonly float min;
-        public readonly float max;
-        public readonly int count;
+        public float min;
+        public float max;
+        public int count;
         
-        public float Step => count > 0 ? (max - min) / (count - 1) : 0;
+        public float Step => count > 1 ? (max - min) / (count - 1) : 0;
         
         public UniformlySpacedRangeFloat(float min, float max, int count)
         {
@@ -22,13 +22,13 @@ namespace VMFramework.Core
         float IMinMaxOwner<float>.Min
         {
             get => min;
-            init => min = value;
+            set => min = value;
         }
 
         float IMinMaxOwner<float>.Max
         {
             get => max;
-            init => max = value;
+            set => max = value;
         }
 
         int IReadOnlyCollection<float>.Count => count;
@@ -86,7 +86,12 @@ namespace VMFramework.Core
             return GetEnumerator();
         }
 
-        public IEnumerator<float> GetEnumerator()
+        IEnumerator<float> IEnumerable<float>.GetEnumerator()
+        {
+            return new Enumerator(this);
+        }
+        
+        public Enumerator GetEnumerator()
         {
             return new Enumerator(this);
         }

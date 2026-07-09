@@ -20,6 +20,9 @@ namespace VMFramework.Core
         #region Min and Max
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static int RandomSeed(this Random random) => random.Next(int.MinValue, int.MaxValue);
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static int Range(this Random random, int min, int max) => random.Next(min, max + 1);
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]

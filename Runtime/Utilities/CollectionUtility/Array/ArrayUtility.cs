@@ -10,70 +10,9 @@ namespace VMFramework.Core
     {
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static bool IsNullOrEmpty<T>(this T[] array) => array == null || array.Length == 0;
-
-        #region Concat
-
-        /// <summary>
-        /// Appends an element to the end of an array.
-        /// For example, if the array is [1, 2, 3] and you want to append 4 to it,
-        /// use array.Append(4) to get [1, 2, 3, 4].
-        /// </summary>
-        /// <param name="array"></param>
-        /// <param name="other"></param>
-        /// <typeparam name="T"></typeparam>
+        
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static T[] Append<T>(this T[] array, T other)
-        {
-            Array.Resize(ref array, array.Length + 1);
-            array[^1] = other;
-            return array;
-        }
-
-        /// <summary>
-        /// Appends multiple elements to the end of an array.
-        /// For example, if the array is [1, 2, 3] and you want to append 4 and 5 to it,
-        /// use array.Append(4, 5) to get [1, 2, 3, 4, 5].
-        /// </summary>
-        /// <param name="array"></param>
-        /// <param name="others"></param>
-        /// <typeparam name="T"></typeparam>
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static T[] Append<T>(this T[] array, params T[] others)
-        {
-            Array.Resize(ref array, array.Length + others.Length);
-            Array.Copy(others, 0, array, array.Length - others.Length, others.Length);
-            return array;
-        }
-
-        #endregion
-
-        #region Remove
-
-        /// <summary>
-        /// Removes the first occurrence of an element from an array.
-        /// For example, if the array is [1, 2, 3, 4, 5] and you want to remove 3,
-        /// use array.Remove(3) to get [1, 2, 4, 5].
-        /// </summary>
-        /// <param name="array"></param>
-        /// <param name="item"></param>
-        /// <typeparam name="T"></typeparam>
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static T[] Remove<T>(this T[] array, T item)
-        {
-            var index = Array.IndexOf(array, item);
-
-            if (index < 0)
-            {
-                return array;
-            }
-            
-            array.MoveSegment(index + 1, array.Length - 1, -1);
-            Array.Resize(ref array, array.Length - 1);
-            
-            return array;
-        }
-
-        #endregion
+        public static bool IsNullOrEmpty<T>(this T[,] array) => array == null || array.Length == 0;
 
         /// <summary>
         /// Moves a segment of an array to a new position.
@@ -123,28 +62,6 @@ namespace VMFramework.Core
                 Array.Resize(ref array, minLength);
             }
         }
-        
-        #region Create && Init
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static void InitArray<T>(this T[,] array) where T : new()
-        {
-            foreach (var pos in array.GetSize().GetRectangle())
-            {
-                array.Set(pos, new());
-            }
-        }
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static void InitArray<T>(this T[,,] array) where T : new()
-        {
-            foreach (var pos in array.GetSize().GetCube())
-            {
-                array.Set(pos, new());
-            }
-        }
-
-        #endregion
 
         #region Array 3D
 
@@ -201,25 +118,6 @@ namespace VMFramework.Core
         #endregion
 
         #region Array 2D
-
-        #region Set
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static void Set<T>(this T[,] array, Vector2Int pos, T content)
-        {
-            array[pos.x, pos.y] = content;
-        }
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static void Set<T>(this T[,] array, T content)
-        {
-            foreach (var pos in array.GetSize().GetRectangle())
-            {
-                array.Set(pos, content);
-            }
-        }
-
-        #endregion
 
         #region Get
 

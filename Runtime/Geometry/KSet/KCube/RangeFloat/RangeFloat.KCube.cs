@@ -3,14 +3,14 @@ using System.Runtime.CompilerServices;
 
 namespace VMFramework.Core
 {
-    public partial struct RangeFloat
+    public partial struct RangeFloat : IMinimumClampable<double>, IMaximumClampable<double>
     {
         float IMinMaxOwner<float>.Min
         {
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
             get => min;
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
-            init => min = value;
+            set => min = value;
         }
 
         float IMinMaxOwner<float>.Max
@@ -18,7 +18,17 @@ namespace VMFramework.Core
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
             get => max;
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
-            init => max = value;
+            set => max = value;
+        }
+
+        float IReadOnlyMinMaxOwner<float>.GetMin()
+        {
+            return min;
+        }
+
+        float IReadOnlyMinMaxOwner<float>.GetMax()
+        {
+            return max;
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -35,15 +45,28 @@ namespace VMFramework.Core
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public float GetRandomItem(Random random) => random.Range(min, max);
-        
+
+        public IChooser<float> GenerateNewChooser() => this;
+
+        public IChooser GenerateNewObjectChooser() => this;
+
         object IRandomItemProvider.GetRandomObjectItem(Random random)
         {
             return GetRandomItem(random);
         }
 
-        void IChooser.ResetChooser()
+        public bool TryClampByMinimum(double minimum)
         {
-            
+            min = min.ClampMin((float)minimum);
+            max = max.ClampMin((float)minimum);
+            return true;
+        }
+
+        public bool TryClampByMaximum(double maximum)
+        {
+            min = min.ClampMax((float)maximum);
+            max = max.ClampMax((float)maximum);
+            return true;
         }
     }
 }

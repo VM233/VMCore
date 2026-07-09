@@ -30,7 +30,6 @@ namespace VMFramework.Core.Pools
         {
             policy.AssertIsNotNull(nameof(policy));
             
-            // cache the target interface methods, to avoid interface lookup overhead
             _preGetFunc = policy.PreGet;
             _createFunc = policy.Create;
             _returnFunc = policy.Return;
@@ -52,6 +51,11 @@ namespace VMFramework.Core.Pools
 
         public override bool Return(TItem item)
         {
+            if (item == null)
+            {
+                throw new ArgumentNullException(nameof(item));
+            }
+            
             if (_returnFunc(item) == false)
             {
                 _clearFunc(item);

@@ -12,7 +12,7 @@ namespace VMFramework.Core
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
             get => min;
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
-            init => min = value;
+            set => min = value;
         }
 
         Vector3Int IMinMaxOwner<Vector3Int>.Max
@@ -20,7 +20,17 @@ namespace VMFramework.Core
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
             get => max;
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
-            init => max = value;
+            set => max = value;
+        }
+        
+        Vector3Int IReadOnlyMinMaxOwner<Vector3Int>.GetMin()
+        {
+            return min;
+        }
+
+        Vector3Int IReadOnlyMinMaxOwner<Vector3Int>.GetMax()
+        {
+            return max;
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -40,14 +50,13 @@ namespace VMFramework.Core
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public Vector3Int GetRandomItem(Random random) => random.Range(min, max);
         
+        public IChooser<Vector3Int> GenerateNewChooser() => this;
+
+        public IChooser GenerateNewObjectChooser() => this;
+        
         object IRandomItemProvider.GetRandomObjectItem(Random random)
         {
             return GetRandomItem(random);
-        }
-
-        void IChooser.ResetChooser()
-        {
-            
         }
     }
 }

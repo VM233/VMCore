@@ -81,7 +81,7 @@ namespace VMFramework.Core
             return new(point + Vector3Int.forward, point + Vector3Int.back, point + Vector3Int.up,
                 point + Vector3Int.down);
         }
-        
+
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static FourDirectionsNeighbors<Vector3Int> GetFourDirectionsNeighborsOnPlane(this Vector3Int point,
             PlaneType planeType)
@@ -97,14 +97,26 @@ namespace VMFramework.Core
 
         #endregion
 
+        #region Four Diagonal Directions Neighbors
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static FourDiagonalDirectionsNeighbors<Vector2Int> GetFourDiagonalDirectionsNeighbors(
+            this Vector2Int point)
+        {
+            return new(leftUp: point + CommonVector2Int.leftUp, rightDown: point + CommonVector2Int.rightDown,
+                leftDown: point + CommonVector2Int.leftDown, rightUp: point + CommonVector2Int.rightUp);
+        }
+
+        #endregion
+
         #region Eight Directions Neighbors
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static EightDirectionsNeighbors<Vector2Int> GetEightDirectionsNeighbors(this Vector2Int point)
         {
             return new(point + Vector2Int.left, point + Vector2Int.right, point + Vector2Int.up,
-                point + Vector2Int.down, point + CommonVector2Int.upLeft, point + CommonVector2Int.upRight,
-                point + CommonVector2Int.downLeft, point + CommonVector2Int.downRight);
+                point + Vector2Int.down, point + CommonVector2Int.leftUp, point + CommonVector2Int.rightUp,
+                point + CommonVector2Int.leftDown, point + CommonVector2Int.rightDown);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -127,9 +139,8 @@ namespace VMFramework.Core
         public static EightDirectionsNeighbors<Vector3Int> GetEightDirectionsNeighborsOnXZPlane(this Vector3Int point)
         {
             return new(point + Vector3Int.left, point + Vector3Int.right, point + Vector3Int.back,
-                point + Vector3Int.forward, point + CommonVector3Int.backLeft,
-                point + CommonVector3Int.backRight, point + CommonVector3Int.forwardLeft,
-                point + CommonVector3Int.forwardRight);
+                point + Vector3Int.forward, point + CommonVector3Int.backLeft, point + CommonVector3Int.backRight,
+                point + CommonVector3Int.forwardLeft, point + CommonVector3Int.forwardRight);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]

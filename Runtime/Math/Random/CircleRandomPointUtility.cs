@@ -76,5 +76,47 @@ namespace VMFramework.Core
             GlobalRandom.Default.PointInsideCircle(center, radius);
 
         #endregion
+
+        #region Point Inside Sector
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Vector2 PointInsideUnitSector(this Random random, float startAngle, float endAngle)
+        {
+            float angle = random.Range(startAngle, endAngle);
+            float rad = angle.DegToRad();
+            float r = (float)random.NextDouble().Sqrt();
+
+            float x = r * MathF.Cos(rad);
+            float y = r * MathF.Sin(rad);
+            return new(x, y);
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Vector2 PointInsideSector(this Random random, float radius, float startAngle, float endAngle)
+        {
+            float angle = random.Range(startAngle, endAngle);
+            float rad = angle.DegToRad();
+            float r = (float)random.NextDouble().Sqrt() * radius;
+
+            float x = r * MathF.Cos(rad);
+            float y = r * MathF.Sin(rad);
+            return new(x, y);
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Vector2 PointInsideSector(this Random random, Vector2 center, float radius, float startAngle,
+            float endAngle) =>
+            random.PointInsideSector(radius, startAngle, endAngle) + center;
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Vector2 RandomPointInsideSector(this float radius, float startAngle, float endAngle) =>
+            GlobalRandom.Default.PointInsideSector(radius, startAngle, endAngle);
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Vector2 RandomPointInsideSector(this Vector2 center, float radius, float startAngle,
+            float endAngle) =>
+            GlobalRandom.Default.PointInsideSector(center, radius, startAngle, endAngle);
+
+        #endregion
     }
 }

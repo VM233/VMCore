@@ -6,21 +6,21 @@ namespace VMFramework.Core
 {
     public readonly struct EightDirectionsNeighbors<TItem> : IEnumerable<TItem>
     {
-        public readonly TItem upLeft, up, upRight;
+        public readonly TItem leftUp, up, rightUp;
         public readonly TItem left, right;
-        public readonly TItem downLeft, down, downRight;
+        public readonly TItem leftDown, down, rightDown;
 
-        public EightDirectionsNeighbors(TItem left, TItem right, TItem up, TItem down, TItem upLeft, TItem upRight,
-            TItem downLeft, TItem downRight)
+        public EightDirectionsNeighbors(TItem left, TItem right, TItem up, TItem down, TItem leftUp, TItem rightUp,
+            TItem leftDown, TItem rightDown)
         {
             this.left = left;
             this.right = right;
             this.up = up;
             this.down = down;
-            this.upLeft = upLeft;
-            this.upRight = upRight;
-            this.downLeft = downLeft;
-            this.downRight = downRight;
+            this.leftUp = leftUp;
+            this.rightUp = rightUp;
+            this.leftDown = leftDown;
+            this.rightDown = rightDown;
         }
 
         public EightDirectionsNeighbors(TItem item)
@@ -29,29 +29,31 @@ namespace VMFramework.Core
             right = item;
             up = item;
             down = item;
-            upLeft = item;
-            upRight = item;
-            downLeft = item;
-            downRight = item;
+            leftUp = item;
+            rightUp = item;
+            leftDown = item;
+            rightDown = item;
         }
 
         #region Operators
 
         public TItem this[EightTypesDirection direction] => this.GetNeighbor(direction);
-        
+
         public TItem this[FourTypesDirection direction] => this.GetNeighbor(direction);
-        
+
         public TItem this[LeftRightDirection direction] => this.GetNeighbor(direction);
 
         public TItem this[int index] => this.GetNeighbor(index);
-        
+
         public static implicit operator EightDirectionsNeighbors<TItem>(TItem item) => new(item);
 
         #endregion
 
         #region Enumerator
 
-        public IEnumerator<TItem> GetEnumerator()
+        public Enumerator GetEnumerator() => new(this);
+
+        IEnumerator<TItem> IEnumerable<TItem>.GetEnumerator()
         {
             return new Enumerator(this);
         }
@@ -60,7 +62,7 @@ namespace VMFramework.Core
         {
             return GetEnumerator();
         }
-        
+
         public struct Enumerator : IEnumerator<TItem>
         {
             private readonly EightDirectionsNeighbors<TItem> neighbors;
@@ -87,7 +89,9 @@ namespace VMFramework.Core
                 index = -1;
             }
 
-            public void Dispose() { }
+            public void Dispose()
+            {
+            }
         }
 
         #endregion

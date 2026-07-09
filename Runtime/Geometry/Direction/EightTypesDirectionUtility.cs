@@ -80,10 +80,10 @@ namespace VMFramework.Core
                 EightTypesDirection.Down => Vector2Int.down,
                 EightTypesDirection.Left => Vector2Int.left,
                 EightTypesDirection.Right => Vector2Int.right,
-                EightTypesDirection.UpLeft => CommonVector2Int.upLeft,
-                EightTypesDirection.UpRight => CommonVector2Int.upRight,
-                EightTypesDirection.DownLeft => CommonVector2Int.downLeft,
-                EightTypesDirection.DownRight => CommonVector2Int.downRight,
+                EightTypesDirection.UpLeft => CommonVector2Int.leftUp,
+                EightTypesDirection.UpRight => CommonVector2Int.rightUp,
+                EightTypesDirection.DownLeft => CommonVector2Int.leftDown,
+                EightTypesDirection.DownRight => CommonVector2Int.rightDown,
                 _ => throw new ArgumentOutOfRangeException(nameof(direction), direction, null)
             };
         }

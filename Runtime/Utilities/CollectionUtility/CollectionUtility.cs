@@ -65,6 +65,19 @@ namespace VMFramework.Core
         #endregion
 
         #region Remove
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void RemoveIfNotNull<TCollection, TItem>(this TCollection collection, TItem item)
+            where TCollection : ICollection<TItem>
+            where TItem : class
+        {
+            if (item == null)
+            {
+                return;
+            }
+            
+            collection.Remove(item);
+        }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void RemoveRange<T>(this ICollection<T> collection, IEnumerable<T> items)

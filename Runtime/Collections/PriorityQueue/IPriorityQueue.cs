@@ -2,7 +2,7 @@
 
 namespace VMFramework.Core
 {
-    public interface IPriorityQueue<TItem, in TPriority> : IEnumerable<TItem>
+    public interface IPriorityQueue<TItem, in TPriority> : IReadOnlyCollection<TItem>
     {
         /// <summary>
         /// Enqueue a node to the priority queue.
@@ -42,11 +42,6 @@ namespace VMFramework.Core
         /// Returns the head of the queue, without removing it
         /// (use <see cref="Dequeue"/> for that).
         /// </summary>
-        TItem first { get; }
-
-        /// <summary>
-        /// Returns the number of nodes in the queue.
-        /// </summary>
-        int count { get; }
+        TItem First { get; }
     }
 }

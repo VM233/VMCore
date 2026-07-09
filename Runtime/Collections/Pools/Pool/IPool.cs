@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace VMFramework.Core.Pools
+﻿namespace VMFramework.Core.Pools
 {
     public interface IPool<in TItem>
     {

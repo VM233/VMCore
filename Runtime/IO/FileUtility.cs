@@ -8,8 +8,6 @@ namespace VMFramework.Core
 {
     public static class FileUtility
     {
-        #region File
-
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static bool ExistsFile(this string filePath)
         {
@@ -76,7 +74,5 @@ namespace VMFramework.Core
         {
             return Path.GetExtension(path);
         }
-
-        #endregion
     }
 }

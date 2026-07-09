@@ -30,7 +30,7 @@ namespace VMFramework.Core
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static T Choose<T>(this Random random, IList<T> list)
+        public static T Choose<T>(this Random random, IReadOnlyList<T> list)
         {
             if (list == null)
             {
@@ -43,6 +43,37 @@ namespace VMFramework.Core
             }
 
             return list[random.Next(list.Count)];
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static T Choose<T>(this Random random, IReadOnlyList<T> list, int startIndex, int endIndex)
+        {
+            if (list == null)
+            {
+                throw new ArgumentNullException(nameof(list));
+            }
+
+            if (startIndex < 0 || startIndex >= list.Count)
+            {
+                throw new ArgumentOutOfRangeException(nameof(startIndex));
+            }
+            
+            if (endIndex < 0 || endIndex > list.Count)
+            {
+                throw new ArgumentOutOfRangeException(nameof(endIndex));
+            }
+
+            if (endIndex < startIndex)
+            {
+                throw new ArgumentException("End index is less than start index.", nameof(endIndex));
+            }
+
+            if (startIndex == endIndex)
+            {
+                return list[startIndex];
+            }
+            
+            return list[random.Range(startIndex, endIndex)];
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -80,7 +111,7 @@ namespace VMFramework.Core
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static T WeightedChoose<T>(this Random random, IList<T> objects, IList<int> rates)
+        public static T WeightedChoose<T>(this Random random, IReadOnlyList<T> objects, IReadOnlyList<int> rates)
         {
             if (objects.IsNullOrEmpty())
             {
@@ -117,7 +148,7 @@ namespace VMFramework.Core
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static T WeightedChoose<T>(this Random random, IList<T> objects, IList<float> rates)
+        public static T WeightedChoose<T>(this Random random, IReadOnlyList<T> objects, IReadOnlyList<float> rates)
         {
             if (objects.IsNullOrEmpty())
             {
@@ -154,7 +185,23 @@ namespace VMFramework.Core
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static TItem WeightedChoose<TItem>(this Random random, IList<(TItem item, float rate)> infos)
+        public static TItem WeightedChoose<TItem>(this Random random, IReadOnlyDictionary<TItem, float> dictionary)
+        {
+            var infos = ListPool<(TItem item, float rate)>.Shared.Get();
+            infos.Clear();
+
+            foreach (var kvp in dictionary)
+            {
+                infos.Add((kvp.Key, kvp.Value));
+            }
+
+            var result = random.WeightedChoose(infos);
+            infos.ReturnToDefaultPool();
+            return result;
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static TItem WeightedChoose<TItem>(this Random random, IReadOnlyList<(TItem item, float rate)> infos)
         {
             if (infos.IsNullOrEmpty())
             {
@@ -194,9 +241,60 @@ namespace VMFramework.Core
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void WeightedChoose<TInfo>(this Random random, IReadOnlyList<TInfo> infos,
+            out TInfo resultInfo, out int resultIndex)
+            where TInfo : IWeightedSelectItem
+        {
+            if (infos.IsNullOrEmpty())
+            {
+                throw new ArgumentNullException(nameof(infos));
+            }
+
+            if (infos.Count == 1)
+            {
+                resultInfo = infos[0];
+                resultIndex = 0;
+                return;
+            }
+
+            float sum = 0;
+
+            foreach (var info in infos)
+            {
+                sum += info.Weight;
+            }
+
+            if (sum <= 0)
+            {
+                resultInfo = infos[0];
+                resultIndex = 0;
+                return;
+            }
+
+            float randomRate = random.Range(sum);
+
+            float cumulativeRate = 0;
+            for (int i = 0; i < infos.Count; i++)
+            {
+                var info = infos[i];
+                cumulativeRate += info.Weight;
+                if (cumulativeRate >= randomRate)
+                {
+                    resultInfo = info;
+                    resultIndex = i;
+                    return;
+                }
+            }
+
+            throw new InvalidOperationException();
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static TEnum ChooseFlag<TEnum>(this Random random, TEnum enumValue)
-            where TEnum : struct, Enum =>
-            random.Choose(enumValue.GetFlags());
+            where TEnum : struct, Enum
+        {
+            return enumValue.GetFlagCount() == 1 ? enumValue : random.Choose(enumValue.GetFlags());
+        }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static T Choose<T>(this IEnumerable<T> enumerable) => GlobalRandom.Default.Choose(enumerable);
@@ -205,7 +303,7 @@ namespace VMFramework.Core
         public static T Choose<T>(this IReadOnlyCollection<T> collection) => GlobalRandom.Default.Choose(collection);
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static T Choose<T>(this IList<T> list) => GlobalRandom.Default.Choose(list);
+        public static T Choose<T>(this IReadOnlyList<T> list) => GlobalRandom.Default.Choose(list);
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static T Choose<T>(this T[] array) => GlobalRandom.Default.Choose(array);
@@ -219,16 +317,22 @@ namespace VMFramework.Core
             GlobalRandom.Default.ChooseValue(dictionary);
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static T WeightedChoose<T>(this IList<T> objects, IList<int> rates) =>
+        public static T WeightedChoose<T>(this IReadOnlyList<T> objects, IReadOnlyList<int> rates) =>
             GlobalRandom.Default.WeightedChoose(objects, rates);
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static T WeightedChoose<T>(this IList<T> objects, IList<float> rates) =>
+        public static T WeightedChoose<T>(this IReadOnlyList<T> objects, IReadOnlyList<float> rates) =>
             GlobalRandom.Default.WeightedChoose(objects, rates);
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static TItem WeightedChoose<TItem>(this IList<(TItem item, float rate)> infos) =>
+        public static TItem WeightedChoose<TItem>(this IReadOnlyList<(TItem item, float rate)> infos) =>
             GlobalRandom.Default.WeightedChoose(infos);
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void WeightedChoose<TInfo>(this IReadOnlyList<TInfo> infos,
+            out TInfo resultInfo, out int resultIndex)
+            where TInfo : IWeightedSelectItem =>
+            GlobalRandom.Default.WeightedChoose(infos, out resultInfo, out resultIndex);
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static TEnum ChooseFlag<TEnum>(this TEnum enumValue)
@@ -246,18 +350,19 @@ namespace VMFramework.Core
             {
                 return defaultValue;
             }
-            
+
             return random.Choose(enumerable);
         }
-        
+
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static T ChooseOrDefault<T>(this Random random, IReadOnlyCollection<T> collection, T defaultValue = default)
+        public static T ChooseOrDefault<T>(this Random random, IReadOnlyCollection<T> collection,
+            T defaultValue = default)
         {
             if (collection.IsNullOrEmpty())
             {
                 return defaultValue;
             }
-            
+
             return random.Choose(collection);
         }
 
@@ -277,7 +382,7 @@ namespace VMFramework.Core
         {
             return GlobalRandom.Default.ChooseOrDefault(enumerable, defaultValue);
         }
-        
+
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static T ChooseOrDefault<T>(this IReadOnlyCollection<T> collection, T defaultValue = default)
         {
@@ -291,7 +396,7 @@ namespace VMFramework.Core
         }
 
         #endregion
-        
+
         #region Shuffle
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -320,7 +425,7 @@ namespace VMFramework.Core
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void Shuffle<T>(this IList<T> list) => GlobalRandom.Default.Shuffle(list);
-        
+
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void Shuffle<T>(this IList<T> list, int startIndex, int endIndex) =>
             GlobalRandom.Default.Shuffle(list, startIndex, endIndex);

@@ -58,6 +58,11 @@ namespace VMFramework.Core
 
         #region Floor To Zero
 
+        /// <summary>
+        /// <see cref="FloorToZero(float)"/>
+        /// </summary>
+        /// <param name="value"></param>
+        /// <returns></returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static int FloorToZero(this float value)
         {

@@ -6,6 +6,24 @@ namespace VMFramework.Core
     public static class ArrayWriteUtility
     {
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void Set<T>(this T[,] array, T content)
+        {
+            for (int i = 0; i < array.GetLength(0); i++)
+            {
+                for (int j = 0; j < array.GetLength(1); j++)
+                {
+                    array[i, j] = content;
+                }
+            }
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void Set<T>(this T[,] array, Vector2Int pos, T content)
+        {
+            array[pos.x, pos.y] = content;
+        }
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void Set<T>(this T[,,] array, Vector3Int pos, T content)
         {
             array[pos.x, pos.y, pos.z] = content;

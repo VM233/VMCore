@@ -31,8 +31,7 @@ namespace VMFramework.Core.Generic
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static bool IsVector(this Type type) => vectorTypes.Contains(type);
 
-        public static T ConvertNumber<T>(object value) =>
-            (T)Convert.ChangeType(value, typeof(T));
+        public static T ConvertNumber<T>(object value) => (T)Convert.ChangeType(value, typeof(T));
 
         #region Clamp
 
@@ -80,7 +79,6 @@ namespace VMFramework.Core.Generic
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static T ClampMin<T>(this T a, double min)
-            where T : IEquatable<T>
         {
             return a switch
             {
@@ -99,7 +97,6 @@ namespace VMFramework.Core.Generic
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static T ClampMax<T>(this T a, double min)
-            where T : IEquatable<T>
         {
             return a switch
             {
@@ -165,15 +162,15 @@ namespace VMFramework.Core.Generic
         {
             return a switch
             {
-                int => Math.AllNumberBelow(a.ConvertTo<int>(), comparison.ConvertTo<int>()),
-                float => Math.AllNumberBelow(a.ConvertTo<float>(), comparison.ConvertTo<float>()),
-                double => Math.AllNumberBelow(a.ConvertTo<double>(), comparison.ConvertTo<double>()),
-                Vector2 => Math.AllNumberBelow(a.ConvertTo<Vector2>(), comparison.ConvertTo<Vector2>()),
-                Vector3 => Math.AllNumberBelow(a.ConvertTo<Vector3>(), comparison.ConvertTo<Vector3>()),
-                Vector4 => Math.AllNumberBelow(a.ConvertTo<Vector4>(), comparison.ConvertTo<Vector4>()),
-                Vector2Int => Math.AllNumberBelow(a.ConvertTo<Vector2Int>(), comparison.ConvertTo<Vector2Int>()),
-                Vector3Int => Math.AllNumberBelow(a.ConvertTo<Vector3Int>(), comparison.ConvertTo<Vector3Int>()),
-                Color => Math.AllNumberBelow(a.ConvertTo<Color>(), comparison.ConvertTo<Color>()),
+                int => VectorCompareUtility.AllNumberBelow(a.ConvertTo<int>(), comparison.ConvertTo<int>()),
+                float => VectorCompareUtility.AllNumberBelow(a.ConvertTo<float>(), comparison.ConvertTo<float>()),
+                double => VectorCompareUtility.AllNumberBelow(a.ConvertTo<double>(), comparison.ConvertTo<double>()),
+                Vector2 => VectorCompareUtility.AllNumberBelow(a.ConvertTo<Vector2>(), comparison.ConvertTo<Vector2>()),
+                Vector3 => VectorCompareUtility.AllNumberBelow(a.ConvertTo<Vector3>(), comparison.ConvertTo<Vector3>()),
+                Vector4 => VectorCompareUtility.AllNumberBelow(a.ConvertTo<Vector4>(), comparison.ConvertTo<Vector4>()),
+                Vector2Int => VectorCompareUtility.AllNumberBelow(a.ConvertTo<Vector2Int>(), comparison.ConvertTo<Vector2Int>()),
+                Vector3Int => VectorCompareUtility.AllNumberBelow(a.ConvertTo<Vector3Int>(), comparison.ConvertTo<Vector3Int>()),
+                Color => VectorCompareUtility.AllNumberBelow(a.ConvertTo<Color>(), comparison.ConvertTo<Color>()),
                 _ => throw new ArgumentException()
             };
         }
@@ -184,15 +181,15 @@ namespace VMFramework.Core.Generic
         {
             return a switch
             {
-                int => Math.AllNumberAbove(a.ConvertTo<int>(), comparison.ConvertTo<int>()),
-                float => Math.AllNumberAbove(a.ConvertTo<float>(), comparison.ConvertTo<float>()),
-                double => Math.AllNumberAbove(a.ConvertTo<double>(), comparison.ConvertTo<double>()),
-                Vector2 => Math.AllNumberAbove(a.ConvertTo<Vector2>(), comparison.ConvertTo<Vector2>()),
-                Vector3 => Math.AllNumberAbove(a.ConvertTo<Vector3>(), comparison.ConvertTo<Vector3>()),
-                Vector4 => Math.AllNumberAbove(a.ConvertTo<Vector4>(), comparison.ConvertTo<Vector4>()),
-                Vector2Int => Math.AllNumberAbove(a.ConvertTo<Vector2Int>(), comparison.ConvertTo<Vector2Int>()),
-                Vector3Int => Math.AllNumberAbove(a.ConvertTo<Vector3Int>(), comparison.ConvertTo<Vector3Int>()),
-                Color => Math.AllNumberAbove(a.ConvertTo<Color>(), comparison.ConvertTo<Color>()),
+                int => VectorCompareUtility.AllNumberAbove(a.ConvertTo<int>(), comparison.ConvertTo<int>()),
+                float => VectorCompareUtility.AllNumberAbove(a.ConvertTo<float>(), comparison.ConvertTo<float>()),
+                double => VectorCompareUtility.AllNumberAbove(a.ConvertTo<double>(), comparison.ConvertTo<double>()),
+                Vector2 => VectorCompareUtility.AllNumberAbove(a.ConvertTo<Vector2>(), comparison.ConvertTo<Vector2>()),
+                Vector3 => VectorCompareUtility.AllNumberAbove(a.ConvertTo<Vector3>(), comparison.ConvertTo<Vector3>()),
+                Vector4 => VectorCompareUtility.AllNumberAbove(a.ConvertTo<Vector4>(), comparison.ConvertTo<Vector4>()),
+                Vector2Int => VectorCompareUtility.AllNumberAbove(a.ConvertTo<Vector2Int>(), comparison.ConvertTo<Vector2Int>()),
+                Vector3Int => VectorCompareUtility.AllNumberAbove(a.ConvertTo<Vector3Int>(), comparison.ConvertTo<Vector3Int>()),
+                Color => VectorCompareUtility.AllNumberAbove(a.ConvertTo<Color>(), comparison.ConvertTo<Color>()),
                 _ => throw new ArgumentException()
             };
         }
@@ -203,15 +200,15 @@ namespace VMFramework.Core.Generic
         {
             return a switch
             {
-                int => Math.AllNumberBelowOrEqual(a.ConvertTo<int>(), comparison.ConvertTo<int>()),
-                float => Math.AllNumberBelowOrEqual(a.ConvertTo<float>(), comparison.ConvertTo<float>()),
-                double => Math.AllNumberBelowOrEqual(a.ConvertTo<double>(), comparison.ConvertTo<double>()),
-                Vector2 => Math.AllNumberBelowOrEqual(a.ConvertTo<Vector2>(), comparison.ConvertTo<Vector2>()),
-                Vector3 => Math.AllNumberBelowOrEqual(a.ConvertTo<Vector3>(), comparison.ConvertTo<Vector3>()),
-                Vector4 => Math.AllNumberBelowOrEqual(a.ConvertTo<Vector4>(), comparison.ConvertTo<Vector4>()),
-                Vector2Int => Math.AllNumberBelowOrEqual(a.ConvertTo<Vector2Int>(), comparison.ConvertTo<Vector2Int>()),
-                Vector3Int => Math.AllNumberBelowOrEqual(a.ConvertTo<Vector3Int>(), comparison.ConvertTo<Vector3Int>()),
-                Color => Math.AllNumberBelowOrEqual(a.ConvertTo<Color>(), comparison.ConvertTo<Color>()),
+                int => VectorCompareUtility.AllNumberBelowOrEqual(a.ConvertTo<int>(), comparison.ConvertTo<int>()),
+                float => VectorCompareUtility.AllNumberBelowOrEqual(a.ConvertTo<float>(), comparison.ConvertTo<float>()),
+                double => VectorCompareUtility.AllNumberBelowOrEqual(a.ConvertTo<double>(), comparison.ConvertTo<double>()),
+                Vector2 => VectorCompareUtility.AllNumberBelowOrEqual(a.ConvertTo<Vector2>(), comparison.ConvertTo<Vector2>()),
+                Vector3 => VectorCompareUtility.AllNumberBelowOrEqual(a.ConvertTo<Vector3>(), comparison.ConvertTo<Vector3>()),
+                Vector4 => VectorCompareUtility.AllNumberBelowOrEqual(a.ConvertTo<Vector4>(), comparison.ConvertTo<Vector4>()),
+                Vector2Int => VectorCompareUtility.AllNumberBelowOrEqual(a.ConvertTo<Vector2Int>(), comparison.ConvertTo<Vector2Int>()),
+                Vector3Int => VectorCompareUtility.AllNumberBelowOrEqual(a.ConvertTo<Vector3Int>(), comparison.ConvertTo<Vector3Int>()),
+                Color => VectorCompareUtility.AllNumberBelowOrEqual(a.ConvertTo<Color>(), comparison.ConvertTo<Color>()),
                 _ => throw new ArgumentException()
             };
         }
@@ -222,15 +219,15 @@ namespace VMFramework.Core.Generic
         {
             return a switch
             {
-                int => Math.AllNumberAboveOrEqual(a.ConvertTo<int>(), comparison.ConvertTo<int>()),
-                float => Math.AllNumberAboveOrEqual(a.ConvertTo<float>(), comparison.ConvertTo<float>()),
-                double => Math.AllNumberAboveOrEqual(a.ConvertTo<double>(), comparison.ConvertTo<double>()),
-                Vector2 => Math.AllNumberAboveOrEqual(a.ConvertTo<Vector2>(), comparison.ConvertTo<Vector2>()),
-                Vector3 => Math.AllNumberAboveOrEqual(a.ConvertTo<Vector3>(), comparison.ConvertTo<Vector3>()),
-                Vector4 => Math.AllNumberAboveOrEqual(a.ConvertTo<Vector4>(), comparison.ConvertTo<Vector4>()),
-                Vector2Int => Math.AllNumberAboveOrEqual(a.ConvertTo<Vector2Int>(), comparison.ConvertTo<Vector2Int>()),
-                Vector3Int => Math.AllNumberAboveOrEqual(a.ConvertTo<Vector3Int>(), comparison.ConvertTo<Vector3Int>()),
-                Color => Math.AllNumberAboveOrEqual(a.ConvertTo<Color>(), comparison.ConvertTo<Color>()),
+                int => VectorCompareUtility.AllNumberAboveOrEqual(a.ConvertTo<int>(), comparison.ConvertTo<int>()),
+                float => VectorCompareUtility.AllNumberAboveOrEqual(a.ConvertTo<float>(), comparison.ConvertTo<float>()),
+                double => VectorCompareUtility.AllNumberAboveOrEqual(a.ConvertTo<double>(), comparison.ConvertTo<double>()),
+                Vector2 => VectorCompareUtility.AllNumberAboveOrEqual(a.ConvertTo<Vector2>(), comparison.ConvertTo<Vector2>()),
+                Vector3 => VectorCompareUtility.AllNumberAboveOrEqual(a.ConvertTo<Vector3>(), comparison.ConvertTo<Vector3>()),
+                Vector4 => VectorCompareUtility.AllNumberAboveOrEqual(a.ConvertTo<Vector4>(), comparison.ConvertTo<Vector4>()),
+                Vector2Int => VectorCompareUtility.AllNumberAboveOrEqual(a.ConvertTo<Vector2Int>(), comparison.ConvertTo<Vector2Int>()),
+                Vector3Int => VectorCompareUtility.AllNumberAboveOrEqual(a.ConvertTo<Vector3Int>(), comparison.ConvertTo<Vector3Int>()),
+                Color => VectorCompareUtility.AllNumberAboveOrEqual(a.ConvertTo<Color>(), comparison.ConvertTo<Color>()),
                 _ => throw new ArgumentException()
             };
         }
@@ -275,15 +272,16 @@ namespace VMFramework.Core.Generic
         {
             return a switch
             {
-                int => Math.AnyNumberBelow(a.ConvertTo<int>(), comparison.ConvertTo<int>()),
-                float => Math.AnyNumberBelow(a.ConvertTo<float>(), comparison.ConvertTo<float>()),
-                double => Math.AnyNumberBelow(a.ConvertTo<double>(), comparison.ConvertTo<double>()),
-                Vector2 => Math.AnyNumberBelow(a.ConvertTo<Vector2>(), comparison.ConvertTo<Vector2>()),
-                Vector3 => Math.AnyNumberBelow(a.ConvertTo<Vector3>(), comparison.ConvertTo<Vector3>()),
-                Vector4 => Math.AnyNumberBelow(a.ConvertTo<Vector4>(), comparison.ConvertTo<Vector4>()),
-                Vector2Int => Math.AnyNumberBelow(a.ConvertTo<Vector2Int>(), comparison.ConvertTo<Vector2Int>()),
-                Vector3Int => Math.AnyNumberBelow(a.ConvertTo<Vector3Int>(), comparison.ConvertTo<Vector3Int>()),
-                Color => Math.AnyNumberBelow(a.ConvertTo<Color>(), comparison.ConvertTo<Color>()),
+                int => VectorCompareUtility.AnyNumberBelow(a.ConvertTo<int>(), comparison.ConvertTo<int>()),
+                uint => VectorCompareUtility.AnyNumberBelow(a.ConvertTo<uint>(), comparison.ConvertTo<uint>()),
+                float => VectorCompareUtility.AnyNumberBelow(a.ConvertTo<float>(), comparison.ConvertTo<float>()),
+                double => VectorCompareUtility.AnyNumberBelow(a.ConvertTo<double>(), comparison.ConvertTo<double>()),
+                Vector2 => VectorCompareUtility.AnyNumberBelow(a.ConvertTo<Vector2>(), comparison.ConvertTo<Vector2>()),
+                Vector3 => VectorCompareUtility.AnyNumberBelow(a.ConvertTo<Vector3>(), comparison.ConvertTo<Vector3>()),
+                Vector4 => VectorCompareUtility.AnyNumberBelow(a.ConvertTo<Vector4>(), comparison.ConvertTo<Vector4>()),
+                Vector2Int => VectorCompareUtility.AnyNumberBelow(a.ConvertTo<Vector2Int>(), comparison.ConvertTo<Vector2Int>()),
+                Vector3Int => VectorCompareUtility.AnyNumberBelow(a.ConvertTo<Vector3Int>(), comparison.ConvertTo<Vector3Int>()),
+                Color => VectorCompareUtility.AnyNumberBelow(a.ConvertTo<Color>(), comparison.ConvertTo<Color>()),
                 _ => throw new ArgumentException()
             };
         }
@@ -294,15 +292,15 @@ namespace VMFramework.Core.Generic
         {
             return a switch
             {
-                int => Math.AnyNumberAbove(a.ConvertTo<int>(), comparison.ConvertTo<int>()),
-                float => Math.AnyNumberAbove(a.ConvertTo<float>(), comparison.ConvertTo<float>()),
-                double => Math.AnyNumberAbove(a.ConvertTo<double>(), comparison.ConvertTo<double>()),
-                Vector2 => Math.AnyNumberAbove(a.ConvertTo<Vector2>(), comparison.ConvertTo<Vector2>()),
-                Vector3 => Math.AnyNumberAbove(a.ConvertTo<Vector3>(), comparison.ConvertTo<Vector3>()),
-                Vector4 => Math.AnyNumberAbove(a.ConvertTo<Vector4>(), comparison.ConvertTo<Vector4>()),
-                Vector2Int => Math.AnyNumberAbove(a.ConvertTo<Vector2Int>(), comparison.ConvertTo<Vector2Int>()),
-                Vector3Int => Math.AnyNumberAbove(a.ConvertTo<Vector3Int>(), comparison.ConvertTo<Vector3Int>()),
-                Color => Math.AnyNumberAbove(a.ConvertTo<Color>(), comparison.ConvertTo<Color>()),
+                int => VectorCompareUtility.AnyNumberAbove(a.ConvertTo<int>(), comparison.ConvertTo<int>()),
+                float => VectorCompareUtility.AnyNumberAbove(a.ConvertTo<float>(), comparison.ConvertTo<float>()),
+                double => VectorCompareUtility.AnyNumberAbove(a.ConvertTo<double>(), comparison.ConvertTo<double>()),
+                Vector2 => VectorCompareUtility.AnyNumberAbove(a.ConvertTo<Vector2>(), comparison.ConvertTo<Vector2>()),
+                Vector3 => VectorCompareUtility.AnyNumberAbove(a.ConvertTo<Vector3>(), comparison.ConvertTo<Vector3>()),
+                Vector4 => VectorCompareUtility.AnyNumberAbove(a.ConvertTo<Vector4>(), comparison.ConvertTo<Vector4>()),
+                Vector2Int => VectorCompareUtility.AnyNumberAbove(a.ConvertTo<Vector2Int>(), comparison.ConvertTo<Vector2Int>()),
+                Vector3Int => VectorCompareUtility.AnyNumberAbove(a.ConvertTo<Vector3Int>(), comparison.ConvertTo<Vector3Int>()),
+                Color => VectorCompareUtility.AnyNumberAbove(a.ConvertTo<Color>(), comparison.ConvertTo<Color>()),
                 _ => throw new ArgumentException()
             };
         }
@@ -313,15 +311,15 @@ namespace VMFramework.Core.Generic
         {
             return a switch
             {
-                int => Math.AnyNumberBelowOrEqual(a.ConvertTo<int>(), comparison.ConvertTo<int>()),
-                float => Math.AnyNumberBelowOrEqual(a.ConvertTo<float>(), comparison.ConvertTo<float>()),
-                double => Math.AnyNumberBelowOrEqual(a.ConvertTo<double>(), comparison.ConvertTo<double>()),
-                Vector2 => Math.AnyNumberBelowOrEqual(a.ConvertTo<Vector2>(), comparison.ConvertTo<Vector2>()),
-                Vector3 => Math.AnyNumberBelowOrEqual(a.ConvertTo<Vector3>(), comparison.ConvertTo<Vector3>()),
-                Vector4 => Math.AnyNumberBelowOrEqual(a.ConvertTo<Vector4>(), comparison.ConvertTo<Vector4>()),
-                Vector2Int => Math.AnyNumberBelowOrEqual(a.ConvertTo<Vector2Int>(), comparison.ConvertTo<Vector2Int>()),
-                Vector3Int => Math.AnyNumberBelowOrEqual(a.ConvertTo<Vector3Int>(), comparison.ConvertTo<Vector3Int>()),
-                Color => Math.AnyNumberBelowOrEqual(a.ConvertTo<Color>(), comparison.ConvertTo<Color>()),
+                int => VectorCompareUtility.AnyNumberBelowOrEqual(a.ConvertTo<int>(), comparison.ConvertTo<int>()),
+                float => VectorCompareUtility.AnyNumberBelowOrEqual(a.ConvertTo<float>(), comparison.ConvertTo<float>()),
+                double => VectorCompareUtility.AnyNumberBelowOrEqual(a.ConvertTo<double>(), comparison.ConvertTo<double>()),
+                Vector2 => VectorCompareUtility.AnyNumberBelowOrEqual(a.ConvertTo<Vector2>(), comparison.ConvertTo<Vector2>()),
+                Vector3 => VectorCompareUtility.AnyNumberBelowOrEqual(a.ConvertTo<Vector3>(), comparison.ConvertTo<Vector3>()),
+                Vector4 => VectorCompareUtility.AnyNumberBelowOrEqual(a.ConvertTo<Vector4>(), comparison.ConvertTo<Vector4>()),
+                Vector2Int => VectorCompareUtility.AnyNumberBelowOrEqual(a.ConvertTo<Vector2Int>(), comparison.ConvertTo<Vector2Int>()),
+                Vector3Int => VectorCompareUtility.AnyNumberBelowOrEqual(a.ConvertTo<Vector3Int>(), comparison.ConvertTo<Vector3Int>()),
+                Color => VectorCompareUtility.AnyNumberBelowOrEqual(a.ConvertTo<Color>(), comparison.ConvertTo<Color>()),
                 _ => throw new ArgumentException()
             };
         }
@@ -332,15 +330,15 @@ namespace VMFramework.Core.Generic
         {
             return a switch
             {
-                int => Math.AnyNumberAboveOrEqual(a.ConvertTo<int>(), comparison.ConvertTo<int>()),
-                float => Math.AnyNumberAboveOrEqual(a.ConvertTo<float>(), comparison.ConvertTo<float>()),
-                double => Math.AnyNumberAboveOrEqual(a.ConvertTo<double>(), comparison.ConvertTo<double>()),
-                Vector2 => Math.AnyNumberAboveOrEqual(a.ConvertTo<Vector2>(), comparison.ConvertTo<Vector2>()),
-                Vector3 => Math.AnyNumberAboveOrEqual(a.ConvertTo<Vector3>(), comparison.ConvertTo<Vector3>()),
-                Vector4 => Math.AnyNumberAboveOrEqual(a.ConvertTo<Vector4>(), comparison.ConvertTo<Vector4>()),
-                Vector2Int => Math.AnyNumberAboveOrEqual(a.ConvertTo<Vector2Int>(), comparison.ConvertTo<Vector2Int>()),
-                Vector3Int => Math.AnyNumberAboveOrEqual(a.ConvertTo<Vector3Int>(), comparison.ConvertTo<Vector3Int>()),
-                Color => Math.AnyNumberAboveOrEqual(a.ConvertTo<Color>(), comparison.ConvertTo<Color>()),
+                int => VectorCompareUtility.AnyNumberAboveOrEqual(a.ConvertTo<int>(), comparison.ConvertTo<int>()),
+                float => VectorCompareUtility.AnyNumberAboveOrEqual(a.ConvertTo<float>(), comparison.ConvertTo<float>()),
+                double => VectorCompareUtility.AnyNumberAboveOrEqual(a.ConvertTo<double>(), comparison.ConvertTo<double>()),
+                Vector2 => VectorCompareUtility.AnyNumberAboveOrEqual(a.ConvertTo<Vector2>(), comparison.ConvertTo<Vector2>()),
+                Vector3 => VectorCompareUtility.AnyNumberAboveOrEqual(a.ConvertTo<Vector3>(), comparison.ConvertTo<Vector3>()),
+                Vector4 => VectorCompareUtility.AnyNumberAboveOrEqual(a.ConvertTo<Vector4>(), comparison.ConvertTo<Vector4>()),
+                Vector2Int => VectorCompareUtility.AnyNumberAboveOrEqual(a.ConvertTo<Vector2Int>(), comparison.ConvertTo<Vector2Int>()),
+                Vector3Int => VectorCompareUtility.AnyNumberAboveOrEqual(a.ConvertTo<Vector3Int>(), comparison.ConvertTo<Vector3Int>()),
+                Color => VectorCompareUtility.AnyNumberAboveOrEqual(a.ConvertTo<Color>(), comparison.ConvertTo<Color>()),
                 _ => throw new ArgumentException()
             };
         }
@@ -351,15 +349,17 @@ namespace VMFramework.Core.Generic
         {
             return a switch
             {
-                int => Math.AnyNumberBelowOrEqual(a.ConvertTo<int>(), NearToIntegerUtility.Floor(comparison)),
-                float => Math.AnyNumberBelowOrEqual(a.ConvertTo<float>(), comparison.F()),
-                double => Math.AnyNumberBelowOrEqual(a.ConvertTo<double>(), comparison),
-                Vector2 => Math.AnyNumberBelowOrEqual(a.ConvertTo<Vector2>(), comparison.F()),
-                Vector3 => Math.AnyNumberBelowOrEqual(a.ConvertTo<Vector3>(), comparison.F()),
-                Vector4 => Math.AnyNumberBelowOrEqual(a.ConvertTo<Vector4>(), comparison.F()),
-                Vector2Int => Math.AnyNumberBelowOrEqual(a.ConvertTo<Vector2Int>(), NearToIntegerUtility.Floor(comparison)),
-                Vector3Int => Math.AnyNumberBelowOrEqual(a.ConvertTo<Vector3Int>(), NearToIntegerUtility.Floor(comparison)),
-                Color => Math.AnyNumberBelowOrEqual(a.ConvertTo<Color>(), comparison.F()),
+                int => VectorCompareUtility.AnyNumberBelowOrEqual(a.ConvertTo<int>(), NearToIntegerUtility.Floor(comparison)),
+                float => VectorCompareUtility.AnyNumberBelowOrEqual(a.ConvertTo<float>(), comparison.F()),
+                double => VectorCompareUtility.AnyNumberBelowOrEqual(a.ConvertTo<double>(), comparison),
+                Vector2 => VectorCompareUtility.AnyNumberBelowOrEqual(a.ConvertTo<Vector2>(), comparison.F()),
+                Vector3 => VectorCompareUtility.AnyNumberBelowOrEqual(a.ConvertTo<Vector3>(), comparison.F()),
+                Vector4 => VectorCompareUtility.AnyNumberBelowOrEqual(a.ConvertTo<Vector4>(), comparison.F()),
+                Vector2Int => VectorCompareUtility.AnyNumberBelowOrEqual(a.ConvertTo<Vector2Int>(),
+                    NearToIntegerUtility.Floor(comparison)),
+                Vector3Int => VectorCompareUtility.AnyNumberBelowOrEqual(a.ConvertTo<Vector3Int>(),
+                    NearToIntegerUtility.Floor(comparison)),
+                Color => VectorCompareUtility.AnyNumberBelowOrEqual(a.ConvertTo<Color>(), comparison.F()),
                 _ => throw new ArgumentException()
             };
         }
@@ -370,15 +370,15 @@ namespace VMFramework.Core.Generic
         {
             return a switch
             {
-                int => Math.AnyNumberBelow(a.ConvertTo<int>(), NearToIntegerUtility.Floor(comparison)),
-                float => Math.AnyNumberBelow(a.ConvertTo<float>(), comparison.F()),
-                double => Math.AnyNumberBelow(a.ConvertTo<double>(), comparison),
-                Vector2 => Math.AnyNumberBelow(a.ConvertTo<Vector2>(), comparison.F()),
-                Vector3 => Math.AnyNumberBelow(a.ConvertTo<Vector3>(), comparison.F()),
-                Vector4 => Math.AnyNumberBelow(a.ConvertTo<Vector4>(), comparison.F()),
-                Vector2Int => Math.AnyNumberBelow(a.ConvertTo<Vector2Int>(), NearToIntegerUtility.Floor(comparison)),
-                Vector3Int => Math.AnyNumberBelow(a.ConvertTo<Vector3Int>(), NearToIntegerUtility.Floor(comparison)),
-                Color => Math.AnyNumberBelow(a.ConvertTo<Color>(), comparison.F()),
+                int => VectorCompareUtility.AnyNumberBelow(a.ConvertTo<int>(), NearToIntegerUtility.Floor(comparison)),
+                float => VectorCompareUtility.AnyNumberBelow(a.ConvertTo<float>(), comparison.F()),
+                double => VectorCompareUtility.AnyNumberBelow(a.ConvertTo<double>(), comparison),
+                Vector2 => VectorCompareUtility.AnyNumberBelow(a.ConvertTo<Vector2>(), comparison.F()),
+                Vector3 => VectorCompareUtility.AnyNumberBelow(a.ConvertTo<Vector3>(), comparison.F()),
+                Vector4 => VectorCompareUtility.AnyNumberBelow(a.ConvertTo<Vector4>(), comparison.F()),
+                Vector2Int => VectorCompareUtility.AnyNumberBelow(a.ConvertTo<Vector2Int>(), NearToIntegerUtility.Floor(comparison)),
+                Vector3Int => VectorCompareUtility.AnyNumberBelow(a.ConvertTo<Vector3Int>(), NearToIntegerUtility.Floor(comparison)),
+                Color => VectorCompareUtility.AnyNumberBelow(a.ConvertTo<Color>(), comparison.F()),
                 _ => throw new ArgumentException()
             };
         }
@@ -389,15 +389,17 @@ namespace VMFramework.Core.Generic
         {
             return a switch
             {
-                int => Math.AnyNumberAboveOrEqual(a.ConvertTo<int>(), NearToIntegerUtility.Ceiling(comparison)),
-                float => Math.AnyNumberAboveOrEqual(a.ConvertTo<float>(), comparison.F()),
-                double => Math.AnyNumberAboveOrEqual(a.ConvertTo<double>(), comparison),
-                Vector2 => Math.AnyNumberAboveOrEqual(a.ConvertTo<Vector2>(), comparison.F()),
-                Vector3 => Math.AnyNumberAboveOrEqual(a.ConvertTo<Vector3>(), comparison.F()),
-                Vector4 => Math.AnyNumberAboveOrEqual(a.ConvertTo<Vector4>(), comparison.F()),
-                Vector2Int => Math.AnyNumberAboveOrEqual(a.ConvertTo<Vector2Int>(), NearToIntegerUtility.Ceiling(comparison)),
-                Vector3Int => Math.AnyNumberAboveOrEqual(a.ConvertTo<Vector3Int>(), NearToIntegerUtility.Ceiling(comparison)),
-                Color => Math.AnyNumberAboveOrEqual(a.ConvertTo<Color>(), comparison.F()),
+                int => VectorCompareUtility.AnyNumberAboveOrEqual(a.ConvertTo<int>(), NearToIntegerUtility.Ceiling(comparison)),
+                float => VectorCompareUtility.AnyNumberAboveOrEqual(a.ConvertTo<float>(), comparison.F()),
+                double => VectorCompareUtility.AnyNumberAboveOrEqual(a.ConvertTo<double>(), comparison),
+                Vector2 => VectorCompareUtility.AnyNumberAboveOrEqual(a.ConvertTo<Vector2>(), comparison.F()),
+                Vector3 => VectorCompareUtility.AnyNumberAboveOrEqual(a.ConvertTo<Vector3>(), comparison.F()),
+                Vector4 => VectorCompareUtility.AnyNumberAboveOrEqual(a.ConvertTo<Vector4>(), comparison.F()),
+                Vector2Int => VectorCompareUtility.AnyNumberAboveOrEqual(a.ConvertTo<Vector2Int>(),
+                    NearToIntegerUtility.Ceiling(comparison)),
+                Vector3Int => VectorCompareUtility.AnyNumberAboveOrEqual(a.ConvertTo<Vector3Int>(),
+                    NearToIntegerUtility.Ceiling(comparison)),
+                Color => VectorCompareUtility.AnyNumberAboveOrEqual(a.ConvertTo<Color>(), comparison.F()),
                 _ => throw new ArgumentException()
             };
         }
@@ -408,15 +410,15 @@ namespace VMFramework.Core.Generic
         {
             return a switch
             {
-                int => Math.AnyNumberAbove(a.ConvertTo<int>(), NearToIntegerUtility.Ceiling(comparison)),
-                float => Math.AnyNumberAbove(a.ConvertTo<float>(), comparison.F()),
-                double => Math.AnyNumberAbove(a.ConvertTo<double>(), comparison),
-                Vector2 => Math.AnyNumberAbove(a.ConvertTo<Vector2>(), comparison.F()),
-                Vector3 => Math.AnyNumberAbove(a.ConvertTo<Vector3>(), comparison.F()),
-                Vector4 => Math.AnyNumberAbove(a.ConvertTo<Vector4>(), comparison.F()),
-                Vector2Int => Math.AnyNumberAbove(a.ConvertTo<Vector2Int>(), NearToIntegerUtility.Ceiling(comparison)),
-                Vector3Int => Math.AnyNumberAbove(a.ConvertTo<Vector3Int>(), NearToIntegerUtility.Ceiling(comparison)),
-                Color => Math.AnyNumberAbove(a.ConvertTo<Color>(), comparison.F()),
+                int => VectorCompareUtility.AnyNumberAbove(a.ConvertTo<int>(), NearToIntegerUtility.Ceiling(comparison)),
+                float => VectorCompareUtility.AnyNumberAbove(a.ConvertTo<float>(), comparison.F()),
+                double => VectorCompareUtility.AnyNumberAbove(a.ConvertTo<double>(), comparison),
+                Vector2 => VectorCompareUtility.AnyNumberAbove(a.ConvertTo<Vector2>(), comparison.F()),
+                Vector3 => VectorCompareUtility.AnyNumberAbove(a.ConvertTo<Vector3>(), comparison.F()),
+                Vector4 => VectorCompareUtility.AnyNumberAbove(a.ConvertTo<Vector4>(), comparison.F()),
+                Vector2Int => VectorCompareUtility.AnyNumberAbove(a.ConvertTo<Vector2Int>(), NearToIntegerUtility.Ceiling(comparison)),
+                Vector3Int => VectorCompareUtility.AnyNumberAbove(a.ConvertTo<Vector3Int>(), NearToIntegerUtility.Ceiling(comparison)),
+                Color => VectorCompareUtility.AnyNumberAbove(a.ConvertTo<Color>(), comparison.F()),
                 _ => throw new ArgumentException()
             };
         }
@@ -425,67 +427,6 @@ namespace VMFramework.Core.Generic
         #endregion
 
         #endregion
-
-        // #region Round
-        //
-        // [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        // public static T Round<T>(this T a)
-        //     where T : IEquatable<T>
-        // {
-        //     return a switch
-        //     {
-        //         int => a.ConvertTo<T>(),
-        //         float => NearToIntegerUtility.Round(a.ConvertTo<float>()).ConvertTo<T>(),
-        //         double => NearToIntegerUtility.Round(a.ConvertTo<double>()).ConvertTo<T>(),
-        //         Vector2 => NearToIntegerUtility.Round(a.ConvertTo<Vector2>()).ConvertTo<T>(),
-        //         Vector3 => NearToIntegerUtility.Round(a.ConvertTo<Vector3>()).ConvertTo<T>(),
-        //         Vector4 => NearToIntegerUtility.Round(a.ConvertTo<Vector4>()).ConvertTo<T>(),
-        //         Vector2Int => a.ConvertTo<T>(),
-        //         Vector3Int => a.ConvertTo<T>(),
-        //         Color => a.ConvertTo<T>(),
-        //         _ => throw new ArgumentException()
-        //     };
-        // }
-        //
-        // [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        // public static T Ceiling<T>(this T a)
-        //     where T : IEquatable<T>
-        // {
-        //     return a switch
-        //     {
-        //         int => a.ConvertTo<T>(),
-        //         float => NearToIntegerUtility.Ceiling(a.ConvertTo<float>()).ConvertTo<T>(),
-        //         double => NearToIntegerUtility.Ceiling(a.ConvertTo<double>()).ConvertTo<T>(),
-        //         Vector2 => NearToIntegerUtility.Ceiling(a.ConvertTo<Vector2>()).ConvertTo<T>(),
-        //         Vector3 => NearToIntegerUtility.Ceiling(a.ConvertTo<Vector3>()).ConvertTo<T>(),
-        //         Vector4 => NearToIntegerUtility.Ceiling(a.ConvertTo<Vector4>()).ConvertTo<T>(),
-        //         Vector2Int => a.ConvertTo<T>(),
-        //         Vector3Int => a.ConvertTo<T>(),
-        //         Color => a.ConvertTo<T>(),
-        //         _ => throw new ArgumentException()
-        //     };
-        // }
-        //
-        // [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        // public static T Floor<T>(this T a)
-        //     where T : IEquatable<T>
-        // {
-        //     return a switch
-        //     {
-        //         int => a.ConvertTo<T>(),
-        //         float => NearToIntegerUtility.Floor(a.ConvertTo<float>()).ConvertTo<T>(),
-        //         double => NearToIntegerUtility.Floor(a.ConvertTo<double>()).ConvertTo<T>(),
-        //         Vector2 => NearToIntegerUtility.Floor(a.ConvertTo<Vector2>()).ConvertTo<T>(),
-        //         Vector3 => NearToIntegerUtility.Floor(a.ConvertTo<Vector3>()).ConvertTo<T>(),
-        //         Vector4 => NearToIntegerUtility.Floor(a.ConvertTo<Vector4>()).ConvertTo<T>(),
-        //         Vector2Int => a.ConvertTo<T>(),
-        //         Vector3Int => a.ConvertTo<T>(),
-        //         Color => a.ConvertTo<T>(),
-        //         _ => throw new ArgumentException()
-        //     };
-        // }
-        //
-        // #endregion
 
         #region + - * / ^
 
@@ -551,7 +492,6 @@ namespace VMFramework.Core.Generic
                 Vector4 => (-a.ConvertTo<Vector4>()).ConvertTo<T>(),
                 Vector2Int => (-a.ConvertTo<Vector2Int>()).ConvertTo<T>(),
                 Vector3Int => (-a.ConvertTo<Vector3Int>()).ConvertTo<T>(),
-                Color => throw new ArgumentException(),
                 _ => throw new ArgumentException(),
             };
         }
@@ -591,8 +531,10 @@ namespace VMFramework.Core.Generic
                 Vector2 => ArithmeticUtility.Multiply(a.ConvertTo<Vector2>(), b.ConvertTo<Vector2>()).ConvertTo<T>(),
                 Vector3 => ArithmeticUtility.Multiply(a.ConvertTo<Vector3>(), b.ConvertTo<Vector3>()).ConvertTo<T>(),
                 Vector4 => ArithmeticUtility.Multiply(a.ConvertTo<Vector4>(), b.ConvertTo<Vector4>()).ConvertTo<T>(),
-                Vector2Int => ArithmeticUtility.Multiply(a.ConvertTo<Vector2Int>(), b.ConvertTo<Vector2Int>()).ConvertTo<T>(),
-                Vector3Int => ArithmeticUtility.Multiply(a.ConvertTo<Vector3Int>(), b.ConvertTo<Vector3Int>()).ConvertTo<T>(),
+                Vector2Int => ArithmeticUtility.Multiply(a.ConvertTo<Vector2Int>(), b.ConvertTo<Vector2Int>())
+                    .ConvertTo<T>(),
+                Vector3Int => ArithmeticUtility.Multiply(a.ConvertTo<Vector3Int>(), b.ConvertTo<Vector3Int>())
+                    .ConvertTo<T>(),
                 Color => ArithmeticUtility.Multiply(a.ConvertTo<Color>(), b.ConvertTo<Color>()).ConvertTo<T>(),
                 _ => throw new ArgumentException()
             };
@@ -614,8 +556,10 @@ namespace VMFramework.Core.Generic
                 Vector2 vector => ArithmeticUtility.Divide(vector, divisor.F()).ConvertTo<T>(),
                 Vector3 vector => ArithmeticUtility.Divide(vector, divisor.F()).ConvertTo<T>(),
                 Vector4 vector => ArithmeticUtility.Divide(vector, divisor.F()).ConvertTo<T>(),
-                Vector2Int vector => ArithmeticUtility.Divide(vector, NearToIntegerUtility.Round(divisor)).ConvertTo<T>(),
-                Vector3Int vector => ArithmeticUtility.Divide(vector, NearToIntegerUtility.Round(divisor)).ConvertTo<T>(),
+                Vector2Int vector => ArithmeticUtility.Divide(vector, NearToIntegerUtility.Round(divisor))
+                    .ConvertTo<T>(),
+                Vector3Int vector => ArithmeticUtility.Divide(vector, NearToIntegerUtility.Round(divisor))
+                    .ConvertTo<T>(),
                 Color color => ArithmeticUtility.Divide(color, divisor.F()).ConvertTo<T>(),
                 _ => throw new ArgumentException()
             };
@@ -630,14 +574,18 @@ namespace VMFramework.Core.Generic
                 int => (dividend.ConvertTo<int>() / divisor.ConvertTo<int>()).ConvertTo<T>(),
                 float => (dividend.ConvertTo<float>() / divisor.ConvertTo<float>()).ConvertTo<T>(),
                 double => (dividend.ConvertTo<double>() / divisor.ConvertTo<double>()).ConvertTo<T>(),
-                Vector2 => ArithmeticUtility.Divide(dividend.ConvertTo<Vector2>(), divisor.ConvertTo<Vector2>()).ConvertTo<T>(),
-                Vector3 => ArithmeticUtility.Divide(dividend.ConvertTo<Vector3>(), divisor.ConvertTo<Vector3>()).ConvertTo<T>(),
-                Vector4 => ArithmeticUtility.Divide(dividend.ConvertTo<Vector4>(), divisor.ConvertTo<Vector4>()).ConvertTo<T>(),
-                Vector2Int => ArithmeticUtility.Divide(dividend.ConvertTo<Vector2Int>(), divisor.ConvertTo<Vector2Int>())
+                Vector2 => ArithmeticUtility.Divide(dividend.ConvertTo<Vector2>(), divisor.ConvertTo<Vector2>())
                     .ConvertTo<T>(),
-                Vector3Int => ArithmeticUtility.Divide(dividend.ConvertTo<Vector3Int>(), divisor.ConvertTo<Vector3Int>())
+                Vector3 => ArithmeticUtility.Divide(dividend.ConvertTo<Vector3>(), divisor.ConvertTo<Vector3>())
                     .ConvertTo<T>(),
-                Color => ArithmeticUtility.Divide(dividend.ConvertTo<Color>(), divisor.ConvertTo<Color>()).ConvertTo<T>(),
+                Vector4 => ArithmeticUtility.Divide(dividend.ConvertTo<Vector4>(), divisor.ConvertTo<Vector4>())
+                    .ConvertTo<T>(),
+                Vector2Int => ArithmeticUtility
+                    .Divide(dividend.ConvertTo<Vector2Int>(), divisor.ConvertTo<Vector2Int>()).ConvertTo<T>(),
+                Vector3Int => ArithmeticUtility
+                    .Divide(dividend.ConvertTo<Vector3Int>(), divisor.ConvertTo<Vector3Int>()).ConvertTo<T>(),
+                Color => ArithmeticUtility.Divide(dividend.ConvertTo<Color>(), divisor.ConvertTo<Color>())
+                    .ConvertTo<T>(),
                 _ => throw new ArgumentException()
             };
         }
@@ -654,15 +602,15 @@ namespace VMFramework.Core.Generic
         {
             return a switch
             {
-                int => Math.Min(a.ConvertTo<int>(), min.ConvertTo<int>()).ConvertTo<T>(),
-                float => Math.Min(a.ConvertTo<float>(), min.ConvertTo<float>()).ConvertTo<T>(),
-                double => Math.Min(a.ConvertTo<double>(), min.ConvertTo<double>()).ConvertTo<T>(),
-                Vector2 => Math.Min(a.ConvertTo<Vector2>(), min.ConvertTo<Vector2>()).ConvertTo<T>(),
-                Vector3 => Math.Min(a.ConvertTo<Vector3>(), min.ConvertTo<Vector3>()).ConvertTo<T>(),
-                Vector4 => Math.Min(a.ConvertTo<Vector4>(), min.ConvertTo<Vector4>()).ConvertTo<T>(),
-                Vector2Int => Math.Min(a.ConvertTo<Vector2Int>(), min.ConvertTo<Vector2Int>()).ConvertTo<T>(),
-                Vector3Int => Math.Min(a.ConvertTo<Vector3Int>(), min.ConvertTo<Vector3Int>()).ConvertTo<T>(),
-                Color => Math.Min(a.ConvertTo<Color>(), min.ConvertTo<Color>()).ConvertTo<T>(),
+                int => MinMaxUtility.Min(a.ConvertTo<int>(), min.ConvertTo<int>()).ConvertTo<T>(),
+                float => MinMaxUtility.Min(a.ConvertTo<float>(), min.ConvertTo<float>()).ConvertTo<T>(),
+                double => MinMaxUtility.Min(a.ConvertTo<double>(), min.ConvertTo<double>()).ConvertTo<T>(),
+                Vector2 => MinMaxUtility.Min(a.ConvertTo<Vector2>(), min.ConvertTo<Vector2>()).ConvertTo<T>(),
+                Vector3 => MinMaxUtility.Min(a.ConvertTo<Vector3>(), min.ConvertTo<Vector3>()).ConvertTo<T>(),
+                Vector4 => MinMaxUtility.Min(a.ConvertTo<Vector4>(), min.ConvertTo<Vector4>()).ConvertTo<T>(),
+                Vector2Int => MinMaxUtility.Min(a.ConvertTo<Vector2Int>(), min.ConvertTo<Vector2Int>()).ConvertTo<T>(),
+                Vector3Int => MinMaxUtility.Min(a.ConvertTo<Vector3Int>(), min.ConvertTo<Vector3Int>()).ConvertTo<T>(),
+                Color => MinMaxUtility.Min(a.ConvertTo<Color>(), min.ConvertTo<Color>()).ConvertTo<T>(),
                 _ => throw new ArgumentException()
             };
         }
@@ -702,15 +650,15 @@ namespace VMFramework.Core.Generic
         {
             return a switch
             {
-                int => Math.Max(a.ConvertTo<int>(), min.ConvertTo<int>()).ConvertTo<T>(),
-                float => Math.Max(a.ConvertTo<float>(), min.ConvertTo<float>()).ConvertTo<T>(),
-                double => Math.Max(a.ConvertTo<double>(), min.ConvertTo<double>()).ConvertTo<T>(),
-                Vector2 => Math.Max(a.ConvertTo<Vector2>(), min.ConvertTo<Vector2>()).ConvertTo<T>(),
-                Vector3 => Math.Max(a.ConvertTo<Vector3>(), min.ConvertTo<Vector3>()).ConvertTo<T>(),
-                Vector4 => Math.Max(a.ConvertTo<Vector4>(), min.ConvertTo<Vector4>()).ConvertTo<T>(),
-                Vector2Int => Math.Max(a.ConvertTo<Vector2Int>(), min.ConvertTo<Vector2Int>()).ConvertTo<T>(),
-                Vector3Int => Math.Max(a.ConvertTo<Vector3Int>(), min.ConvertTo<Vector3Int>()).ConvertTo<T>(),
-                Color => Math.Max(a.ConvertTo<Color>(), min.ConvertTo<Color>()).ConvertTo<T>(),
+                int => MinMaxUtility.Max(a.ConvertTo<int>(), min.ConvertTo<int>()).ConvertTo<T>(),
+                float => MinMaxUtility.Max(a.ConvertTo<float>(), min.ConvertTo<float>()).ConvertTo<T>(),
+                double => MinMaxUtility.Max(a.ConvertTo<double>(), min.ConvertTo<double>()).ConvertTo<T>(),
+                Vector2 => MinMaxUtility.Max(a.ConvertTo<Vector2>(), min.ConvertTo<Vector2>()).ConvertTo<T>(),
+                Vector3 => MinMaxUtility.Max(a.ConvertTo<Vector3>(), min.ConvertTo<Vector3>()).ConvertTo<T>(),
+                Vector4 => MinMaxUtility.Max(a.ConvertTo<Vector4>(), min.ConvertTo<Vector4>()).ConvertTo<T>(),
+                Vector2Int => MinMaxUtility.Max(a.ConvertTo<Vector2Int>(), min.ConvertTo<Vector2Int>()).ConvertTo<T>(),
+                Vector3Int => MinMaxUtility.Max(a.ConvertTo<Vector3Int>(), min.ConvertTo<Vector3Int>()).ConvertTo<T>(),
+                Color => MinMaxUtility.Max(a.ConvertTo<Color>(), min.ConvertTo<Color>()).ConvertTo<T>(),
                 _ => throw new ArgumentException()
             };
         }
@@ -745,244 +693,5 @@ namespace VMFramework.Core.Generic
         }
 
         #endregion
-
-        #region Abs
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static T Abs<T>(this T a)
-            where T : IEquatable<T>
-        {
-            return a switch
-            {
-                int => Math.Abs(a.ConvertTo<int>()).ConvertTo<T>(),
-                float => Math.Abs(a.ConvertTo<float>()).ConvertTo<T>(),
-                double => Math.Abs(a.ConvertTo<double>()).ConvertTo<T>(),
-                Vector2 => Math.Abs(a.ConvertTo<Vector2>()).ConvertTo<T>(),
-                Vector3 => Math.Abs(a.ConvertTo<Vector3>()).ConvertTo<T>(),
-                Vector4 => Math.Abs(a.ConvertTo<Vector4>()).ConvertTo<T>(),
-                Vector2Int => Math.Abs(a.ConvertTo<Vector2Int>()).ConvertTo<T>(),
-                Vector3Int => Math.Abs(a.ConvertTo<Vector3Int>()).ConvertTo<T>(),
-                Color => Math.Abs(a.ConvertTo<Color>()).ConvertTo<T>(),
-                _ => throw new ArgumentException()
-            };
-        }
-
-        #endregion
-
-        #region Sum & Products
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static double Products<T>(this T a)
-            where T : IEquatable<T>
-        {
-            return a switch
-            {
-                int => a.ConvertTo<double>(),
-                float => a.ConvertTo<double>(),
-                double => a.ConvertTo<double>(),
-                Vector2 => Math.Products(a.ConvertTo<Vector2>()),
-                Vector3 => Math.Products(a.ConvertTo<Vector3>()),
-                Vector4 => Math.Products(a.ConvertTo<Vector4>()),
-                Vector2Int => Math.Products(a.ConvertTo<Vector2Int>()),
-                Vector3Int => Math.Products(a.ConvertTo<Vector3Int>()),
-                Color => Math.Products(a.ConvertTo<Color>()),
-                _ => throw new ArgumentException()
-            };
-        }
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static double Sum<T>(this T a)
-            where T : IEquatable<T>
-        {
-            return a switch
-            {
-                int => a.ConvertTo<double>(),
-                float => a.ConvertTo<double>(),
-                double => a.ConvertTo<double>(),
-                Vector2 => Math.Sum(a.ConvertTo<Vector2>()),
-                Vector3 => Math.Sum(a.ConvertTo<Vector3>()),
-                Vector4 => Math.Sum(a.ConvertTo<Vector4>()),
-                Vector2Int => Math.Sum(a.ConvertTo<Vector2Int>()),
-                Vector3Int => Math.Sum(a.ConvertTo<Vector3Int>()),
-                Color => Math.Sum(a.ConvertTo<Color>()),
-                _ => throw new ArgumentException()
-            };
-        }
-
-        #endregion
-
-        #region Norm
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static double L1Norm<T>(this T a)
-            where T : IEquatable<T>
-        {
-            return a switch
-            {
-                int => a.ConvertTo<int>().Abs(),
-                float => a.ConvertTo<float>().Abs(),
-                double => a.ConvertTo<double>().Abs(),
-                Vector2 => Math.L1Norm(a.ConvertTo<Vector2>()),
-                Vector3 => Math.L1Norm(a.ConvertTo<Vector3>()),
-                Vector4 => Math.L1Norm(a.ConvertTo<Vector4>()),
-                Vector2Int => Math.L1Norm(a.ConvertTo<Vector2Int>()),
-                Vector3Int => Math.L1Norm(a.ConvertTo<Vector3Int>()),
-                Color => Math.L1Norm(a.ConvertTo<Color>()),
-                _ => throw new ArgumentException()
-            };
-        }
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static double L2Norm<T>(this T a)
-            where T : IEquatable<T>
-        {
-            return a switch
-            {
-                int => a.ConvertTo<int>().Abs(),
-                float => a.ConvertTo<float>().Abs(),
-                double => a.ConvertTo<double>().Abs(),
-                Vector2 => Math.L2Norm(a.ConvertTo<Vector2>()),
-                Vector3 => Math.L2Norm(a.ConvertTo<Vector3>()),
-                Vector4 => Math.L2Norm(a.ConvertTo<Vector4>()),
-                Vector2Int => Math.L2Norm(a.ConvertTo<Vector2Int>()),
-                Vector3Int => Math.L2Norm(a.ConvertTo<Vector3Int>()),
-                Color => Math.L2Norm(a.ConvertTo<Color>()),
-                _ => throw new ArgumentException()
-            };
-        }
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static double InfinityNorm<T>(this T a)
-            where T : IEquatable<T>
-        {
-            return a switch
-            {
-                int => a.ConvertTo<int>().Abs(),
-                float => a.ConvertTo<float>().Abs(),
-                double => a.ConvertTo<double>().Abs(),
-                Vector2 => Math.InfinityNorm(a.ConvertTo<Vector2>()),
-                Vector3 => Math.InfinityNorm(a.ConvertTo<Vector3>()),
-                Vector4 => Math.InfinityNorm(a.ConvertTo<Vector4>()),
-                Vector2Int => Math.InfinityNorm(a.ConvertTo<Vector2Int>()),
-                Vector3Int => Math.InfinityNorm(a.ConvertTo<Vector3Int>()),
-                Color => Math.InfinityNorm(a.ConvertTo<Color>()),
-                _ => throw new ArgumentException()
-            };
-        }
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static double Norm<T>(this T a, double p)
-            where T : IEquatable<T>
-        {
-            return a switch
-            {
-                int => a.ConvertTo<int>().Abs(),
-                float => a.ConvertTo<float>().Abs(),
-                double => a.ConvertTo<double>().Abs(),
-                Vector2 => Math.Norm(a.ConvertTo<Vector2>(), p),
-                Vector3 => Math.Norm(a.ConvertTo<Vector3>(), p),
-                Vector4 => Math.Norm(a.ConvertTo<Vector4>(), p),
-                Vector2Int => Math.Norm(a.ConvertTo<Vector2Int>(), p),
-                Vector3Int => Math.Norm(a.ConvertTo<Vector3Int>(), p),
-                Color => Math.Norm(a.ConvertTo<Color>(), p),
-                _ => throw new ArgumentException()
-            };
-        }
-
-        #endregion
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static double Distance<T>(this T a, T b)
-            where T : IEquatable<T>
-        {
-            return a.Subtract(b).L2Norm();
-        }
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static T Lerp<T>(this T from, T to, float t)
-            where T : IEquatable<T>
-        {
-            return from switch
-            {
-                int => Math.Lerp(from.ConvertTo<int>(), to.ConvertTo<int>(), t).ConvertTo<T>(),
-                float => Math.Lerp(from.ConvertTo<float>(), to.ConvertTo<float>(), t).ConvertTo<T>(),
-                double => Math.Lerp(from.ConvertTo<double>(), to.ConvertTo<double>(), t).ConvertTo<T>(),
-                Vector2 => Math.Lerp(from.ConvertTo<Vector2>(), to.ConvertTo<Vector2>(), t).ConvertTo<T>(),
-                Vector3 => Math.Lerp(from.ConvertTo<Vector3>(), to.ConvertTo<Vector3>(), t).ConvertTo<T>(),
-                Vector4 => Math.Lerp(from.ConvertTo<Vector4>(), to.ConvertTo<Vector4>(), t).ConvertTo<T>(),
-                Vector2Int => Math.Lerp(from.ConvertTo<Vector2Int>(), to.ConvertTo<Vector2Int>(), t).ConvertTo<T>(),
-                Vector3Int => Math.Lerp(from.ConvertTo<Vector3Int>(), to.ConvertTo<Vector3Int>(), t).ConvertTo<T>(),
-                Color => Math.Lerp(from.ConvertTo<Color>(), to.ConvertTo<Color>(), t).ConvertTo<T>(),
-                _ => throw new ArgumentException()
-            };
-        }
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static T Lerp<T>(this T from, T to, float t, float power)
-            where T : IEquatable<T>
-        {
-            return from switch
-            {
-                int => Math.Lerp(from.ConvertTo<int>(), to.ConvertTo<int>(), t, power).ConvertTo<T>(),
-                float => Math.Lerp(from.ConvertTo<float>(), to.ConvertTo<float>(), t, power).ConvertTo<T>(),
-                double => Math.Lerp(from.ConvertTo<double>(), to.ConvertTo<double>(), t, power).ConvertTo<T>(),
-                Vector2 => Math.Lerp(from.ConvertTo<Vector2>(), to.ConvertTo<Vector2>(), t, power).ConvertTo<T>(),
-                Vector3 => Math.Lerp(from.ConvertTo<Vector3>(), to.ConvertTo<Vector3>(), t, power).ConvertTo<T>(),
-                Vector4 => Math.Lerp(from.ConvertTo<Vector4>(), to.ConvertTo<Vector4>(), t, power).ConvertTo<T>(),
-                Vector2Int => Math.Lerp(from.ConvertTo<Vector2Int>(), to.ConvertTo<Vector2Int>(), t, power)
-                    .ConvertTo<T>(),
-                Vector3Int => Math.Lerp(from.ConvertTo<Vector3Int>(), to.ConvertTo<Vector3Int>(), t, power)
-                    .ConvertTo<T>(),
-                Color => Math.Lerp(from.ConvertTo<Color>(), to.ConvertTo<Color>(), t, power).ConvertTo<T>(),
-                _ => throw new ArgumentException()
-            };
-        }
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static T Normalize01<T>(this T a, T min, T max)
-            where T : IEquatable<T>
-        {
-            return a switch
-            {
-                int => Math.Normalize01(a.ConvertTo<int>(), min.ConvertTo<int>(), max.ConvertTo<int>()).ConvertTo<T>(),
-                float => Math.Normalize01(a.ConvertTo<float>(), min.ConvertTo<float>(), max.ConvertTo<float>())
-                    .ConvertTo<T>(),
-                double => Math.Normalize01(a.ConvertTo<double>(), min.ConvertTo<double>(), max.ConvertTo<double>())
-                    .ConvertTo<T>(),
-                Vector2 => Math.Normalize01(a.ConvertTo<Vector2>(), min.ConvertTo<Vector2>(), max.ConvertTo<Vector2>())
-                    .ConvertTo<T>(),
-                Vector3 => Math.Normalize01(a.ConvertTo<Vector3>(), min.ConvertTo<Vector3>(), max.ConvertTo<Vector3>())
-                    .ConvertTo<T>(),
-                Vector4 => Math.Normalize01(a.ConvertTo<Vector4>(), min.ConvertTo<Vector4>(), max.ConvertTo<Vector4>())
-                    .ConvertTo<T>(),
-                Vector2Int => Math.Normalize01(a.ConvertTo<Vector2Int>(), min.ConvertTo<Vector2Int>(),
-                    max.ConvertTo<Vector2Int>()).ConvertTo<T>(),
-                Vector3Int => Math.Normalize01(a.ConvertTo<Vector3Int>(), min.ConvertTo<Vector3Int>(),
-                    max.ConvertTo<Vector3Int>()).ConvertTo<T>(),
-                Color => throw new ArgumentException(),
-                _ => throw new ArgumentException()
-            };
-        }
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static T PointSymmetric<T>(this T a, T point)
-            where T : IEquatable<T>
-        {
-            return a switch
-            {
-                int => Math.PointSymmetric(a.ConvertTo<int>(), point.ConvertTo<int>()).ConvertTo<T>(),
-                float => Math.PointSymmetric(a.ConvertTo<float>(), point.ConvertTo<float>()).ConvertTo<T>(),
-                double => Math.PointSymmetric(a.ConvertTo<double>(), point.ConvertTo<double>()).ConvertTo<T>(),
-                Vector2 => Math.PointSymmetric(a.ConvertTo<Vector2>(), point.ConvertTo<Vector2>()).ConvertTo<T>(),
-                Vector3 => Math.PointSymmetric(a.ConvertTo<Vector3>(), point.ConvertTo<Vector3>()).ConvertTo<T>(),
-                Vector4 => Math.PointSymmetric(a.ConvertTo<Vector4>(), point.ConvertTo<Vector4>()).ConvertTo<T>(),
-                Vector2Int => Math.PointSymmetric(a.ConvertTo<Vector2Int>(), point.ConvertTo<Vector2Int>())
-                    .ConvertTo<T>(),
-                Vector3Int => Math.PointSymmetric(a.ConvertTo<Vector3Int>(), point.ConvertTo<Vector3Int>())
-                    .ConvertTo<T>(),
-                Color => throw new ArgumentException(),
-                _ => throw new ArgumentException()
-            };
-        }
     }
 }

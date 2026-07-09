@@ -36,10 +36,9 @@ namespace VMFramework.Core
             return random.WeightedChoose(infos);
         }
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public void ResetChooser()
+        public IChooser<TItem> GenerateNewChooser()
         {
-            // No need to reset anything for this chooser.
+            return new WeightedSelectChooser<TItem>(infos);
         }
     }
 }

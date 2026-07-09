@@ -10,6 +10,8 @@ namespace VMFramework.Core
 
         public readonly float radius;
 
+        public float Area => (float)(Math.PI * radius * radius);
+
         #region Interface Implementation
 
         Vector2 IKSphere<Vector2, float>.Center
@@ -72,5 +74,19 @@ namespace VMFramework.Core
         {
             return random.PointOnCircle(radius) + center;
         }
+
+        #region Operators
+
+        public static CircleFloat operator +(CircleFloat circle, Vector2 offset)
+        {
+            return new CircleFloat(circle.center + offset, circle.radius);
+        }
+
+        public static CircleFloat operator -(CircleFloat circle, Vector2 offset)
+        {
+            return new CircleFloat(circle.center - offset, circle.radius);
+        }
+
+        #endregion
     }
 }

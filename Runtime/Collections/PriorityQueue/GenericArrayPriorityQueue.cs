@@ -2,13 +2,15 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
+using Sirenix.OdinInspector;
 
 namespace VMFramework.Core
 {
-    public sealed partial class GenericArrayPriorityQueue<TItem, TPriority> : IFixedSizePriorityQueue<TItem, TPriority>
+    public sealed class GenericArrayPriorityQueue<TItem, TPriority> : IFixedSizePriorityQueue<TItem, TPriority>
         where TItem : class, IGenericPriorityQueueNode<TPriority>
     {
         private int _numNodes;
+        [ShowInInspector]
         private TItem[] _nodes;
         private long _numNodesEverEnqueued;
         private readonly Comparison<TPriority> _comparer;
@@ -17,23 +19,23 @@ namespace VMFramework.Core
         /// Returns the number of nodes in the queue.
         /// O(1)
         /// </summary>
-        public int count => _numNodes;
+        public int Count => _numNodes;
 
         /// <summary>
         /// Returns the maximum number of items that can be enqueued at once in this queue.
         /// Once you hit this number,
-        /// (i.e. once <see cref="count"/>> == <see cref="capacity"/>>)
+        /// (i.e. once <see cref="Count"/>> == <see cref="Capacity"/>>)
         /// attempting to enqueue another item will cause undefined behavior.
         /// O(1)
         /// </summary>
-        public int capacity => _nodes.Length - 1;
+        public int Capacity => _nodes.Length - 1;
         
         /// <summary>
         /// Returns the head of the queue, without removing it (use Dequeue() for that).
         /// If the queue is empty, behavior is undefined.
         /// O(1)
         /// </summary>
-        public TItem first
+        public TItem First
         {
             get
             {
@@ -410,7 +412,7 @@ namespace VMFramework.Core
         {
             node.AssertIsNotNull(nameof(node));
 
-            if (!Contains(node) == false)
+            if (Contains(node) == false)
             {
                 throw new InvalidOperationException("Cannot call UpdatePriority() on a node which is not enqueued: " + node);
             }

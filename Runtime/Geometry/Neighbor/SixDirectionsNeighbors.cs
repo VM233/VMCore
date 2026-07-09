@@ -46,7 +46,9 @@ namespace VMFramework.Core
 
         #region Enumerator
 
-        public IEnumerator<TItem> GetEnumerator()
+        public Enumerator GetEnumerator() => new(this);
+        
+        IEnumerator<TItem> IEnumerable<TItem>.GetEnumerator()
         {
             return new Enumerator(this);
         }

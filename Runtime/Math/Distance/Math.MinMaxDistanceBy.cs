@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace VMFramework.Core
 {
-    public partial class Math
+    public partial class MathBasic
     {
         #region Int
 

@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace VMFramework.Core
 {
-    public readonly partial struct ColorRange : IKCubeFloat<Color>, IEquatable<ColorRange>, IFormattable
+    public partial struct ColorRange : IKCubeFloat<Color>, IEquatable<ColorRange>, IFormattable
     {
         public static Color ZeroColor { get; } = new(0, 0, 0, 0);
 
@@ -22,7 +22,7 @@ namespace VMFramework.Core
 
         public Color Extents => (max - min) / 2;
 
-        public readonly Color min, max;
+        public Color min, max;
 
         public RangeFloat RRange => new(min.r, max.r);
 

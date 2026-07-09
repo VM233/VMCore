@@ -13,7 +13,7 @@ namespace VMFramework.Core.Editor
             if (type.IsDerivedFrom<ScriptableObject>(false) == false)
             {
                 Debug.LogWarning($"{type}不是{nameof(ScriptableObject)}的子类");
-                return default;
+                return null;
             }
 
             var result = type.FindAssetOfType() as ScriptableObject;
@@ -21,13 +21,14 @@ namespace VMFramework.Core.Editor
             return result;
         }
 
-        public static ScriptableObject FindOrCreateScriptableObject(this Type type, string newPath, 
+        [Obsolete]
+        public static ScriptableObject FindOrCreateScriptableObject(this Type type, string newAssetFolderPath, 
             string newName)
         {
             if (type.IsDerivedFrom<ScriptableObject>(false) == false)
             {
                 Debug.LogWarning($"{type} is not a subclass of {nameof(ScriptableObject)}");
-                return default;
+                return null;
             }
             
             var result = type.FindAssetOfType() as ScriptableObject;
@@ -36,14 +37,14 @@ namespace VMFramework.Core.Editor
             {
                 var temp = ScriptableObject.CreateInstance(type);
                 
-                newPath.CreateDirectory();
+                newAssetFolderPath.CreateDirectory();
                 
                 if (newName.EndsWith(".asset") == false)
                 {
                     newName += ".asset";
                 }
                 
-                AssetDatabase.CreateAsset(temp, Path.Combine(newPath, newName));
+                AssetDatabase.CreateAsset(temp, Path.Combine(newAssetFolderPath, newName));
                 AssetDatabase.Refresh();
 
                 result = type.FindAssetOfType() as ScriptableObject;
@@ -51,7 +52,7 @@ namespace VMFramework.Core.Editor
                 if (result == null)
                 {
                     Debug.LogWarning($"种类为:{type}" +
-                                     $"的{nameof(ScriptableObject)}在{newPath}/{newName}下创建失败");
+                                     $"的{nameof(ScriptableObject)}在{newAssetFolderPath}/{newName}下创建失败");
                 }
             }
 
@@ -158,7 +159,8 @@ namespace VMFramework.Core.Editor
                 
                 return null;
             }
-            
+
+            path = AssetDatabase.GenerateUniqueAssetPath(path);
             AssetDatabase.CreateAsset(result, path);
             AssetDatabase.Refresh();
             

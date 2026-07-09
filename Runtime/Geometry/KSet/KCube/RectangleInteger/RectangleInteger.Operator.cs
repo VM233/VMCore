@@ -14,6 +14,8 @@ namespace VMFramework.Core
 
         public static RectangleInteger operator +(RectangleInteger a, Vector2Int b) => new(a.min + b, a.max + b);
 
+        public static RectangleInteger operator +(Vector2Int b, RectangleInteger a) => new(a.min + b, a.max + b);
+
         public static RectangleInteger operator -(RectangleInteger a, Vector2Int b) => new(a.min - b, a.max - b);
 
         public static RectangleInteger operator *(RectangleInteger a, int b)

@@ -27,7 +27,7 @@ namespace VMFramework.Core
                 throw new ArgumentNullException(name);
             }
             
-            if (str.IsWhiteSpace())
+            if (str.IsEmptyOrWhiteSpace())
             {
                 throw new ArgumentException($"{name} is white space");
             }

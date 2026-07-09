@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace VMFramework.Core
 {
-    public readonly partial struct TesseractFloat : IKCubeFloat<Vector4>, IEquatable<TesseractFloat>,
+    public partial struct TesseractFloat : IKCubeFloat<Vector4>, IEquatable<TesseractFloat>,
         IFormattable
     {
         public static TesseractFloat Zero { get; } = new(Vector4.zero, Vector4.zero);
@@ -18,7 +18,7 @@ namespace VMFramework.Core
 
         public Vector4 Extents => (max - min) / 2;
 
-        public readonly Vector4 min, max;
+        public Vector4 min, max;
 
         public RangeFloat XRange => new(min.x, max.x);
 

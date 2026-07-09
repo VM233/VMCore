@@ -1,13 +1,11 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
-using System.Runtime.CompilerServices;
 
 namespace VMFramework.Core
 {
-    public readonly struct FourDirectionsNeighbors<TItem> : IEnumerable<TItem>
+    public struct FourDirectionsNeighbors<TItem> : IEnumerable<TItem>
     {
-        public readonly TItem left, right, up, down;
+        public TItem left, right, up, down;
 
         public FourDirectionsNeighbors(TItem left, TItem right, TItem up, TItem down)
         {
@@ -39,7 +37,9 @@ namespace VMFramework.Core
 
         #region Enumerator
 
-        public IEnumerator<TItem> GetEnumerator()
+        public Enumerator GetEnumerator() => new(this);
+        
+        IEnumerator<TItem> IEnumerable<TItem>.GetEnumerator()
         {
             return new Enumerator(this);
         }

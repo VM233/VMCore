@@ -1,8 +1,12 @@
 ﻿namespace VMFramework.Core
 {
-    public interface IWeightedSelectItem<out T>
+    public interface IWeightedSelectItem
+    {
+        float Weight { get; }
+    }
+    
+    public interface IWeightedSelectItem<out T> : IWeightedSelectItem
     {
         public T Value { get; }
-        public float Weight { get; }
     }
 }

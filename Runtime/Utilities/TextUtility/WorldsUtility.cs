@@ -6,16 +6,33 @@ using System.Text;
 
 namespace VMFramework.Core
 {
+    public readonly struct WordSegment
+    {
+        public string Word { get; }
+
+        public int StartIndex { get; }
+
+        public int Length => Word.Length;
+
+        public int EndIndex => StartIndex + Length;
+
+        public WordSegment(string word, int startIndex)
+        {
+            Word = word;
+            StartIndex = startIndex;
+        }
+    }
+
     public static class WorldsUtility
     {
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static IEnumerable<string> GetWords(this string input)
+        public static IReadOnlyList<string> GetWords(this string input)
         {
             if (input.IsNullOrWhiteSpace())
             {
-                return Enumerable.Empty<string>();
+                return Array.Empty<string>();
             }
-            
+
             var words = new List<string>();
             StringBuilder currentWord = new StringBuilder();
             var isDigit = true;
@@ -80,7 +97,7 @@ namespace VMFramework.Core
                     ClearCurrentWorld();
                     continue;
                 }
-                
+
                 currentWord.Append(c);
             }
 
@@ -90,6 +107,34 @@ namespace VMFramework.Core
             }
 
             return words;
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static IReadOnlyList<WordSegment> GetWordSegments(this string input)
+        {
+            var words = input.GetWords();
+
+            if (words.Count == 0)
+            {
+                return Array.Empty<WordSegment>();
+            }
+
+            var segments = new List<WordSegment>(words.Count);
+
+            int searchStartIndex = 0;
+            foreach (var word in words)
+            {
+                int index = input.IndexOf(word, searchStartIndex, StringComparison.Ordinal);
+                if (index < 0)
+                {
+                    break;
+                }
+
+                segments.Add(new WordSegment(word, index));
+                searchStartIndex = index + word.Length;
+            }
+
+            return segments;
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -109,7 +154,7 @@ namespace VMFramework.Core
         {
             return ToCamelCase(input.GetWords(), step);
         }
-        
+
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static string ToSnakeCase(this IEnumerable<string> words)
         {
@@ -134,13 +179,13 @@ namespace VMFramework.Core
                 {
                     result += word.ToLower();
                     isFirst = false;
-                    
+
                     continue;
                 }
-                
+
                 result += step + word.CapitalizeFirstLetter();
             }
-            
+
             return result;
         }
 
@@ -148,10 +193,10 @@ namespace VMFramework.Core
         public static IEnumerable<string> RemoveWordsSuffix(this string input, IEnumerable<string> suffixes)
         {
             var words = input.GetWords().ToList();
-            
-            var suffixesList = suffixes.ToList();
 
-            for (int i = suffixesList.Count - 1; i >= 0; i--)
+            var suffixesList = suffixes.ToArray();
+
+            for (int i = suffixesList.Length - 1; i >= 0; i--)
             {
                 var lastWord = words[^1];
 
@@ -160,8 +205,57 @@ namespace VMFramework.Core
                     words.RemoveAt(words.Count - 1);
                 }
             }
-            
+
             return words;
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static IReadOnlyList<string> MakeWordsSuffix(this string input, string suffix)
+        {
+            var inputWords = input.GetWords().ToList();
+            var suffixWords = suffix.GetWords().ToArray();
+
+            int overlappingCount = inputWords.CountOverlappingElements(suffixWords, StringComparison.OrdinalIgnoreCase);
+            if (overlappingCount >= suffixWords.Length)
+            {
+                return inputWords;
+            }
+
+            for (int i = overlappingCount; i < suffixWords.Length; i++)
+            {
+                inputWords.Add(suffixWords[i]);
+            }
+
+            return inputWords;
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static IReadOnlyList<string> GetSameWords(this IReadOnlyList<string> inputs)
+        {
+            if (inputs == null || inputs.Count == 0)
+            {
+                return Array.Empty<string>();
+            }
+            
+            var sameWords = new List<string>();
+            var firstInput = inputs[0];
+            
+            sameWords.AddRange(firstInput.GetWords());
+            
+            for (int i = 1; i < inputs.Count; i++)
+            {
+                var input = inputs[i];
+                var words = input.GetWords();
+
+                sameWords.RemoveAll(word => words.Contains(word, StringComparer.OrdinalIgnoreCase) == false);
+
+                if (sameWords.Count == 0)
+                {
+                    break;
+                }
+            }
+            
+            return sameWords;
         }
     }
 }

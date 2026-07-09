@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics.Contracts;
 using System.Runtime.CompilerServices;
 using UnityEngine;
 
@@ -7,42 +8,49 @@ namespace VMFramework.Core
     public static class VectorExtractUtility
     {
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [Pure]
         public static Vector2Int XZ(this Vector3Int vector)
         {
             return new(vector.x, vector.z);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [Pure]
         public static Vector2Int XY(this Vector3Int vector)
         {
             return new(vector.x, vector.y);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [Pure]
         public static Vector2Int YZ(this Vector3Int vector)
         {
             return new(vector.y, vector.z);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [Pure]
         public static Vector2 XZ(this Vector3 vector)
         {
             return new(vector.x, vector.z);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [Pure]
         public static Vector2 XY(this Vector3 vector)
         {
             return new(vector.x, vector.y);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [Pure]
         public static Vector2 YZ(this Vector3 vector)
         {
             return new(vector.y, vector.z);
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [Pure]
         public static Vector2 ExtractAs(this Vector3 vector3, PlaneType planeType)
         {
             return planeType switch
@@ -56,6 +64,7 @@ namespace VMFramework.Core
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [Pure]
         public static Vector2Int ExtractAs(this Vector3Int vector3, PlaneType planeType)
         {
             return planeType switch

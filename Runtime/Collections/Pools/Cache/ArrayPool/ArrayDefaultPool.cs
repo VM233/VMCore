@@ -16,7 +16,7 @@ namespace VMFramework.Core.Pools
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static T[] Get(int length)
         {
-            var pool = pools.GetValueOrAddNew(length);
+            var pool = pools.GetOrCreate(length);
 
             return pool.Count > 0 ? pool.Pop() : new T[length];
         }
@@ -41,7 +41,7 @@ namespace VMFramework.Core.Pools
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void Return(T[] array)
         {
-            var pool = pools.GetValueOrAddNew(array.Length);
+            var pool = pools.GetOrCreate(array.Length);
 
             pool.Push(array);
         }

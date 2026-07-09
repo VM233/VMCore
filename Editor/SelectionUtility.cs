@@ -1,4 +1,6 @@
-﻿using System.Runtime.CompilerServices;
+﻿using System.Collections.Generic;
+using System.Linq;
+using System.Runtime.CompilerServices;
 using UnityEditor;
 using UnityEngine;
 
@@ -10,6 +12,12 @@ namespace VMFramework.Core.Editor
         public static void SelectObject(this Object obj)
         {
             Selection.activeObject = obj;
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void SelectObjects(this IEnumerable<Object> objects)
+        {
+            Selection.objects = objects.ToArray();
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]

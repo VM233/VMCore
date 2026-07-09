@@ -29,18 +29,27 @@ namespace VMFramework.Core
         {
         }
 
-        public void ResetChooser()
-        {
-            foreach (var (chooser, _) in infos)
-            {
-                chooser.ResetChooser();
-            }
-        }
-
         public TItem GetRandomItem(Random random)
         {
             var chooser = random.WeightedChoose(infos);
+            if (chooser == null)
+            {
+                return default;
+            }
+
             return chooser.GetRandomItem(random);
+        }
+
+        public IChooser<TItem> GenerateNewChooser()
+        {
+            var newInfos = new (IChooser<TItem>, float)[infos.Length];
+            for (int i = 0; i < infos.Length; i++)
+            {
+                var (chooser, weight) = infos[i];
+                newInfos[i] = (chooser.GenerateNewChooser(), weight);
+            }
+
+            return new NestedWeightedSelectChooser<TItem>(newInfos);
         }
     }
 }

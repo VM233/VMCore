@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
+using EnumsNET;
 
 namespace VMFramework.Core
 {
@@ -12,14 +13,14 @@ namespace VMFramework.Core
         {
             return direction switch
             {
-                EightTypesDirection.UpLeft => allNeighbors.upLeft,
+                EightTypesDirection.UpLeft => allNeighbors.leftUp,
                 EightTypesDirection.Up => allNeighbors.up,
-                EightTypesDirection.UpRight => allNeighbors.upRight,
+                EightTypesDirection.UpRight => allNeighbors.rightUp,
                 EightTypesDirection.Left => allNeighbors.left,
                 EightTypesDirection.Right => allNeighbors.right,
-                EightTypesDirection.DownLeft => allNeighbors.downLeft,
+                EightTypesDirection.DownLeft => allNeighbors.leftDown,
                 EightTypesDirection.Down => allNeighbors.down,
-                EightTypesDirection.DownRight => allNeighbors.downRight,
+                EightTypesDirection.DownRight => allNeighbors.rightDown,
                 _ => throw new ArgumentOutOfRangeException(nameof(direction), direction, null)
             };
         }
@@ -55,14 +56,14 @@ namespace VMFramework.Core
         {
             return index switch
             {
-                0 => allNeighbors.upLeft,
+                0 => allNeighbors.leftUp,
                 1 => allNeighbors.up,
-                2 => allNeighbors.upRight,
+                2 => allNeighbors.rightUp,
                 3 => allNeighbors.left,
                 4 => allNeighbors.right,
-                5 => allNeighbors.downLeft,
+                5 => allNeighbors.leftDown,
                 6 => allNeighbors.down,
-                7 => allNeighbors.downRight,
+                7 => allNeighbors.rightDown,
                 _ => throw new IndexOutOfRangeException()
             };
         }
@@ -71,44 +72,44 @@ namespace VMFramework.Core
         public static IEnumerable<TItem> GetNeighbors<TItem>(this EightDirectionsNeighbors<TItem> allNeighbors,
             EightTypesDirection direction)
         {
-            if (direction.HasFlag(EightTypesDirection.UpLeft))
+            if (direction.HasAnyFlags(EightTypesDirection.UpLeft))
             {
-                yield return allNeighbors.upLeft;
+                yield return allNeighbors.leftUp;
             }
 
-            if (direction.HasFlag(EightTypesDirection.Up))
+            if (direction.HasAnyFlags(EightTypesDirection.Up))
             {
                 yield return allNeighbors.up;
             }
             
-            if (direction.HasFlag(EightTypesDirection.UpRight))
+            if (direction.HasAnyFlags(EightTypesDirection.UpRight))
             {
-                yield return allNeighbors.upRight;
+                yield return allNeighbors.rightUp;
             }
             
-            if (direction.HasFlag(EightTypesDirection.Left))
+            if (direction.HasAnyFlags(EightTypesDirection.Left))
             {
                 yield return allNeighbors.left;
             }
             
-            if (direction.HasFlag(EightTypesDirection.Right))
+            if (direction.HasAnyFlags(EightTypesDirection.Right))
             {
                 yield return allNeighbors.right;
             }
             
-            if (direction.HasFlag(EightTypesDirection.DownLeft))
+            if (direction.HasAnyFlags(EightTypesDirection.DownLeft))
             {
-                yield return allNeighbors.downLeft;
+                yield return allNeighbors.leftDown;
             }
             
-            if (direction.HasFlag(EightTypesDirection.Down))
+            if (direction.HasAnyFlags(EightTypesDirection.Down))
             {
                 yield return allNeighbors.down;
             }
             
-            if (direction.HasFlag(EightTypesDirection.DownRight))
+            if (direction.HasAnyFlags(EightTypesDirection.DownRight))
             {
-                yield return allNeighbors.downRight;
+                yield return allNeighbors.rightDown;
             }
         }
 
@@ -120,44 +121,44 @@ namespace VMFramework.Core
             
             int count = 0;
             
-            if (direction.HasFlag(EightTypesDirection.UpLeft))
+            if (direction.HasAnyFlags(EightTypesDirection.UpLeft))
             {
-                neighbors[count++] = allNeighbors.upLeft;
+                neighbors[count++] = allNeighbors.leftUp;
             }
 
-            if (direction.HasFlag(EightTypesDirection.Up))
+            if (direction.HasAnyFlags(EightTypesDirection.Up))
             {
                 neighbors[count++] = allNeighbors.up;
             }
             
-            if (direction.HasFlag(EightTypesDirection.UpRight))
+            if (direction.HasAnyFlags(EightTypesDirection.UpRight))
             {
-                neighbors[count++] = allNeighbors.upRight;
+                neighbors[count++] = allNeighbors.rightUp;
             }
             
-            if (direction.HasFlag(EightTypesDirection.Left))
+            if (direction.HasAnyFlags(EightTypesDirection.Left))
             {
                 neighbors[count++] = allNeighbors.left;
             }
             
-            if (direction.HasFlag(EightTypesDirection.Right))
+            if (direction.HasAnyFlags(EightTypesDirection.Right))
             {
                 neighbors[count++] = allNeighbors.right;
             }
             
-            if (direction.HasFlag(EightTypesDirection.DownLeft))
+            if (direction.HasAnyFlags(EightTypesDirection.DownLeft))
             {
-                neighbors[count++] = allNeighbors.downLeft;
+                neighbors[count++] = allNeighbors.leftDown;
             }
             
-            if (direction.HasFlag(EightTypesDirection.Down))
+            if (direction.HasAnyFlags(EightTypesDirection.Down))
             {
                 neighbors[count++] = allNeighbors.down;
             }
             
-            if (direction.HasFlag(EightTypesDirection.DownRight))
+            if (direction.HasAnyFlags(EightTypesDirection.DownRight))
             {
-                neighbors[count++] = allNeighbors.downRight;
+                neighbors[count++] = allNeighbors.rightDown;
             }
             
             return count;

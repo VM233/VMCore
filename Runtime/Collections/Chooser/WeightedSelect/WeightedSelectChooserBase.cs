@@ -6,7 +6,7 @@ namespace VMFramework.Core
 {
     public abstract class WeightedSelectChooserBase<TItem>
     {
-        protected readonly (TItem item, float weight)[] infos;
+        public readonly (TItem item, float weight)[] infos;
 
         protected WeightedSelectChooserBase(params (TItem item, float weight)[] infos)
         {

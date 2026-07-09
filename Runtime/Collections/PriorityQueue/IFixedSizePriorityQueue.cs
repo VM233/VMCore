@@ -6,7 +6,7 @@
         /// Returns the maximum number of items that can be enqueued at once in this queue.  Once you hit this number (ie. once Count == MaxSize),
         /// attempting to enqueue another item will cause undefined behavior.
         /// </summary>
-        int capacity { get; }
+        int Capacity { get; }
         
         /// <summary>
         /// Resize the queue so it can accept more nodes.  All currently enqueued nodes are remain.

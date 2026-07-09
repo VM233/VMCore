@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace VMFramework.Core
 {
-    public readonly partial struct CubeFloat : IKCubeFloat<Vector3>, IEquatable<CubeFloat>, IFormattable
+    public partial struct CubeFloat : IKCubeFloat<Vector3>, IEquatable<CubeFloat>, IFormattable
     {
         public static CubeFloat Zero { get; } = new(Vector3.zero, Vector3.zero);
 
@@ -17,7 +17,7 @@ namespace VMFramework.Core
 
         public Vector3 Extents => (max - min) / 2;
 
-        public readonly Vector3 min, max;
+        public Vector3 min, max;
 
         public RangeFloat XRange => new(min.x, max.x);
 

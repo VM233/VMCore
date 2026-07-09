@@ -6,11 +6,11 @@ using Random = System.Random;
 
 namespace VMFramework.Core
 {
-    public readonly struct UniformlySpacedRangeVector2 : ISteppedRange<Vector2>
+    public struct UniformlySpacedRangeVector2 : ISteppedRange<Vector2>
     {
-        public readonly Vector2 min;
-        public readonly Vector2 max;
-        public readonly int count;
+        public Vector2 min;
+        public Vector2 max;
+        public int count;
 
         public Vector2 Step => count > 0 ? (max - min) / (count - 1) : Vector2.zero;
         
@@ -24,13 +24,23 @@ namespace VMFramework.Core
         Vector2 IMinMaxOwner<Vector2>.Min
         {
             get => min;
-            init => min = value;
+            set => min = value;
         }
 
         Vector2 IMinMaxOwner<Vector2>.Max
         {
             get => max;
-            init => max = value;
+            set => max = value;
+        }
+        
+        Vector2 IReadOnlyMinMaxOwner<Vector2>.GetMin()
+        {
+            return min;
+        }
+
+        Vector2 IReadOnlyMinMaxOwner<Vector2>.GetMax()
+        {
+            return max;
         }
         
         int IReadOnlyCollection<Vector2>.Count => count;

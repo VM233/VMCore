@@ -1,6 +1,7 @@
 ﻿namespace VMFramework.Core.Pools
 {
-    public class CollectionPool<TCollection> where TCollection : class, new()
+    public class CollectionPool<TCollection>
+        where TCollection : class, new()
     {
         /// <summary>
         /// A pool that can be used by a single thread. The pool is not thread-safe.

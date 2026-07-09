@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using Sirenix.OdinInspector;
+// ReSharper disable InconsistentlySynchronizedField
 
 namespace VMFramework.Core
 {
@@ -15,6 +17,7 @@ namespace VMFramework.Core
     {
         private class SimpleNode : GenericPriorityQueueNode<TPriority>
         {
+            [ShowInInspector]
             public TItem Data { get; private set; }
 
             public SimpleNode(TItem data)
@@ -25,40 +28,57 @@ namespace VMFramework.Core
 
         private const int INITIAL_QUEUE_SIZE = 10;
 
-        private readonly GenericArrayPriorityQueue<SimpleNode, TPriority> _queue;
-        private readonly Dictionary<TItem, IList<SimpleNode>> _itemToNodesCache;
-        private readonly IList<SimpleNode> _nullNodesCache;
+        [ShowInInspector]
+        private readonly GenericArrayPriorityQueue<SimpleNode, TPriority> queue;
+
+        private readonly Dictionary<TItem, IList<SimpleNode>> itemToNodesCache;
+        private readonly IList<SimpleNode> nullNodesCache;
 
         #region Constructors
+
         /// <summary>
         /// Instantiate a new Priority Queue
         /// </summary>
-        public SimplePriorityQueue() : this(Comparer<TPriority>.Default, EqualityComparer<TItem>.Default) { }
+        public SimplePriorityQueue() : this(Comparer<TPriority>.Default, EqualityComparer<TItem>.Default)
+        {
+        }
 
         /// <summary>
         /// Instantiate a new Priority Queue
         /// </summary>
         /// <param name="priorityComparer">The comparer used to compare TPriority values.  Defaults to Comparer&lt;TPriority&gt;.default</param>
-        public SimplePriorityQueue(IComparer<TPriority> priorityComparer) : this(priorityComparer.Compare, EqualityComparer<TItem>.Default) { }
+        public SimplePriorityQueue(IComparer<TPriority> priorityComparer) : this(priorityComparer.Compare,
+            EqualityComparer<TItem>.Default)
+        {
+        }
 
         /// <summary>
         /// Instantiate a new Priority Queue
         /// </summary>
         /// <param name="priorityComparer">The comparison function to use to compare TPriority values</param>
-        public SimplePriorityQueue(Comparison<TPriority> priorityComparer) : this(priorityComparer, EqualityComparer<TItem>.Default) { }
+        public SimplePriorityQueue(Comparison<TPriority> priorityComparer) : this(priorityComparer,
+            EqualityComparer<TItem>.Default)
+        {
+        }
 
         /// <summary>
         /// Instantiate a new Priority Queue       
         /// </summary>
         /// <param name="itemEquality">The equality comparison function to use to compare TItem values</param>
-        public SimplePriorityQueue(IEqualityComparer<TItem> itemEquality) : this(Comparer<TPriority>.Default, itemEquality) { }
+        public SimplePriorityQueue(IEqualityComparer<TItem> itemEquality) : this(Comparer<TPriority>.Default,
+            itemEquality)
+        {
+        }
 
         /// <summary>
         /// Instantiate a new Priority Queue
         /// </summary>
         /// <param name="priorityComparer">The comparer used to compare TPriority values.  Defaults to Comparer&lt;TPriority&gt;.default</param>
         /// <param name="itemEquality">The equality comparison function to use to compare TItem values</param>
-        public SimplePriorityQueue(IComparer<TPriority> priorityComparer, IEqualityComparer<TItem> itemEquality) : this(priorityComparer.Compare, itemEquality) { }
+        public SimplePriorityQueue(IComparer<TPriority> priorityComparer, IEqualityComparer<TItem> itemEquality) : this(
+            priorityComparer.Compare, itemEquality)
+        {
+        }
 
         /// <summary>
         /// Instantiate a new Priority Queue
@@ -67,10 +87,11 @@ namespace VMFramework.Core
         /// <param name="itemEquality">The equality comparison function to use to compare TItem values</param>
         public SimplePriorityQueue(Comparison<TPriority> priorityComparer, IEqualityComparer<TItem> itemEquality)
         {
-            _queue = new(INITIAL_QUEUE_SIZE, priorityComparer);
-            _itemToNodesCache = new Dictionary<TItem, IList<SimpleNode>>(itemEquality);
-            _nullNodesCache = new List<SimpleNode>();
+            queue = new(INITIAL_QUEUE_SIZE, priorityComparer);
+            itemToNodesCache = new Dictionary<TItem, IList<SimpleNode>>(itemEquality);
+            nullNodesCache = new List<SimpleNode>();
         }
+
         #endregion
 
         /// <summary>
@@ -80,14 +101,15 @@ namespace VMFramework.Core
         {
             if (item == null)
             {
-                return _nullNodesCache.Count > 0 ? _nullNodesCache[0] : null;
+                return nullNodesCache.Count > 0 ? nullNodesCache[0] : null;
             }
 
             IList<SimpleNode> nodes;
-            if (!_itemToNodesCache.TryGetValue(item, out nodes))
+            if (!itemToNodesCache.TryGetValue(item, out nodes))
             {
                 return null;
             }
+
             return nodes[0];
         }
 
@@ -98,16 +120,17 @@ namespace VMFramework.Core
         {
             if (node.Data == null)
             {
-                _nullNodesCache.Add(node);
+                nullNodesCache.Add(node);
                 return;
             }
 
             IList<SimpleNode> nodes;
-            if (!_itemToNodesCache.TryGetValue(node.Data, out nodes))
+            if (!itemToNodesCache.TryGetValue(node.Data, out nodes))
             {
                 nodes = new List<SimpleNode>();
-                _itemToNodesCache[node.Data] = nodes;
+                itemToNodesCache[node.Data] = nodes;
             }
+
             nodes.Add(node);
         }
 
@@ -118,19 +141,20 @@ namespace VMFramework.Core
         {
             if (node.Data == null)
             {
-                _nullNodesCache.Remove(node);
+                nullNodesCache.Remove(node);
                 return;
             }
 
             IList<SimpleNode> nodes;
-            if (!_itemToNodesCache.TryGetValue(node.Data, out nodes))
+            if (!itemToNodesCache.TryGetValue(node.Data, out nodes))
             {
                 return;
             }
+
             nodes.Remove(node);
             if (nodes.Count == 0)
             {
-                _itemToNodesCache.Remove(node.Data);
+                itemToNodesCache.Remove(node.Data);
             }
         }
 
@@ -138,13 +162,13 @@ namespace VMFramework.Core
         /// Returns the number of nodes in the queue.
         /// O(1)
         /// </summary>
-        public int count
+        public int Count
         {
             get
             {
-                lock(_queue)
+                lock (queue)
                 {
-                    return _queue.count;
+                    return queue.Count;
                 }
             }
         }
@@ -154,18 +178,18 @@ namespace VMFramework.Core
         /// Throws an exception when the queue is empty.
         /// O(1)
         /// </summary>
-        public TItem first
+        public TItem First
         {
             get
             {
-                lock(_queue)
+                lock (queue)
                 {
-                    if(_queue.count <= 0)
+                    if (queue.Count <= 0)
                     {
                         throw new InvalidOperationException("Cannot call .First on an empty queue");
                     }
 
-                    return _queue.first.Data;
+                    return queue.First.Data;
                 }
             }
         }
@@ -176,11 +200,11 @@ namespace VMFramework.Core
         /// </summary>
         public void Clear()
         {
-            lock(_queue)
+            lock (queue)
             {
-                _queue.Clear();
-                _itemToNodesCache.Clear();
-                _nullNodesCache.Clear();
+                queue.Clear();
+                itemToNodesCache.Clear();
+                nullNodesCache.Clear();
             }
         }
 
@@ -190,9 +214,9 @@ namespace VMFramework.Core
         /// </summary>
         public bool Contains(TItem item)
         {
-            lock(_queue)
+            lock (queue)
             {
-                return item == null ? _nullNodesCache.Count > 0 : _itemToNodesCache.ContainsKey(item);
+                return item == null ? nullNodesCache.Count > 0 : itemToNodesCache.ContainsKey(item);
             }
         }
 
@@ -203,14 +227,14 @@ namespace VMFramework.Core
         /// </summary>
         public TItem Dequeue()
         {
-            lock(_queue)
+            lock (queue)
             {
-                if(_queue.count <= 0)
+                if (queue.Count <= 0)
                 {
                     throw new InvalidOperationException("Cannot call Dequeue() on an empty queue");
                 }
 
-                SimpleNode node =_queue.Dequeue();
+                SimpleNode node = queue.Dequeue();
                 RemoveFromNodeCache(node);
                 return node.Data;
             }
@@ -225,11 +249,12 @@ namespace VMFramework.Core
         private SimpleNode EnqueueNoLockOrCache(TItem item, TPriority priority)
         {
             SimpleNode node = new SimpleNode(item);
-            if (_queue.count == _queue.capacity)
+            if (queue.Count == queue.Capacity)
             {
-                _queue.Resize(_queue.capacity * 2 + 1);
+                queue.Resize(queue.Capacity * 2 + 1);
             }
-            _queue.Enqueue(node, priority);
+
+            queue.Enqueue(node, priority);
             return node;
         }
 
@@ -241,18 +266,19 @@ namespace VMFramework.Core
         /// </summary>
         public void Enqueue(TItem item, TPriority priority)
         {
-            lock(_queue)
+            lock (queue)
             {
                 IList<SimpleNode> nodes;
                 if (item == null)
                 {
-                    nodes = _nullNodesCache;
+                    nodes = nullNodesCache;
                 }
-                else if (!_itemToNodesCache.TryGetValue(item, out nodes))
+                else if (!itemToNodesCache.TryGetValue(item, out nodes))
                 {
                     nodes = new List<SimpleNode>();
-                    _itemToNodesCache[item] = nodes;
+                    itemToNodesCache[item] = nodes;
                 }
+
                 SimpleNode node = EnqueueNoLockOrCache(item, priority);
                 nodes.Add(node);
             }
@@ -266,26 +292,28 @@ namespace VMFramework.Core
         /// </summary>
         public bool EnqueueWithoutDuplicates(TItem item, TPriority priority)
         {
-            lock(_queue)
+            lock (queue)
             {
                 IList<SimpleNode> nodes;
                 if (item == null)
                 {
-                    if (_nullNodesCache.Count > 0)
+                    if (nullNodesCache.Count > 0)
                     {
                         return false;
                     }
-                    nodes = _nullNodesCache;
+
+                    nodes = nullNodesCache;
                 }
-                else if (_itemToNodesCache.ContainsKey(item))
+                else if (itemToNodesCache.ContainsKey(item))
                 {
                     return false;
                 }
                 else
                 {
                     nodes = new List<SimpleNode>();
-                    _itemToNodesCache[item] = nodes;
+                    itemToNodesCache[item] = nodes;
                 }
+
                 SimpleNode node = EnqueueNoLockOrCache(item, priority);
                 nodes.Add(node);
                 return true;
@@ -300,32 +328,36 @@ namespace VMFramework.Core
         /// </summary>
         public void Remove(TItem item)
         {
-            lock(_queue)
+            lock (queue)
             {
                 SimpleNode removeMe;
                 IList<SimpleNode> nodes;
                 if (item == null)
                 {
-                    if (_nullNodesCache.Count == 0)
+                    if (nullNodesCache.Count == 0)
                     {
-                        throw new InvalidOperationException("Cannot call Remove() on a node which is not enqueued: " + item);
+                        throw new InvalidOperationException("Cannot call Remove() on a node which is not enqueued");
                     }
-                    removeMe = _nullNodesCache[0];
-                    nodes = _nullNodesCache;
+
+                    removeMe = nullNodesCache[0];
+                    nodes = nullNodesCache;
                 }
                 else
                 {
-                    if (!_itemToNodesCache.TryGetValue(item, out nodes))
+                    if (!itemToNodesCache.TryGetValue(item, out nodes))
                     {
-                        throw new InvalidOperationException("Cannot call Remove() on a node which is not enqueued: " + item);
+                        throw new InvalidOperationException("Cannot call Remove() on a node which is not enqueued: " +
+                                                            item);
                     }
+
                     removeMe = nodes[0];
                     if (nodes.Count == 1)
                     {
-                        _itemToNodesCache.Remove(item);
+                        itemToNodesCache.Remove(item);
                     }
                 }
-                _queue.Remove(removeMe);
+
+                queue.Remove(removeMe);
                 nodes.Remove(removeMe);
             }
         }
@@ -340,14 +372,16 @@ namespace VMFramework.Core
         /// </summary>
         public void UpdatePriority(TItem item, TPriority priority)
         {
-            lock (_queue)
+            lock (queue)
             {
                 SimpleNode updateMe = GetExistingNode(item);
                 if (updateMe == null)
                 {
-                    throw new InvalidOperationException("Cannot call UpdatePriority() on a node which is not enqueued: " + item);
+                    throw new InvalidOperationException(
+                        "Cannot call UpdatePriority() on a node which is not enqueued: " + item);
                 }
-                _queue.UpdatePriority(updateMe, priority);
+
+                queue.UpdatePriority(updateMe, priority);
             }
         }
 
@@ -361,31 +395,34 @@ namespace VMFramework.Core
         /// </summary>
         public TPriority GetPriority(TItem item)
         {
-            lock (_queue)
+            lock (queue)
             {
                 SimpleNode findMe = GetExistingNode(item);
-                if(findMe == null)
+                if (findMe == null)
                 {
-                    throw new InvalidOperationException("Cannot call GetPriority() on a node which is not enqueued: " + item);
+                    throw new InvalidOperationException("Cannot call GetPriority() on a node which is not enqueued: " +
+                                                        item);
                 }
+
                 return findMe.Priority;
             }
         }
 
         #region Try* methods for multithreading
+
         /// Get the head of the queue, without removing it (use TryDequeue() for that).
         /// Useful for multi-threading, where the queue may become empty between calls to Contains() and First
         /// Returns true if successful, false otherwise
         /// O(1)
         public bool TryFirst(out TItem first)
         {
-            if (_queue.count > 0)
+            if (queue.Count > 0)
             {
-                lock (_queue)
+                lock (queue)
                 {
-                    if (_queue.count > 0)
+                    if (queue.Count > 0)
                     {
-                        first = _queue.first.Data;
+                        first = queue.First.Data;
                         return true;
                     }
                 }
@@ -403,20 +440,20 @@ namespace VMFramework.Core
         /// </summary>
         public bool TryDequeue(out TItem first)
         {
-            if (_queue.count > 0)
+            if (queue.Count > 0)
             {
-                lock (_queue)
+                lock (queue)
                 {
-                    if (_queue.count > 0)
+                    if (queue.Count > 0)
                     {
-                        SimpleNode node = _queue.Dequeue();
+                        SimpleNode node = queue.Dequeue();
                         first = node.Data;
                         RemoveFromNodeCache(node);
                         return true;
                     }
                 }
             }
-            
+
             first = default(TItem);
             return false;
         }
@@ -430,32 +467,35 @@ namespace VMFramework.Core
         /// </summary>
         public bool TryRemove(TItem item)
         {
-            lock(_queue)
+            lock (queue)
             {
                 SimpleNode removeMe;
                 IList<SimpleNode> nodes;
                 if (item == null)
                 {
-                    if (_nullNodesCache.Count == 0)
+                    if (nullNodesCache.Count == 0)
                     {
                         return false;
                     }
-                    removeMe = _nullNodesCache[0];
-                    nodes = _nullNodesCache;
+
+                    removeMe = nullNodesCache[0];
+                    nodes = nullNodesCache;
                 }
                 else
                 {
-                    if (!_itemToNodesCache.TryGetValue(item, out nodes))
+                    if (!itemToNodesCache.TryGetValue(item, out nodes))
                     {
                         return false;
                     }
+
                     removeMe = nodes[0];
                     if (nodes.Count == 1)
                     {
-                        _itemToNodesCache.Remove(item);
+                        itemToNodesCache.Remove(item);
                     }
                 }
-                _queue.Remove(removeMe);
+
+                queue.Remove(removeMe);
                 nodes.Remove(removeMe);
                 return true;
             }
@@ -472,14 +512,15 @@ namespace VMFramework.Core
         /// </summary>
         public bool TryUpdatePriority(TItem item, TPriority priority)
         {
-            lock(_queue)
+            lock (queue)
             {
                 SimpleNode updateMe = GetExistingNode(item);
-                if(updateMe == null)
+                if (updateMe == null)
                 {
                     return false;
                 }
-                _queue.UpdatePriority(updateMe, priority);
+
+                queue.UpdatePriority(updateMe, priority);
                 return true;
             }
         }
@@ -495,27 +536,29 @@ namespace VMFramework.Core
         /// </summary>
         public bool TryGetPriority(TItem item, out TPriority priority)
         {
-            lock(_queue)
+            lock (queue)
             {
                 SimpleNode findMe = GetExistingNode(item);
-                if(findMe == null)
+                if (findMe == null)
                 {
                     priority = default(TPriority);
                     return false;
                 }
+
                 priority = findMe.Priority;
                 return true;
             }
         }
+
         #endregion
 
         public IEnumerator<TItem> GetEnumerator()
         {
             List<TItem> queueData = new List<TItem>();
-            lock (_queue)
+            lock (queue)
             {
                 //Copy to a separate list because we don't want to 'yield return' inside a lock
-                foreach(var node in _queue)
+                foreach (var node in queue)
                 {
                     queueData.Add(node.Data);
                 }
@@ -531,14 +574,14 @@ namespace VMFramework.Core
 
         public bool IsValidQueue()
         {
-            lock(_queue)
+            lock (queue)
             {
                 // Check all items in cache are in the queue
-                foreach (IList<SimpleNode> nodes in _itemToNodesCache.Values)
+                foreach (IList<SimpleNode> nodes in itemToNodesCache.Values)
                 {
                     foreach (SimpleNode node in nodes)
                     {
-                        if (!_queue.Contains(node))
+                        if (!queue.Contains(node))
                         {
                             return false;
                         }
@@ -546,7 +589,7 @@ namespace VMFramework.Core
                 }
 
                 // Check all items in queue are in cache
-                foreach (SimpleNode node in _queue)
+                foreach (SimpleNode node in queue)
                 {
                     if (GetExistingNode(node.Data) == null)
                     {
@@ -555,7 +598,7 @@ namespace VMFramework.Core
                 }
 
                 // Check queue structure itself
-                return _queue.IsValidQueue();
+                return queue.IsValidQueue();
             }
         }
     }
@@ -571,18 +614,24 @@ namespace VMFramework.Core
         /// <summary>
         /// Instantiate a new Priority Queue
         /// </summary>
-        public SimplePriorityQueue() { }
+        public SimplePriorityQueue()
+        {
+        }
 
         /// <summary>
         /// Instantiate a new Priority Queue
         /// </summary>
         /// <param name="comparer">The comparer used to compare priority values.  Defaults to Comparer&lt;float&gt;.default</param>
-        public SimplePriorityQueue(IComparer<float> comparer) : base(comparer) { }
+        public SimplePriorityQueue(IComparer<float> comparer) : base(comparer)
+        {
+        }
 
         /// <summary>
         /// Instantiate a new Priority Queue
         /// </summary>
         /// <param name="comparer">The comparison function to use to compare priority values</param>
-        public SimplePriorityQueue(Comparison<float> comparer) : base(comparer) { }
+        public SimplePriorityQueue(Comparison<float> comparer) : base(comparer)
+        {
+        }
     }
 }

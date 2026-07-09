@@ -11,29 +11,23 @@ namespace VMFramework.Core
         #region Contains Cube
 
         /// <summary>
-        ///     判断一个K维立方体是否包含另一个K维立方体
+        /// 判断一个K维立方体是否包含另一个K维立方体
         /// </summary>
-        /// <typeparam name="TPoint"></typeparam>
-        /// <param name="cube"></param>
-        /// <param name="smallerCube"></param>
-        /// <returns></returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static bool Contains<TPoint>(this IKCube<TPoint> cube, IKCube<TPoint> smallerCube)
+        public static bool Contains<TCube, TPoint>(this IKCube<TPoint> cube, TCube smallerCube)
             where TPoint : struct, IEquatable<TPoint>
+            where TCube : IKCube<TPoint>
         {
             return cube.Contains(smallerCube.Min) && cube.Contains(smallerCube.Max);
         }
 
         /// <summary>
-        ///     判断一个K维立方体是否被另一个K维立方体包含
+        /// 判断一个K维立方体是否被另一个K维立方体包含
         /// </summary>
-        /// <typeparam name="TPoint"></typeparam>
-        /// <param name="cube"></param>
-        /// <param name="biggerCube"></param>
-        /// <returns></returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static bool ContainsBy<TPoint>(this IKCube<TPoint> cube, IKCube<TPoint> biggerCube)
+        public static bool ContainsBy<TCube, TPoint>(this IKCube<TPoint> cube, TCube biggerCube)
             where TPoint : struct, IEquatable<TPoint>
+            where TCube : IKCube<TPoint>
         {
             return biggerCube.Contains(cube.Min) && biggerCube.Contains(cube.Max);
         }
@@ -45,76 +39,12 @@ namespace VMFramework.Core
         /// <summary>
         ///     以此K维立方体为基础，截断一个点，确保这个点在K维立方体内
         /// </summary>
-        /// <typeparam name="TPoint"></typeparam>
-        /// <param name="cube"></param>
-        /// <param name="pos"></param>
-        /// <returns></returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static TPoint Clamp<TPoint>(this IKCube<TPoint> cube, TPoint pos)
+        public static TPoint Clamp<TPoint, TCube>(this TCube cube, TPoint pos)
             where TPoint : struct, IEquatable<TPoint>
+            where TCube : IKCube<TPoint>
         {
             return cube.ClampMin(cube.ClampMax(pos));
-        }
-
-        /// <summary>
-        ///     以一个K维立方体为基础，截断另一个K维立方体，或者说返回两个K维立方体的交
-        /// </summary>
-        /// <typeparam name="TPoint"></typeparam>
-        /// <typeparam name="TKCube"></typeparam>
-        /// <param name="cube"></param>
-        /// <param name="otherCube"></param>
-        /// <returns></returns>
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static TKCube Clamp<TPoint, TKCube>(this TKCube cube, TKCube otherCube)
-            where TPoint : struct, IEquatable<TPoint> where TKCube : struct, IKCube<TPoint>
-        {
-            return new TKCube
-            {
-                Min = cube.Clamp(otherCube.Min),
-                Max = cube.Clamp(otherCube.Max)
-            };
-        }
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static TKCube ClampBy<TPoint, TKCube>(this TKCube cube, TKCube otherCube)
-            where TPoint : struct, IEquatable<TPoint> where TKCube : struct, IKCube<TPoint>
-        {
-            return new TKCube
-            {
-                Min = otherCube.Clamp(cube.Min),
-                Max = otherCube.Clamp(cube.Max)
-            };
-        }
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static TKCube ClampBy<TPoint, TKCube>(this TKCube cube, TPoint min, TPoint max)
-            where TPoint : struct, IEquatable<TPoint> where TKCube : struct, IKCube<TPoint>
-        {
-            var otherCube = new TKCube
-            {
-                Min = min,
-                Max = max
-            };
-            return new TKCube
-            {
-                Min = otherCube.Clamp(cube.Min),
-                Max = otherCube.Clamp(cube.Max)
-            };
-        }
-
-        /// <summary>
-        ///     以一个K维立方体为基础，截断poses内的所有点，确保这些点在K维立方体内
-        /// </summary>
-        /// <typeparam name="TPoint"></typeparam>
-        /// <typeparam name="TKCube"></typeparam>
-        /// <param name="cube"></param>
-        /// <param name="poses"></param>
-        /// <returns></returns>
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static IEnumerable<TPoint> Clamp<TPoint, TKCube>(this TKCube cube, IEnumerable<TPoint> poses)
-            where TPoint : struct, IEquatable<TPoint> where TKCube : struct, IKCube<TPoint>
-        {
-            return poses.Select(cube.Clamp);
         }
 
         #endregion
@@ -122,29 +52,24 @@ namespace VMFramework.Core
         #region Geometry
 
         /// <summary>
-        ///     返回两个K维立方体的交，或者说以一个K维立方体为基础，截断另一个K维立方体
+        /// 返回两个K维立方体的交，或者说以一个K维立方体为基础，截断另一个K维立方体
         /// </summary>
-        /// <typeparam name="TPoint"></typeparam>
-        /// <param name="cube"></param>
-        /// <param name="otherCube"></param>
-        /// <returns></returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static (TPoint min, TPoint max) IntersectsWith<TPoint>(this IKCube<TPoint> cube,
-            IKCube<TPoint> otherCube) where TPoint : struct, IEquatable<TPoint>
+        public static (TPoint min, TPoint max) IntersectsWith<TCube, TPoint>(this TCube cube, TPoint min, TPoint max)
+            where TPoint : struct, IEquatable<TPoint>
+            where TCube : IKCube<TPoint>
         {
-            return (cube.ClampMin(otherCube.Min), cube.ClampMax(otherCube.Max));
+            return (cube.ClampMin(min), cube.ClampMax(max));
         }
 
         /// <summary>
-        ///     判断两个K维立方体是否相交
+        /// 判断两个K维立方体是否相交
         /// </summary>
-        /// <param name="cube"></param>
-        /// <param name="otherCube"></param>
-        /// <returns></returns>
-        public static bool Overlaps<TPoint>(this IKCube<TPoint> cube, IKCube<TPoint> otherCube)
+        public static bool Overlaps<TCube, TPoint>(this TCube cube, TPoint min, TPoint max)
             where TPoint : struct, IEquatable<TPoint>
+            where TCube : IKCube<TPoint>
         {
-            return cube.Contains(otherCube.Min) || cube.Contains(otherCube.Max);
+            return cube.Contains(min) || cube.Contains(max);
         }
 
         #endregion
@@ -167,5 +92,29 @@ namespace VMFramework.Core
         #endregion
 
         #endregion
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void LimitTo<TCube, TPoint, TCollection>(this IEnumerable<TCube> cubes, TPoint min, TPoint max,
+            TCollection collection)
+            where TPoint : struct, IEquatable<TPoint>, IComparable<TPoint>
+            where TCube : IKCube<TPoint>, new()
+            where TCollection : ICollection<TCube>
+        {
+            foreach (var cube in cubes)
+            {
+                var (newMin, newMax) = cube.IntersectsWith(min, max);
+
+                if (newMin.CompareTo(newMax) > 0)
+                {
+                    continue;
+                }
+
+                collection.Add(new TCube()
+                {
+                    Min = newMin,
+                    Max = newMax
+                });
+            }
+        }
     }
 }

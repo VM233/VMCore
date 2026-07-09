@@ -12,8 +12,8 @@ namespace VMFramework.Core
 
         #region Query First
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static T QueryFirstComponentInChildren<T>(this Component root, bool includingSelf)
-            where T : Component
         {
             foreach (var transform in root.transform.GetAllChildren(includingSelf))
             {
@@ -28,8 +28,8 @@ namespace VMFramework.Core
             return default;
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static T QueryFirstComponentInChildren<T>(this Component root, string name, bool includingSelf)
-            where T : Component
         {
             foreach (var transform in root.transform.GetAllChildren(includingSelf))
             {
@@ -49,8 +49,8 @@ namespace VMFramework.Core
             return default;
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static T QueryFirstComponentInParents<T>(this Component root, bool includingSelf)
-            where T : Component
         {
             foreach (var transform in root.transform.GetAllParents(includingSelf))
             {
@@ -65,8 +65,8 @@ namespace VMFramework.Core
             return default;
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static T QueryFirstComponentInParents<T>(this Component root, string name, bool includingSelf)
-            where T : Component
         {
             foreach (var transform in root.transform.GetAllParents(includingSelf))
             {
@@ -100,7 +100,6 @@ namespace VMFramework.Core
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static IEnumerable<T> QueryComponentsInChildren<T>(this Component c,
             bool includingSelf)
-            where T : Component
         {
             foreach (var transform in c.transform.GetAllChildren(includingSelf))
             {
@@ -122,7 +121,7 @@ namespace VMFramework.Core
         /// <returns></returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static IEnumerable<T> QueryComponentsInParents<T>(this Component c,
-            bool includingSelf) where T : Component
+            bool includingSelf)
         {
             foreach (var transform in c.transform.GetAllParents(includingSelf))
             {

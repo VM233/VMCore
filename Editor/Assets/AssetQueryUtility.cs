@@ -184,7 +184,7 @@ namespace VMFramework.Core.Editor
                 content += " " + name;
             }
 
-            if (type.IsDerivedFrom<Component>(false))
+            if (type.IsDerivedFrom<Component>(false) || type.IsDerivedFrom<IController>(false))
             {
                 content = "t:GameObject" + content;
                 

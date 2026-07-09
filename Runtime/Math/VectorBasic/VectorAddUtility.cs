@@ -10,109 +10,127 @@ namespace VMFramework.Core
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Vector2 AddX(this Vector2 vector, float x)
         {
-            return new(vector.x + x, vector.y);
+            vector.x += x;
+            return vector;
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Vector2 AddY(this Vector2 vector, float y)
         {
-            return new(vector.x, vector.y + y);
+            vector.y += y;
+            return vector;
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Vector2Int AddX(this Vector2Int vector, int x)
         {
-            return new(vector.x + x, vector.y);
+            vector.x += x;
+            return vector;
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Vector2Int AddY(this Vector2Int vector, int y)
         {
-            return new(vector.x, vector.y + y);
+            vector.y += y;
+            return vector;
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Vector3 AddX(this Vector3 vector, float x)
         {
-            return new(vector.x + x, vector.y, vector.z);
+            vector.x += x;
+            return vector;
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Vector3 AddY(this Vector3 vector, float y)
         {
-            return new(vector.x, vector.y + y, vector.z);
+            vector.y += y;
+            return vector;
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Vector3 AddZ(this Vector3 vector, float z)
         {
-            return new(vector.x, vector.y, vector.z + z);
+            vector.z += z;
+            return vector;
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Vector3Int AddX(this Vector3Int vector, int x)
         {
-            return new(vector.x + x, vector.y, vector.z);
+            vector.x += x;
+            return vector;
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Vector3Int AddY(this Vector3Int vector, int y)
         {
-            return new(vector.x, vector.y + y, vector.z);
+            vector.y += y;
+            return vector;
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Vector3Int AddZ(this Vector3Int vector, int z)
         {
-            return new(vector.x, vector.y, vector.z + z);
+            vector.z += z;
+            return vector;
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Vector4 AddX(this Vector4 vector, float x)
         {
-            return new(vector.x + x, vector.y, vector.z, vector.w);
+            vector.x += x;
+            return vector;
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Vector4 AddY(this Vector4 vector, float y)
         {
-            return new(vector.x, vector.y + y, vector.z, vector.w);
+            vector.y += y;
+            return vector;
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Vector4 AddZ(this Vector4 vector, float z)
         {
-            return new(vector.x, vector.y, vector.z + z, vector.w);
+            vector.z += z;
+            return vector;
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Vector4 AddW(this Vector4 vector, float w)
         {
-            return new(vector.x, vector.y, vector.z, vector.w + w);
+            vector.w += w;
+            return vector;
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Color AddRed(this Color color, float red)
         {
-            return new(color.r + red, color.g, color.b, color.a);
+            color.r += red;
+            return color;
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Color AddGreen(this Color color, float green)
         {
-            return new(color.r, color.g + green, color.b, color.a);
+            color.g += green;
+            return color;
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Color AddBlue(this Color color, float blue)
         {
-            return new(color.r, color.g, color.b + blue, color.a);
+            color.b += blue;
+            return color;
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Color AddAlpha(this Color color, float alpha)
         {
-            return new(color.r, color.g, color.b, color.a + alpha);
+            color.a += alpha;
+            return color;
         }
 
         #endregion

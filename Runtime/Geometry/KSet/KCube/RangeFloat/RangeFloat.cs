@@ -3,7 +3,8 @@ using UnityEngine;
 
 namespace VMFramework.Core
 {
-    public readonly partial struct RangeFloat : IKCubeFloat<float>, IEquatable<RangeFloat>, IFormattable
+    [Serializable]
+    public partial struct RangeFloat : IKCubeFloat<float>, IEquatable<RangeFloat>, IFormattable
     {
         public static RangeFloat Zero { get; } = new(0, 0);
 
@@ -17,7 +18,7 @@ namespace VMFramework.Core
 
         public float Extents => (max - min) / 2;
 
-        public readonly float min, max;
+        public float min, max;
 
         #region Constructor
 
