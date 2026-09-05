@@ -1,4 +1,4 @@
-﻿using System.Runtime.CompilerServices;
+using System.Runtime.CompilerServices;
 using UnityEngine;
 
 namespace VMFramework.Core
@@ -19,7 +19,7 @@ namespace VMFramework.Core
         public static RangeFloat FromCorners(float corner1, float corner2) =>
             new(corner1.Min(corner2), corner1.Max(corner2));
     }
-    
+
     public partial struct RangeInteger
     {
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -29,7 +29,7 @@ namespace VMFramework.Core
         public static RangeInteger FromCorners(int corner1, int corner2) =>
             new(corner1.Min(corner2), corner1.Max(corner2));
     }
-    
+
     public partial struct RectangleFloat
     {
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -49,7 +49,7 @@ namespace VMFramework.Core
             var extents = size / 2;
             return new(pivot - extents, pivot + extents);
         }
-        
+
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static RectangleFloat FromPivotSize(Vector2 pivot, float size)
         {
@@ -93,7 +93,7 @@ namespace VMFramework.Core
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static CubeFloat FromPivotExtents(Vector3 pivot, Vector3 extents) =>
             new(pivot - extents, pivot + extents);
-        
+
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static CubeFloat FromPivotExtents(Vector3 pivot, float extents)
         {
@@ -107,7 +107,7 @@ namespace VMFramework.Core
             var extents = size / 2;
             return new(pivot - extents, pivot + extents);
         }
-        
+
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static CubeFloat FromPivotSize(Vector3 pivot, float size)
         {
@@ -120,45 +120,27 @@ namespace VMFramework.Core
         public static CubeFloat FromCorners(Vector3 corner1, Vector3 corner2) =>
             new(corner1.Min(corner2), corner1.Max(corner2));
     }
-    
-    public partial struct CubeInteger
-    {
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static CubeInteger FromPivotExtents(Vector3Int pivot, Vector3Int extents) =>
-            new(pivot - extents, pivot + extents);
-        
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static CubeInteger FromPivotExtents(Vector3Int pivot, int extents)
-        {
-            var extentsVector = new Vector3Int(extents, extents, extents);
-            return new(pivot - extentsVector, pivot + extentsVector);
-        }
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static CubeInteger FromCorners(Vector3Int corner1, Vector3Int corner2) =>
-            new(corner1.Min(corner2), corner1.Max(corner2));
-    }
-    
     public partial struct TesseractFloat
     {
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static TesseractFloat FromPivotExtents(Vector4 pivot, Vector4 extents) =>
             new(pivot - extents, pivot + extents);
-        
+
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static TesseractFloat FromPivotExtents(Vector4 pivot, float extents)
         {
             var extentsVector = new Vector4(extents, extents);
             return new(pivot - extentsVector, pivot + extentsVector);
         }
-        
+
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static TesseractFloat FromPivotSize(Vector4 pivot, Vector4 size)
         {
             var extents = size / 2;
             return new(pivot - extents, pivot + extents);
         }
-        
+
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static TesseractFloat FromPivotSize(Vector4 pivot, float size)
         {
@@ -177,7 +159,7 @@ namespace VMFramework.Core
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static ColorRange FromPivotExtents(Color pivot, Color extents) =>
             new(pivot - extents, pivot + extents);
-        
+
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static ColorRange FromPivotSize(Color pivot, Color size)
         {
