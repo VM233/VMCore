@@ -1,20 +1,17 @@
 # VMCore
- The Common Utilities for unity
 
- Have Tested on:
-- Unity 6000.0.20f1
+Common Unity utilities, distributed as `com.vm233.vmcore`.
 
-`CubeInteger` supports Unity field serialization, including both bounds and axis directions.
+Install through Unity Package Manager using `https://github.com/VM233/VMCore.git`
+with `#` followed by the full 40-character commit SHA of the chosen release.
+The package manifest declares Unity 2022.3 as its minimum version. The existing
+tested Editor baseline is Unity 6000.0.20f1. There are no package dependencies;
+the package manifest is the dependency authority.
 
-For collider containment, capture `ConvexColliderGeometry2D` from a circle, capsule or box using
-an explicit collider-local-to-world matrix. `ColliderAreaGeometry2D.Contains` and `Overlaps`
-consume its vertices and radius, with no angular samples or temporary Transform changes.
-Areas support primitive colliders, closed Polygon paths, and polygon-mode Composite paths
-with zero edge radius. `PolygonAreaGeometry2D` can also be retained for continuous geometric
-queries. Captures are immutable, so their owner must replace them when authored geometry or
-the captured coordinate frame changes. Project-specific CustomCollider2D shapes must resolve
-their authored rest primitive before capture.
+Runtime contains the public utilities, Editor contains Editor extensions, and
+Tests contains focused Editor fixtures. Consumers can enable the package's tests
+through Unity's package test workflow and run `VMCore.Editor.Tests`.
 
-The old `ColliderContainsUtility` position/sample-count API is removed. To query a proposed
-body position, prepend the requested world translation to each collider's local-to-world
-matrix. Rotation, scale and hierarchy offsets remain part of that explicit frame.
+Detailed documentation: [snake case](Documentation~/SnakeCase.md) and
+[collider containment and migration](Documentation~/ColliderContainment.md).
+See [CHANGELOG](CHANGELOG.md) and [LICENSE](LICENSE).

@@ -140,7 +140,45 @@ namespace VMFramework.Core
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static string ToSnakeCase(this string input)
         {
+            if (IsCanonicalSnakeCase(input))
+            {
+                return input;
+            }
+
             return input.GetWords().Select(word => word.ToLower()).ToFormattedString("_");
+        }
+
+        private static bool IsCanonicalSnakeCase(string input)
+        {
+            if (string.IsNullOrEmpty(input))
+            {
+                return false;
+            }
+
+            bool wordStart = true;
+            foreach (char c in input)
+            {
+                if (c == '_')
+                {
+                    if (wordStart)
+                    {
+                        return false;
+                    }
+
+                    wordStart = true;
+                }
+                else
+                {
+                    if (c < 'a' || c > 'z')
+                    {
+                        return false;
+                    }
+
+                    wordStart = false;
+                }
+            }
+
+            return !wordStart;
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]

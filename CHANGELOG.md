@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.1.1 - 2026-10-03
+
+- Normalize canonical lowercase ASCII snake case without word, lowercase or join
+  allocations, preserving all other current-culture normalization semantics.
+- Add focused culture, exhaustive short-input, reference identity and allocation
+  tests. Move detailed collider usage and migration out of the README.
+
 ## 1.1.0 - 2026-09-11
 
 - Replace sampled collider containment with immutable convex footprints and polygon-region
