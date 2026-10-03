@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.1.5 - 2026-10-04
+
+- Measure snake-case allocations with Unity's thread-local GC.Alloc recorder
+  and a known positive control, so an unavailable managed byte counter cannot
+  make the allocation regression pass falsely or fail without valid observation.
+
 ## 1.1.4 - 2026-10-04
 
 - Bind the snake-case fixture's assertions to NUnit explicitly so the test

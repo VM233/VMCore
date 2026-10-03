@@ -1,6 +1,7 @@
 using System;
 using System.Globalization;
 using NUnit.Framework;
+using Unity.Profiling;
 using VMFramework.Core;
 using Assert = NUnit.Framework.Assert;
 
@@ -109,27 +110,58 @@ namespace VMFramework.Tests
                 input.GetWords().ToSnakeCase();
             }
 
-            long before = GC.GetAllocatedBytesForCurrentThread();
+            const ProfilerRecorderOptions options = ProfilerRecorderOptions.SumAllSamplesInFrame |
+                ProfilerRecorderOptions.CollectOnlyOnCurrentThread;
+            bool positiveRecorderValid;
+            long positiveAllocations;
+            using (var recorder = ProfilerRecorder.StartNew(ProfilerCategory.Internal, "GC.Alloc", 1, options))
+            {
+                positiveRecorderValid = recorder.Valid;
+                byte[] positiveControl = null;
+                for (int i = 0; i < 16; i++)
+                {
+                    positiveControl = new byte[1024];
+                }
+                GC.KeepAlive(positiveControl);
+                recorder.Stop();
+                positiveAllocations = recorder.Count == 0 ? 0 : recorder.GetSample(0).Count;
+            }
+
+            bool canonicalRecorderValid;
+            long canonicalAllocations;
             string normalized = null;
-            for (int i = 0; i < iterations; i++)
+            using (var recorder = ProfilerRecorder.StartNew(ProfilerCategory.Internal, "GC.Alloc", 1, options))
             {
-                normalized = input.ToSnakeCase();
+                canonicalRecorderValid = recorder.Valid;
+                for (int i = 0; i < iterations; i++)
+                {
+                    normalized = input.ToSnakeCase();
+                }
+                recorder.Stop();
+                canonicalAllocations = recorder.Count == 0 ? 0 : recorder.GetSample(0).Count;
             }
 
-            long canonicalBytes = GC.GetAllocatedBytesForCurrentThread() - before;
-            before = GC.GetAllocatedBytesForCurrentThread();
+            bool wordRecorderValid;
+            long wordPipelineAllocations;
             string control = null;
-            for (int i = 0; i < iterations; i++)
+            using (var recorder = ProfilerRecorder.StartNew(ProfilerCategory.Internal, "GC.Alloc", 1, options))
             {
-                control = input.GetWords().ToSnakeCase();
+                wordRecorderValid = recorder.Valid;
+                for (int i = 0; i < iterations; i++)
+                {
+                    control = input.GetWords().ToSnakeCase();
+                }
+                recorder.Stop();
+                wordPipelineAllocations = recorder.Count == 0 ? 0 : recorder.GetSample(0).Count;
             }
 
-            long wordPipelineBytes = GC.GetAllocatedBytesForCurrentThread() - before;
+            Assert.That(positiveRecorderValid && canonicalRecorderValid && wordRecorderValid, Is.True);
+            Assert.That(positiveAllocations, Is.GreaterThan(0), "The native recorder must observe the known allocation.");
             Assert.That(normalized, Is.SameAs(input));
             Assert.That(control, Is.EqualTo(input));
-            Assert.That(canonicalBytes, Is.Zero);
-            Assert.That(wordPipelineBytes, Is.GreaterThan(0));
-            TestContext.WriteLine($"Canonical bytes: {canonicalBytes}; word pipeline bytes: {wordPipelineBytes}; calls: {iterations}");
+            Assert.That(canonicalAllocations, Is.Zero);
+            Assert.That(wordPipelineAllocations, Is.GreaterThan(0));
+            TestContext.WriteLine($"Positive allocations: {positiveAllocations}; canonical allocations: {canonicalAllocations}; word pipeline allocations: {wordPipelineAllocations}; calls: {iterations}");
         }
     }
 }

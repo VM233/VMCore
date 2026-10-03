@@ -33,19 +33,29 @@ Two normalizations per input give at most 11204 normalization calls and 44816
 input character visits per normalization stage. Inputs are generated and released
 individually, with no retained corpus. Six cultures also cover a fixed 35-input
 corpus. The allocation fixture performs 64 initialization iterations per path
-and then 4096 calls per path on one 16-character key. A separate 8192-character
-canonical input proves long-input identity. The fixture owns at most 32 KiB of
-live input strings and its temporary normalization allocation budget is 64 MiB;
-no gameplay, scene objects or Unity API calls are involved: PASS.
+and then 4096 calls per path on one 16-character key. A known positive control
+creates sixteen 1024-byte arrays. Three sequential thread-local GC.Alloc recorder
+windows retain one summed sample each, stop before assertions and dispose before
+the next window. Only one native recorder is live at a time. A separate
+8192-character canonical input proves long-input identity. The fixture owns at
+most 32 KiB of live input strings, 16 KiB of positive-control arrays and a 64 MiB
+temporary normalization allocation budget. There are no scenes, gameplay or
+retained Profiler frame captures: PASS.
 
 ## Verification and scope
 
 Run `VMCore.Editor.Tests`, filtered to `VMFramework.Tests.SnakeCaseTests`, through
 the existing native package-test workflow of the consuming project. The tests
 compare the string overload to the separately exposed word/sequence pipeline,
-prove exact canonical reference identity, and measure allocations on the calling
-thread. All Unity APIs used here are unchanged; supported Unity versions continue
-to be declared by package metadata and the README.
+prove exact canonical reference identity, and measure GC.Alloc events on the
+calling thread. The known array allocation must register events before zero can
+be interpreted; the word pipeline must also register allocations. Unity's
+ProfilerRecorder API owns this observation, including on Editors whose managed
+GC byte counter reports zero. Both paths use the same native measurement contract.
+See the official [thread-local recorder](https://docs.unity.cn/2022.3/Documentation/ScriptReference/Unity.Profiling.ProfilerRecorderOptions.CollectOnlyOnCurrentThread.html)
+and [summed sample](https://docs.unity.com/en-us/engine/6000.6/script-reference/unity/profiling/profilerrecorderoptions/sumallsamplesinframe)
+documentation. Supported Unity versions remain declared by package metadata and
+the README.
 
 This repair removes a source-proven allocation contributor. It does not establish
 that a game-specific cold creation or physics hitch has been fixed. Those require
