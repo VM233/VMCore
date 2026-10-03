@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.1.3 - 2026-10-04
+
+- Correct the three existing runtime folder metadata records to declare folder
+  ownership, preserving their GUIDs and completing the native package meta audit.
+
 ## 1.1.2 - 2026-10-04
 
 - Give WordSegment its own declaration file, preserving its public value API and
