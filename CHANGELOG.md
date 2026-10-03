@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.1.2 - 2026-10-04
+
+- Give WordSegment its own declaration file, preserving its public value API and
+  the snake-case allocation repair while satisfying the one-type-per-file policy.
+
 ## 1.1.1 - 2026-10-03
 
 - Normalize canonical lowercase ASCII snake case without word, lowercase or join
