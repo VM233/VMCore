@@ -2,6 +2,7 @@ using System;
 using System.Globalization;
 using NUnit.Framework;
 using VMFramework.Core;
+using Assert = NUnit.Framework.Assert;
 
 namespace VMFramework.Tests
 {

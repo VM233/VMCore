@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.1.4 - 2026-10-04
+
+- Bind the snake-case fixture's assertions to NUnit explicitly so the test
+  assembly compiles alongside VMCore's assertion utility.
+
 ## 1.1.3 - 2026-10-04
 
 - Correct the three existing runtime folder metadata records to declare folder
