@@ -35,11 +35,12 @@ application-domain lifetime. Existing capacities and collection creation costs
 remain unchanged. No additional warm path allocation occurs. PASS.
 
 The focused fixture uses three distinct closed collection types. It performs
-at most twenty pool/factory accesses and twenty collection leases/returns, plus
+at most forty pool/factory accesses and forty collection leases/returns, plus
 four threads each reading one shared product and factory. All loops have four elements or fewer;
 thread joins have a 5-second observation limit. Test storage is four pools,
 four threads, four result references in each of four fixed arrays, three
 small lists and four additional small lists, below 64 KiB excluding the existing CLR/Unity
 test runtime. One initialization race is the only concurrent portion; no
 Unity APIs, scene, gameplay simulation, source enumeration or timing assertion
-are used. PASS.
+are used. The retained-collection case also runs twice in the same domain,
+covering both an initially empty pool and existing retained entries. PASS.

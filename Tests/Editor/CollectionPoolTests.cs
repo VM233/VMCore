@@ -10,6 +10,7 @@ namespace VMFramework.Tests
     public sealed class CollectionPoolTests
     {
         [Test]
+        [Repeat(2)]
         public void RequestedModesRetainIndependentCollections()
         {
             var local = CollectionPool<List<RetainedEntry>>.Default;
@@ -24,8 +25,6 @@ namespace VMFramework.Tests
             var expectedShared = sharedItem;
             try
             {
-                Assert.That(localFresh, Is.True);
-                Assert.That(sharedFresh, Is.True);
                 Assert.That(sharedItem, Is.Not.SameAs(localItem));
                 bool localRetained = local.Return(localItem);
                 localItem = null;

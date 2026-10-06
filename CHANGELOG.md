@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.1.7 - 2026-10-06
+
+- Repeat the retained-collection regression in one application domain and
+  assert the lease/return contract without assuming the pool starts empty.
+  The independent initialization implementation is unchanged.
+
 ## 1.1.6 - 2026-10-06
 
 - Initialize single-thread and shared collection pools independently, so a
