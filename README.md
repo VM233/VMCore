@@ -12,6 +12,7 @@ Runtime contains the public utilities, Editor contains Editor extensions, and
 Tests contains focused Editor fixtures. Consumers can enable the package's tests
 through Unity's package test workflow and run `VMCore.Editor.Tests`.
 
-Detailed documentation: [snake case](Documentation~/SnakeCase.md) and
+Detailed documentation: [collection pools](Documentation~/CollectionPools.md),
+[snake case](Documentation~/SnakeCase.md) and
 [collider containment and migration](Documentation~/ColliderContainment.md).
 See [CHANGELOG](CHANGELOG.md) and [LICENSE](LICENSE).

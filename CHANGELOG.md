@@ -1,5 +1,14 @@
 # Changelog
 
+## 1.1.6 - 2026-10-06
+
+- Initialize single-thread and shared collection pools independently, so a
+  caller requesting one mode does not construct the other mode's pool and
+  generic concurrent queue during first use.
+- Verify retained-collection isolation, factory clearing and concurrent first
+  publication with focused Editor tests. Existing capacities and lease/return
+  semantics remain unchanged.
+
 ## 1.1.5 - 2026-10-04
 
 - Measure snake-case allocations with Unity's thread-local GC.Alloc recorder
