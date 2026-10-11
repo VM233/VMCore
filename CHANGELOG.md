@@ -1,5 +1,15 @@
 # Changelog
 
+## 1.1.8 - 2026-10-11
+
+- Retire the actual acquired item when fresh or pooled initialization fails,
+  preserving the original error and independently failed retirement errors.
+- End a lease and publish its retirement before checking current capacity and
+  exposing retained storage to reentrant Get calls.
+- Withdraw Clear's entry-time queue before callbacks, attempt every held item,
+  and preserve legal new admissions without repeating lease retirement.
+- Add focused acquisition and retained-storage fixtures and lifecycle documentation.
+
 ## 1.1.7 - 2026-10-06
 
 - Repeat the retained-collection regression in one application domain and
